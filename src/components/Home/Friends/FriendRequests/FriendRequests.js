@@ -11,6 +11,7 @@ import {
   TouchableNativeFeedback,
   Modal,
   BackHandler,
+  Alert,
 } from "react-native";
 
 //Custom Components
@@ -36,7 +37,7 @@ import { UserContext } from "../../../../data/UserContext";
 import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 
-const FriendRequests = ({ onExit, refresh }) => {
+const FriendRequests = ({ onExit, refresh, getFriendList }) => {
 
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
@@ -128,6 +129,8 @@ const FriendRequests = ({ onExit, refresh }) => {
           var buffer = docSnap.data().requests;
           updateDoc(docRef, {
             requests: buffer.concat(user.id),
+          }).then(() => {
+            Alert.alert("Invite sent")
           });
         }
       } catch (e) {
@@ -147,7 +150,6 @@ const FriendRequests = ({ onExit, refresh }) => {
     updateDoc(docRef, {
       requests: buffer,
     });
-    console.log(buffer);
 
     var friends_buffer;
     const docSnap = await getDoc(docRef);
@@ -161,6 +163,11 @@ const FriendRequests = ({ onExit, refresh }) => {
       friends: friends_buffer,
     });
 
+    refresh({
+      friends: friends_buffer,
+      requests: buffer
+    });
+
     const docSnap2 = await getDoc(docRef2);
     if (docSnap2.exists()) {
       friends_buffer = docSnap2.data().friends;
@@ -172,8 +179,8 @@ const FriendRequests = ({ onExit, refresh }) => {
       friends: friends_buffer,
     });
 
+    getFriendList();
     loadRequests();
-    refresh();
     setLoading(false);
   };
 

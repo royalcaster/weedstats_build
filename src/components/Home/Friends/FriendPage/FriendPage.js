@@ -206,6 +206,10 @@ const FriendPage = ({ show, userid, onExit, refresh, toggleNavbar }) => {
       updateDoc(docRef, {
         friends: buffer.filter((item) => item != id),
       });
+
+      refresh({
+        friends: buffer.filter((item) => item != id)
+      });
     } catch (e) {
       console.log("Error", e);
     }
@@ -226,7 +230,6 @@ const FriendPage = ({ show, userid, onExit, refresh, toggleNavbar }) => {
       console.log("Error", e);
     }
     setModalVisible(false);
-    refresh();
   };
 
   const getSortedCounters = (array) => {
@@ -444,35 +447,35 @@ const FriendPage = ({ show, userid, onExit, refresh, toggleNavbar }) => {
                 <Animated.View style={{width: "90%", flexDirection: "row", alignSelf: "center", height: responsiveHeight(7)}}>
                     <View style={{flex: 1, justifyContent: "center"}}>
                       <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
-                        <Text style={styles.small_counter}>{user.joint_counter ? user.joint_counter  : "-"}</Text>
+                        <Text style={styles.small_counter}>{user.joint_counter}</Text>
                       </Animated.View>
                         <Text style={styles.small_label}>JOINT</Text>
                         <Animated.Image style={[styles.small_image,{opacity: opacityAnim2}]} source={require('../../../../data/img/joint.png')}/>
                     </View>
                     <View style={{flex: 1, justifyContent: "center"}}>
                      <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
-                        <Text style={styles.small_counter}>{user.bong_counter ? user.bong_counter  : "-"}</Text>
+                        <Text style={styles.small_counter}>{user.bong_counter}</Text>
                       </Animated.View>
                         <Text style={styles.small_label}>BONG</Text>
                         <Animated.Image style={[styles.small_image,{height: responsiveHeight(8), width: responsiveHeight(5), marginTop: responsiveHeight(-1), opacity: opacityAnim2}]} source={require('../../../../data/img/bong.png')}/>
                     </View>
                     <View style={{flex: 1, justifyContent: "center"}}>
                       <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
-                        <Text style={styles.small_counter}>{user.vape_counter ? user.vape_counter  : "-"}</Text>
+                        <Text style={styles.small_counter}>{user.vape_counter}</Text>
                       </Animated.View>
                         <Text style={styles.small_label}>VAPE</Text>
                         <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(7), marginTop: responsiveHeight(-1), opacity: opacityAnim2}]} source={require('../../../../data/img/vape.png')}/>
                     </View>
                     <View style={{flex: 1, justifyContent: "center"}}>
                      <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
-                        <Text style={styles.small_counter}>{user.pipe_counter ? user.pipe_counter  : "-"}</Text>
+                        <Text style={styles.small_counter}>{user.pipe_counter}</Text>
                       </Animated.View>
                         <Text style={styles.small_label}>PFEIFE</Text>
                         <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(10), marginTop: responsiveHeight(0), opacity: opacityAnim2}]} source={require('../../../../data/img/pipe.png')}/>
                     </View>
                     <View style={{flex: 1, justifyContent: "center"}}>
                       <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
-                        <Text style={styles.small_counter}>{user.cookie_counter ? user.cookie_counter : "-"}</Text>
+                        <Text style={styles.small_counter}>{user.cookie_counter}</Text>
                       </Animated.View>
                         <Text style={styles.small_label}>EDIBLE</Text>
                         <Animated.Image style={[styles.small_image,{height: responsiveHeight(7), width: responsiveWidth(13), marginTop: responsiveHeight(1), opacity: opacityAnim2}]} source={require('../../../../data/img/cookie.png')}/>

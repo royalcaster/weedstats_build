@@ -66,7 +66,7 @@ export default function Home({ handleLogOut, toggleCounter, toggleLanguage, dele
         ) : null}
         {view == "stats" ? <Stats/> : null}
         {view == "map" ? <Map getFriendList={getFriendList}/> : null}
-        {view == "config" ? <Config toggleLanguage={toggleLanguage} loadSettings={loadSettings} /> : null}
+        {view == "config" ? <Config deleteAccount={deleteAccount} toggleLanguage={toggleLanguage} loadSettings={loadSettings} /> : null}
         {view == "groups" ? (
           <Groups handleLogOut={handleLogOut} toggleNavbar={toggleNavbar} deleteAccount={deleteAccount} getFriendList={getFriendList} refreshUser={refreshUser}/>
         ) : null}

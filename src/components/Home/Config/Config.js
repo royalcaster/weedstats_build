@@ -34,7 +34,7 @@ import { LanguageContext } from "../../../data/LanguageContext";
 import { useBackHandler } from "@react-native-community/hooks";
 import { ConfigContext } from "../../../data/ConfigContext";
 
-const Config = ({ toggleLanguage, loadSettings }) => {
+const Config = ({ toggleLanguage, loadSettings, deleteAccount }) => {
 
   const language = useContext(LanguageContext);
   const config = useContext(ConfigContext);

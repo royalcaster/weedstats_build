@@ -18,7 +18,7 @@ import { responsiveHeight } from "react-native-responsive-dimensions";
 import { LanguageContext } from "../../../../data/LanguageContext";
 
 
-const FriendList = memo(({ setActiveFriend, setShowFriend, getFriendList, onSetShowSearchPanel }) => {
+const FriendList = ({ setActiveFriend, setShowFriend, getFriendList, onSetShowSearchPanel }) => {
 
     const user = useContext(UserContext);
     const [loading, setLoading] = useState(true);
@@ -27,7 +27,6 @@ const FriendList = memo(({ setActiveFriend, setShowFriend, getFriendList, onSetS
     const language = useContext(LanguageContext);
 
     useEffect(() => {
-        getFriendList();
         setLoading(false);
     },[]);
 
@@ -58,7 +57,7 @@ const FriendList = memo(({ setActiveFriend, setShowFriend, getFriendList, onSetS
                 </View>}
         </Animated.View>
     );
-})
+}
 
 export default FriendList
 

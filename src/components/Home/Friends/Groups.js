@@ -60,7 +60,7 @@ const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refr
   return (
     <>
       {showAddFriend ? <SearchPanel onExit={() => setShowAddFriend(false)}/> : null}
-      {showRequests ? <FriendRequests onExit={() => setShowRequests(false)} refresh={() => getFriendList()}/> : null}
+      {showRequests ? <FriendRequests onExit={() => setShowRequests(false)} refresh={refreshUser} getFriendList={getFriendList}/> : null}
 
       <FriendPage
         show={showFriend}
@@ -114,7 +114,7 @@ const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refr
                   { height: 50, backgroundColor: "#1E2132", width: 50 },
                 ]}
               >
-                <Feather name="user-check" style={styles.icon} />
+                <Feather name="user-check" style={[styles.icon,{color: user.requests.length != 0 ? "#F2338C" : "white"}]} />
               </View>
             </TouchableNativeFeedback>
 

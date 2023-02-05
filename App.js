@@ -186,16 +186,28 @@ export default function App() {
   }; */
 
   const refreshUser = async ( settings ) => {
-    await updateDoc(doc(firestore, "users", user.id), {
-      username: settings.userName,
-      photoUrl: settings.photoUrl
-    });
+    await updateDoc(doc(firestore, "users", user.id), settings);
 
     setUser({
-      ...user,
-      username: settings.userName,
-      photoUrl: settings.photoUrl
-    })
+      username: settings.username ? settings.username : user.username,
+      id: settings.id ? settings.id : user.id,
+      email: settings.email ? settings.email : user.email,
+      photoUrl: settings.photoUrl ? settings.photoUrl : user.photoUrl,
+      friends: settings.friends ? settings.friends : user.friends,
+      requests: settings.requests ? settings.requests : user.requests,
+      joint_counter: settings.joint_counter ? settings.joint_counter : user.joint_counter,
+      bong_counter: settings.bong_counter ? settings.bong_counter : user.bong_counter,
+      vape_counter: settings.vape_counter ? settings.vape_counter : user.vape_counter,
+      pipe_counter: settings.pipe_counter ? settings.pipe_counter : user.pipe_counter,
+      cookie_counter: settings.cookie_counter ? settings.cookie_counter : user.cookie_counter,
+      member_since: settings.member_since ? settings.member_since : user.member_since,
+      last_entry_timestamp: settings.last_entry_timestamp ? settings.last_entry_timestamp : user.last_entry_timestamp,
+      last_entry_latitude: settings.last_entry_latitude ? settings.last_entry_latitude : user.last_entry_latitude,
+      last_entry_longitude: settings.last_entry_longitude ? settings.last_entry_longitude : user.last_entry_longitude,
+      last_entry_type: settings.last_entry_type ? settings.last_entry_type : user.last_entry_type,
+      main_counter: settings.main_counter ? settings.main_counter : user.main_counter,
+      username_array: settings.username_array ? settings.username_array : user.username_array
+    });
   }
 
   //aktualisiert das gesamte Nutzer-Objekt, das im Context geteilt wird --> ALT!!!
