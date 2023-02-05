@@ -133,7 +133,7 @@ const FriendListItem = ({ userid, onPress }) => {
                 <Animated.View
                   style={{ transform: [{ translateY: slide1Anim}], zIndex: 2}}
                 >
-                  <ProfileImage x={35} type={1} url={user.photoUrl} />
+                  {!isLoading ?<ProfileImage x={35} type={1} url={user.photoUrl} /> : null}
                 </Animated.View>
                 <View style={{ width: responsiveWidth(3) }}></View>
                 <Animated.View
@@ -143,7 +143,8 @@ const FriendListItem = ({ userid, onPress }) => {
                     zIndex: 1,
                   }}
                 >
-                  <Text style={styles.username}>{user.username}</Text>
+                  {!isLoading ? 
+                  <Text style={styles.username}>{user.username}</Text> :null}
                 </Animated.View>
               </View>
             </View>
