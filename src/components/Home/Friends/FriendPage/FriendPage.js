@@ -8,6 +8,7 @@ import Best from "./Best/Best";
 import BackButton from "../../../common/BackButton";
 import CustomLoader from "../../../common/CustomLoader";
 import ProfileImagePanel from "../../../common/ProfileImagePanel";
+import TypeImage from "../../../common/TypeImage"
 
 //Third Party
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from "react-native-responsive-dimensions";
@@ -532,6 +533,7 @@ const FriendPage = ({ show, userid, onExit, refresh, toggleNavbar }) => {
                           alignContent: "center"
                         }}
                       >
+                        {/* <TypeImage type={user.last_act_type}/> */}
                         {user.last_act_type == "joint" ? (
                           <Image
                             style={styles.type_image_joint}

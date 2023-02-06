@@ -31,6 +31,7 @@ import { LanguageContext } from "../../../data/LanguageContext";
 import { FriendListContext } from "../../../data/FriendListContext";
 import { getLocalData } from "../../../data/Service";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import TypeImage from "../../common/TypeImage";
 
 const Map = ({ getFriendList }) => {
   LogBox.ignoreAllLogs();
@@ -164,7 +165,7 @@ const Map = ({ getFriendList }) => {
           style={{ flexDirection: "row", height: "100%", alignItems: "center" }}
         >
           <View style={{ flex: 1 }}>
-            <ProfileImage url={item.photoUrl} x={80} type={2} />
+            <ProfileImage url={item.photoUrl} x={100} type={2} />
           </View>
 
           <View
@@ -215,6 +216,8 @@ const Map = ({ getFriendList }) => {
               </Text>
             </View>
           </View>
+
+          <TypeImage type={item.type}/>
 
           <View style={{ flex: 1 }}>
             {item.type == "joint" ? (

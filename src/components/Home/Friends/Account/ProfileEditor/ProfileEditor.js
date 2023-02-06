@@ -77,7 +77,7 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
             setLoading(true);
             let downloadUri = await uploadImageAsync(image);
             await refreshUser({
-                userName: userName,
+                username: userName,
                 photoUrl: downloadUri
             });
             setLoading(false);

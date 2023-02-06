@@ -4,8 +4,9 @@ import { View, StyleSheet, Animated } from 'react-native'
 
 //Custom Components
 import ProfileImage from "./ProfileImage";
+import TypeImage from "./TypeImage";
 
-const CustomMarker = ({ photoUrl }) => {
+const CustomMarker = ({ photoUrl, type }) => {
 
     return (
         <>

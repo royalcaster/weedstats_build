@@ -14,6 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import LevelBar from "./LevelBar/LevelBar";
+import TypeImage from "../../../common/TypeImage";
 
 const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
 
@@ -148,27 +149,7 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
     <Animated.View style={[styles.container, { transform: [{ translateY: scaleAnim }], opacity: fadeAnim }]}>
        
       <Animated.View style={[styles.card_opener, {backgroundColor: convertToRGB(getGradientColors(counter)[0].substring(1,7), 0.4), borderColor: getGradientColors(counter)[0], borderWidth: 0.5, transform: [{translateX: scaleAnim}]}]}>
-      {type === "joint" ? (
-            <Image
-              style={styles.joint_img}
-              source={require("../../../../data/img/joint.png")}
-            />
-          ) : null}
-          {type === "bong" ? (
-            <Image style={styles.bong_img} source={require("../../../../data/img/bong.png")} />
-          ) : null}
-          {type === "vape" ? (
-            <Image style={styles.vape_img} source={require("../../../../data/img/vape.png")} />
-          ) : null}
-          {type === "pipe" ? (
-            <Image style={styles.pipe_img} source={require("../../../../data/img/pipe.png")} />
-          ) : null}
-          {type === "cookie" ? (
-            <Image
-              style={styles.cookie_img}
-              source={require("../../../../data/img/cookie.png")}
-            />
-          ) : null}
+        <TypeImage type={type} x={60}/>
       </Animated.View>
       
       <View style={[styles.card_content]}>
