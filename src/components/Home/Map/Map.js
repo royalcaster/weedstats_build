@@ -60,6 +60,7 @@ const Map = ({ getFriendList }) => {
       getFriendList();
       loadData(); //Freunde + deren letzte Einträge
       setLocalData(filterNull(await getLocalData(user, () => null))); //Einträge des Users für Heatmap
+      console.log(filterNull(await getLocalData(user, () => null)));
     }
     test();
   }, []);

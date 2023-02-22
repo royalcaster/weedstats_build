@@ -169,6 +169,7 @@ export const getRelevantKeys = async (user) => {
   let keys = [];
   try {
     keys = await AsyncStorage.getAllKeys();
+    console.log("Länge Keys: " + keys.length);
   } catch (e) {
     console.log("Fehler beim Laden der Einträge-Keys aus dem lokalen Speicher:", e);
   }

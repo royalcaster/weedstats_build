@@ -19,9 +19,6 @@ import sayings from './src/data/Sayings'
 
 //Expo
 import { useFonts } from "expo-font";
-import * as Google from 'expo-auth-session/providers/google'
-import * as WebBrowser from 'expo-web-browser'
-import { makeRedirectUri } from "expo-auth-session";
 import * as Location from "expo-location";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen'
@@ -159,7 +156,6 @@ export default function App() {
     catch (error) {
       console.log("Fehler beim Laden des angemeldeten Nutzers:" + error)
     }
-    
   }
 
   //Lädt Freundesliste des angemeldeten Nutzers herunter
@@ -174,16 +170,6 @@ export default function App() {
       setLoading(false);
     }
   }
-
-  // Lädt das User-Objekt aus dem AsyncStorage
-  /* const getCurrentUser = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("current_user");
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.log("Error:", e);
-    }
-  }; */
 
   const refreshUser = async ( settings ) => {
     await updateDoc(doc(firestore, "users", user.id), settings);
@@ -206,103 +192,9 @@ export default function App() {
       last_entry_longitude: settings.last_entry_longitude ? settings.last_entry_longitude : user.last_entry_longitude,
       last_entry_type: settings.last_entry_type ? settings.last_entry_type : user.last_entry_type,
       main_counter: settings.main_counter ? settings.main_counter : user.main_counter,
-      username_array: settings.username_array ? settings.username_array : user.username_array
+      username_array: settings.username ? createUsernameArray(settings.username) : user.username_array
     });
   }
-
-  //aktualisiert das gesamte Nutzer-Objekt, das im Context geteilt wird --> ALT!!!
-  /* const refreshUser = async (user) => {
-    if (user.id) {
-      const docRef = doc(firestore, "users", user.id);
-      const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      //Nutzerdokument existiert -> Nutzer-State mit Daten füllen
-      setUser({
-        username: docSnap.data().username,
-        id: docSnap.data().id,
-        email: docSnap.data().email,
-        photoUrl: docSnap.data().photoUrl,
-        friends: docSnap.data().friends,
-        requests: docSnap.data().requests,
-        joint_counter: localCounters.joint,
-        bong_counter: localCounters.bong,
-        vape_counter: localCounters.vape,
-        pipe_counter: localCounters.pipe,
-        cookie_counter: localCounters.cookie,
-        member_since: docSnap.data().member_since,
-        last_entry_timestamp: docSnap.data().last_entry_timestamp,
-        last_entry_latitude: docSnap.data().last_entry_latitude,
-        last_entry_longitude: docSnap.data().last_entry_longitude,
-        last_entry_type: docSnap.data().last_entry_type,
-        main_counter: localCounters.main,
-      });
-    } else {
-      //Nutzer-Dokument existiert nicht -> loggt sich erstmalig ein -> Dokument erstellen
-      try {
-        await setDoc(doc(firestore, "users", user.id), {
-          username: user.name,
-          id: user.id,
-          email: user.email,
-          photoUrl: user.picture,
-          friends: [],
-          requests: [],
-          username_array: createUsernameArray(user.name),
-          joint_counter: 0,
-          bong_counter: 0,
-          vape_counter: 0,
-          pipe_counter: 0,
-          cookie_counter: 0,
-          last_entry_timestamp: null,
-          last_entry_latitude: null,
-          last_entry_longitude: null,
-          last_entry_type: null,
-          member_since: new Date().toISOString().slice(0, 10),
-          main_counter: 0,
-        });
-        const docSnap = await getDoc(doc(firestore, "users", user.id));
-        if (docSnap.exists()) {
-          setUser({
-            username: docSnap.data().username,
-            id: docSnap.data().id,
-            email: docSnap.data().email,
-            photoUrl: docSnap.data().photoUrl,
-            friends: docSnap.data().friends,
-            requests: docSnap.data().requests,
-            joint_counter: localCounters.joint,
-            bong_counter: localCounters.bong,
-            vape_counter: localCounters.vape,
-            pipe_counter: localCounters.pipe,
-            cookie_counter: localCounters.cookie,
-            member_since: docSnap.data().member_since,
-            last_entry_timestamp: docSnap.data().last_entry_timestamp,
-            last_entry_latitude: docSnap.data().last_entry_latitude,
-            last_entry_longitude: docSnap.data().last_entry_longitude,
-            last_entry_type: docSnap.data().last_entry_type,
-            main_counter: localCounters.main,
-          });
-        }
-      } catch (e) {
-        console.log("Error:", e);
-      }
-
-      //Counter-Object im Local Storage erstmalig einrichten:
-      try {
-        const value = JSON.stringify({
-          main: 0,
-          joint: 0,
-          bong: 0,
-          vape: 0,
-          pipe: 0,
-          cookie: 0,
-        });
-        await AsyncStorage.setItem(user.id + "_counters", value);
-      } catch (e) {
-        console.log("Error in App.js: ", e);
-      }
-    }
-    }
-  }; */
 
   //behandelt Login-Event NEU 
   const handleLogin = (email, password) => {
@@ -484,13 +376,13 @@ const handleLogOut = async () => {
 const toggleCounter = async (index, color) => {
   setBorderColor(color);
   let settings = {};
-  let new_entry = {};
-  try {
-    const jsonValue = await AsyncStorage.getItem("settings");
-    jsonValue != null ? (settings = JSON.parse(jsonValue)) : null;
-  } catch (e) {
-    console.log("Error beim Laden der Einstellungen (Z. 456)", e);
-  }
+  let new_entry = {
+    number: user.main_counter + 1,
+    type: index,
+    timestamp: Date.now(),
+    latitude: null,
+    longitude: null,
+  };
 
   Platform.OS === "android" ? Vibration.vibrate(50) : null;
 
@@ -499,7 +391,7 @@ const toggleCounter = async (index, color) => {
 
   setModalVisible(true);
 
-  if (settings.saveGPS) {
+  if (config.saveGPS) {
     // Die Bestimmung der Position dauert von den Schritten in der Funktion toggleCounter() mit Abstand am längsten
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -510,21 +402,8 @@ const toggleCounter = async (index, color) => {
       accuracy: Location.Accuracy.Highest,
     });
 
-    new_entry = {
-      number: user.main_counter + 1,
-      type: index,
-      timestamp: Date.now(),
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    };
-  } else {
-    new_entry = {
-      number: user.main_counter + 1,
-      type: index,
-      timestamp: Date.now(),
-      latitude: null,
-      longitude: null,
-    };
+    settings.latitude = location.coords.latitude;
+    settings.longitude = location.coords.longitude;
   }
 
   await writeLocalStorage(new_entry);
@@ -536,6 +415,41 @@ const toggleCounter = async (index, color) => {
     main_counter: user.main_counter + 1,
   });
 
+  await updateDoc(docRef, {
+    [index + "_counter"]: user[index + "_counter"] + 1,
+  });
+
+  await updateDoc(docRef, {
+    last_entry_latitude: new_entry.latitude,
+    last_entry_longitude: new_entry.longitude,
+  });
+
+  // Das sollte in Zukunft noch ersetzt werden
+  const docSnap_new = await getDoc(docRef);
+  setUser({
+    ...user,
+    main_counter: docSnap_new.data().main_counter,
+    joint_counter: docSnap_new.data().joint_counter, 
+    bong_counter: docSnap_new.data().bong_counter,
+    vape_counter: docSnap_new.data().vape_counter,
+    pipe_counter: docSnap_new.data().pipe_counter,
+    cookie_counter: docSnap_new.data().cookie_counter,
+    last_entry_timestamp: docSnap_new.data().last_entry_timestamp,
+    last_entry_type: docSnap_new.data().last_entry_type,
+    last_entry_latitude: docSnap_new.data().last_entry_latitude,
+    last_entry_longitude: docSnap_new.data().last_entry_longitude,
+  });
+  
+  setWriteComplete(true);
+
+  //------------------------------------------ALT-----------------------------------------
+  /* try {
+    const jsonValue = await AsyncStorage.getItem("settings");
+    jsonValue != null ? (settings = JSON.parse(jsonValue)) : null;
+  } catch (e) {
+    console.log("Error beim Laden der Einstellungen (Z. 456)", e);
+  } */
+
  /*  if (settings.shareMainCounter) {
     await updateDoc(docRef, {
       main_counter: user.main_counter + 1,
@@ -545,11 +459,6 @@ const toggleCounter = async (index, color) => {
       main_counter: null,
     });
   } */
-
-  await updateDoc(docRef, {
-    ...user,
-    [index + "_counter"]: user[index + "_counter"] + 1,
-  });
 
  /*  if (settings.shareTypeCounters && settings.shareMainCounter) {
     await updateDoc(docRef, {
@@ -582,11 +491,6 @@ const toggleCounter = async (index, color) => {
     });
   } */
 
-  await updateDoc(docRef, {
-    last_entry_timestamp: new_entry.timestamp,
-    last_entry_type: new_entry.type,
-  });
-
   /* if (settings.shareGPS) {
     await updateDoc(docRef, {
       last_entry_latitude: new_entry.latitude,
@@ -598,35 +502,6 @@ const toggleCounter = async (index, color) => {
       last_entry_longitude: null,
     });
   } */
-
-  await updateDoc(docRef, {
-    last_entry_latitude: new_entry.latitude,
-    last_entry_longitude: new_entry.longitude,
-  });
-
-  try {
-    const jsonValue = await AsyncStorage.getItem(user.id + "_counters");
-    jsonValue != null ? setLocalCounters(JSON.parse(jsonValue)) : null;
-  } catch (e) {
-    console.log("Error in App.js: ", e);
-  }
-
-  // Das sollte in Zukunft noch ersetzt werden
-  const docSnap_new = await getDoc(docRef);
-  setUser({
-    ...user,
-    main_counter: docSnap_new.data().main_counter,
-    joint_counter: docSnap_new.data().joint_counter, 
-    bong_counter: docSnap_new.data().bong_counter,
-    vape_counter: docSnap_new.data().vape_counter,
-    pipe_counter: docSnap_new.data().pipe_counter,
-    cookie_counter: docSnap_new.data().cookie_counter,
-    last_entry_timestamp: docSnap_new.data().last_entry_timestamp,
-    last_entry_type: docSnap_new.data().last_entry_type,
-    last_entry_latitude: docSnap_new.data().last_entry_latitude,
-    last_entry_longitude: docSnap_new.data().last_entry_longitude,
-  });
-  setWriteComplete(true);
 };
 
 //wandelt Nutzernamen in Array aus einzelnen Such-Schnipseln um, weil Firebase in Arrays schneller sucht als in Strings (warum auch immer)
@@ -652,7 +527,7 @@ const writeLocalStorage = async (new_entry) => {
   }
 
   // Updated betroffene Counters im AsyncStorage
-  let current_counters = {};
+  /* let current_counters = {};
 
   try {
     const jsonValue = await AsyncStorage.getItem(user.id + "_counters");
@@ -669,7 +544,7 @@ const writeLocalStorage = async (new_entry) => {
     await AsyncStorage.setItem(user.id + "_counters", jsonValue);
   } catch (e) {
     console.log("Error:", e);
-  }
+  } */
 };
 
 //behandelt das Löschen des Nutzeraccounts
@@ -712,7 +587,6 @@ const deleteAccount = async () => {
   }
   setLoading(false);
 };
-
 
   return (
     <>
@@ -771,7 +645,6 @@ const deleteAccount = async () => {
             </>}
             </>}
         </>}
-
       </LanguageContext.Provider>
       </ConfigContext.Provider>
       </View>
