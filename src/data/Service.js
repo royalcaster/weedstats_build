@@ -35,133 +35,13 @@ export const getUserObject = async () => {
   return user;
 }
 
-// Überschreibt Nutzer-Objekt mit aktuellen Daten
-const refreshUser = async () => {
-  let local_counters = {
-    main: 0,
-    joint: 0,
-    bong: 0,
-    vape: 0,
-    pipe: 0,
-    cookie: 0,
-  };
-
-  try {
-    const jsonValue = await AsyncStorage.getItem(user.id + "_counters");
-    jsonValue != null ? (local_counters = JSON.parse(jsonValue)) : null;
-  } catch (e) {
-    console.log("Error in beim Laden des lokalen Nutzers: ", e);
+//wandelt Nutzernamen in Array aus einzelnen Such-Schnipseln um, weil Firebase in Arrays schneller sucht als in Strings (warum auch immer)
+export const createUsernameArray = (name) => {
+  let name_array = [];
+  for (let i = 1; i <= name.length; i++) {
+    name_array.push(name.slice(0, i));
   }
-
-  const docRef = doc(firestore, "users", user.id);
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-    //Nutzerdokument existiert -> Nutzer-State mit Daten füllen
-    user = {
-      username: docSnap.data().username,
-      id: docSnap.data().id,
-      email: docSnap.data().email,
-      photoUrl: docSnap.data().photoUrl,
-      friends: docSnap.data().friends,
-      joint_counter: local_counters.joint,
-      bong_counter: local_counters.bong,
-      vape_counter: local_counters.vape,
-      pipe_counter: local_counters.pipe,
-      cookie_counter: local_counters.cookie,
-      member_since: docSnap.data().member_since,
-      last_entry_timestamp: docSnap.data().last_entry_timestamp,
-      last_entry_latitude: docSnap.data().last_entry_latitude,
-      last_entry_longitude: docSnap.data().last_entry_longitude,
-      last_entry_type: docSnap.data().last_entry_type,
-      last_feedback: docSnap.data().last_feedback,
-      main_counter: local_counters.main,
-    };
-  } else {
-    //Nutzer-Dokument existiert nicht -> loggt sich erstmalig ein -> Dokument erstellen
-    try {
-      await setDoc(doc(firestore, "users", user.id), {
-        username: user.name,
-        id: user.id,
-        email: user.email,
-        photoUrl: user.photoUrl,
-        friends: [],
-        username_array: createUsernameArray(user.name),
-        joint_counter: null,
-        bong_counter: null,
-        vape_counter: null,
-        pipe_counter: null,
-        cookie_counter: null,
-        last_entry_timestamp: null,
-        last_entry_latitude: null,
-        last_entry_longitude: null,
-        last_entry_type: null,
-        last_feedback: null,
-        member_since: new Date().toISOString().slice(0, 10),
-        main_counter: null,
-      });
-      const docSnap = await getDoc(doc(firestore, "users", user.id));
-      if (docSnap.exists()) {
-        user = {
-          username: docSnap.data().username,
-          id: docSnap.data().id,
-          email: docSnap.data().email,
-          photoUrl: docSnap.data().photoUrl,
-          friends: docSnap.data().friends,
-          joint_counter: local_counters.joint,
-          bong_counter: local_counters.bong,
-          vape_counter: local_counters.vape,
-          pipe_counter: local_counters.pipe,
-          cookie_counter: local_counters.cookie,
-          member_since: docSnap.data().member_since,
-          last_entry_timestamp: docSnap.data().last_entry_timestamp,
-          last_entry_latitude: docSnap.data().last_entry_latitude,
-          last_entry_longitude: docSnap.data().last_entry_longitude,
-          last_entry_type: docSnap.data().last_entry_type,
-          last_feedback: docSnap.data().last_feedback,
-          main_counter: local_counters.main,
-        };
-      }
-    } catch (e) {
-      console.log("Error:", e);
-      user = null;
-    }
-
-    //Einstellungs-Objekt im Local Storage erstmalig einrichten:
-    try {
-      const value = JSON.stringify({
-        showJoint: true,
-        showBong: false,
-        showVape: true,
-        showPipe: false,
-        showCookie: true,
-        shareMainCounter: true,
-        shareTypeCounters: true,
-        shareLastEntry: true,
-        saveGPS: true,
-        shareGPS: false,
-        showTutorial: true,
-      });
-      await AsyncStorage.setItem("settings", value);
-    } catch (e) {
-      console.log("Error beim erstellen des lokalen Config-Objekt:", e);
-    }
-
-    //Counter-Object im Local Storage erstmalig einrichten:
-    try {
-      const value = JSON.stringify({
-        main: 0,
-        joint: 0,
-        bong: 0,
-        vape: 0,
-        pipe: 0,
-        cookie: 0,
-      });
-      await AsyncStorage.setItem(user.id + "_counters", value);
-    } catch (e) {
-      console.log("Error in beim erstellen des lokalen Counter-Objekt: ", e);
-    }
-  }
+  return name_array;
 };
 
 // Holt alle Einträge aus dem lokalen Speicher
@@ -169,7 +49,6 @@ export const getRelevantKeys = async (user) => {
   let keys = [];
   try {
     keys = await AsyncStorage.getAllKeys();
-    console.log("Länge Keys: " + keys.length);
   } catch (e) {
     console.log("Fehler beim Laden der Einträge-Keys aus dem lokalen Speicher:", e);
   }
@@ -192,6 +71,39 @@ export const getLocalData = async (user, callback) => {
     console.log("Fehler beim Laden der Einträge Daten aus dem Lokalen Speicher:", e);
   }
 };
+
+//nimmt eine Nutzer ID und gibt das Nutzer objekt zurück
+
+export const downloadUser = async ( id ) =>
+{
+  const docSnap = await getDoc(doc(firestore, "users", id));
+
+  if (docSnap.exists()) {
+    return {
+      username: docSnap.data().username,
+      id: docSnap.data().id,
+      email: docSnap.data().email,
+      photoUrl: docSnap.data().photoUrl,
+      friends: docSnap.data().friends,
+      requests: docSnap.data().requests,
+      joint_counter: docSnap.data().joint_counter,
+      bong_counter: docSnap.data().bong_counter,
+      vape_counter: docSnap.data().vape_counter,
+      pipe_counter: docSnap.data().pipe_counter,
+      cookie_counter: docSnap.data().cookie_counter,
+      member_since: docSnap.data().member_since,
+      last_entry_timestamp: docSnap.data().last_entry_timestamp,
+      last_entry_latitude: docSnap.data().last_entry_latitude,
+      last_entry_longitude: docSnap.data().last_entry_longitude,
+      last_entry_type: docSnap.data().last_entry_type,
+      main_counter: docSnap.data().main_counter,
+      username_array: docSnap.data().username_array
+    }
+  }
+  else {
+    console.log("User not found, check downlaodUser in Service.js");
+  }
+}
 
 // -------------------
 export const calcDailyAverage = (array, localData) => {

@@ -32,6 +32,7 @@ import { FriendListContext } from "../../../data/FriendListContext";
 import { getLocalData } from "../../../data/Service";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
 import TypeImage from "../../common/TypeImage";
+import { downloadUser } from "../../../data/Service";
 
 const Map = ({ getFriendList }) => {
   LogBox.ignoreAllLogs();
@@ -57,10 +58,8 @@ const Map = ({ getFriendList }) => {
 
   useEffect(() => {
     async function test() {
-      getFriendList();
       loadData(); //Freunde + deren letzte Einträge
       setLocalData(filterNull(await getLocalData(user, () => null))); //Einträge des Users für Heatmap
-      console.log(filterNull(await getLocalData(user, () => null)));
     }
     test();
   }, []);
@@ -72,12 +71,12 @@ const Map = ({ getFriendList }) => {
   },[localData]);
 
   useEffect(() => {
-    /* if (view == "heatmap" && localData.length != 0) {
+    if (view == "heatmap" && localData.length != 0) {
       setRegion({
-        latitude: localData[0].latitude,
-        longitude: localData[0].longitude,
-        latitudeDelta: 4,
-        longitudeDelta: 4
+        latitude: localData[localData.length-1].latitude,
+        longitude: localData[localData.length-1].longitude,
+        latitudeDelta: .25,
+        longitudeDelta: .25
       });
     }
 
@@ -88,7 +87,7 @@ const Map = ({ getFriendList }) => {
         latitudeDelta: 2,
         longitudeDelta: 2
       });
-    } */
+    }
   },[view]);
 
   const loadData = async () => {
@@ -148,7 +147,9 @@ const Map = ({ getFriendList }) => {
   };
 
   const filterNull = (array) => {
+    
     return array.filter((entry) => {
+      
       return entry.latitude != null && entry.longitude != null;
     });
   };
@@ -388,26 +389,19 @@ const Map = ({ getFriendList }) => {
 
 
         {view == "friends" ? (
-          <View style={styles.carousel}>
-            {/* HIER ALTERNATIVE FINDEN, DA FEHLERQUELLE FÜR "INVARIANT VIOLATION"
-            <Pages
-              onScrollEnd={(index) => {
-                setRegion({
-                  latitude: markers[index].latitude,
-                  longitude: markers[index].longitude,
-                  longitudeDelta: region.longitudeDelta,
-                  latitudeDelta: region.latitudeDelta,
-                });
-              }}
-              ref={carouselRef}
-            >
-              {markers.map((marker) => {
-                return <View key={uuid.v4()}>{renderItem(marker)}</View>;
-              })}
-            </Pages> */}
+          <View style={styles.iconbutton_container_left}>
+            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)}>
+              <View style={styles.touchable2}>
+                <View>
+                  {friendList.length != 0 ? friendList.map((friend) => {
+                    return <View style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View>
+                  }) : null}
+                </View>
+                <LinearGradient colors={["rgba(0,0,0,0)","#1E2132"]} style={{width: 70, height: "50%", position: "absolute", bottom: 0}}/>
+              </View>
+            </TouchableNativeFeedback>
           </View>
         ) : null}
-
       </View>
     </View>
   );
@@ -472,6 +466,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E2132",
     padding: 10,
     borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
-  }
+    borderBottomLeftRadius: 10,
+    height: responsiveHeight(30),
+    justifyContent: "center"
+  },
+  iconbutton_container_left: {
+    flexDirection: "column",
+    alignSelf: "center",
+    bottom: responsiveHeight(15),
+    left: 0,
+    position: "absolute",
+    backgroundColor: "#1E2132",
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    height: responsiveHeight(30),
+    overflow: "hidden"
+  },
+  touchable2: {
+    padding: 10,
+    width: "100%",
+  },
 });

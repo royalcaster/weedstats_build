@@ -11,6 +11,7 @@ import { firestore, storage } from "../../../../../data/FirebaseConfig";
 import CustomLoader from "../../../../common/CustomLoader";
 import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
 import { doc, updateDoc } from "@firebase/firestore";
+import { createUsernameArray } from "../../../../../data/Service";
 
 const ProfileEditor = ({ onExit, refreshUser}) => {
 
@@ -78,7 +79,8 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
             let downloadUri = await uploadImageAsync(image);
             await refreshUser({
                 username: userName,
-                photoUrl: downloadUri
+                photoUrl: downloadUri,
+                username_array: createUsernameArray(userName)
             });
             setLoading(false);
             hide();

@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect } from "react";
-import { Text, View, Modal, StyleSheet, Dimensions, Vibration, StatusBar, AppRegistry, LogBox } from 'react-native'
+import { View, Modal, Vibration, StatusBar, LogBox } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Service
@@ -13,6 +13,7 @@ import { ConfigContext } from "./src/data/ConfigContext";
 import { app, firestore } from './src/data/FirebaseConfig'
 import { doc, getDoc, updateDoc, deleteDoc, setDoc } from "@firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
+import { createUsernameArray, downloadUser } from "./src/data/Service";
 
 //Data
 import sayings from './src/data/Sayings'
@@ -54,14 +55,6 @@ export default function App() {
    const [borderColor, setBorderColor] = useState("#1E2132");
    const [friendList, setFriendList] = useState([]);
    const [sayingNr, setSayingNr] = useState(0);
-   const [localCounters, setLocalCounters] = useState({
-    joint: 0,
-    bong: 0,
-    vape: 0,
-    pipe: 0,
-    cookie: 0,
-    main: 0
-   });
 
   //Authentifizierung
   const auth = getAuth(app);
@@ -75,6 +68,7 @@ export default function App() {
     checkForUser();
     loadSettings();
     getFriendList();
+    console.debug(friendList);
   },[]);
 
   useEffect(() => {
@@ -149,7 +143,6 @@ export default function App() {
     try {
       const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
       if (accessToken != null) {
-        console.log(accessToken);
         handleLogin(accessToken.email, accessToken.password);
       }
     }
@@ -165,7 +158,11 @@ export default function App() {
       const docSnap = await getDoc(docRef);
   
       if (docSnap.exists()) {
-          setFriendList(docSnap.data().friends);
+        let buffer = [];
+        docSnap.data().friends.forEach(async (friend) => {
+          buffer.push(await downloadUser(friend));
+        })
+        setFriendList(buffer);
       }
       setLoading(false);
     }
@@ -254,7 +251,6 @@ export default function App() {
       else {
         setUserNotFound(false);
       }
-      
     });
   }
 
@@ -339,7 +335,6 @@ export default function App() {
 
   //stellt Sprache um, die im Context geteilt wird
   const toggleLanguage = async ( lang ) => {
-    console.log(lang, config.language);
     if (lang == "de" && config.language == "en") {
       setLanguage(Languages.de);
       await AsyncStorage.setItem("settings",JSON.stringify({...config, language: "de"}));
@@ -402,8 +397,8 @@ const toggleCounter = async (index, color) => {
       accuracy: Location.Accuracy.Highest,
     });
 
-    settings.latitude = location.coords.latitude;
-    settings.longitude = location.coords.longitude;
+    new_entry.latitude = location.coords.latitude;
+    new_entry.longitude = location.coords.longitude;
   }
 
   await writeLocalStorage(new_entry);
@@ -413,15 +408,11 @@ const toggleCounter = async (index, color) => {
 
   await updateDoc(docRef, {
     main_counter: user.main_counter + 1,
-  });
-
-  await updateDoc(docRef, {
     [index + "_counter"]: user[index + "_counter"] + 1,
-  });
-
-  await updateDoc(docRef, {
     last_entry_latitude: new_entry.latitude,
     last_entry_longitude: new_entry.longitude,
+    last_entry_timestamp: new_entry.timestamp,
+    last_entry_type: new_entry.type
   });
 
   // Das sollte in Zukunft noch ersetzt werden
@@ -502,15 +493,6 @@ const toggleCounter = async (index, color) => {
       last_entry_longitude: null,
     });
   } */
-};
-
-//wandelt Nutzernamen in Array aus einzelnen Such-Schnipseln um, weil Firebase in Arrays schneller sucht als in Strings (warum auch immer)
-const createUsernameArray = (name) => {
-  let name_array = [];
-  for (let i = 1; i <= name.length; i++) {
-    name_array.push(name.slice(0, i));
-  }
-  return name_array;
 };
 
 //erstellt Einträge im lokalen Gerätespeicher
