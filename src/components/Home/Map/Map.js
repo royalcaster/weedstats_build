@@ -316,7 +316,7 @@ const Map = ({ getFriendList }) => {
             mapType={mapType}
             followsUserLocation={true}
             region={region}
-            onRegionChangeComplete={(region) => setRegion(region)}
+            /* onRegionChangeComplete={(region) => setRegion(region)} */
             showsCompass={false}
             showsTraffic={false}
             showsIndoors={false}
@@ -326,7 +326,6 @@ const Map = ({ getFriendList }) => {
             loadingEnabled={true}
             loadingBackgroundColor={"#131520"}
             loadingIndicatorColor={"#484F78"}
-            
           > 
             {view == "heatmap" ? 
             <>
