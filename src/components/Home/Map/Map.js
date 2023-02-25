@@ -7,7 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconButton from "../../common/IconButton";
 import ProfileImage from "../../common/ProfileImage";
 import CustomMarker from "../../common/CustomMarker";
-import Empty from '../../common/Empty'
+import Empty from '../../common/Empty';
+import MarkerList from "./MarkerList/MarkerList";
 
 //Konstanten
 import { mapStyle } from "../../../data/CustomMapStyle";
@@ -51,6 +52,7 @@ const Map = ({ getFriendList }) => {
   const [loading, setLoading] = useState(true);
   const [markers, setMarkers] = useState([]);
   const camref = useRef(null);
+  const [showMakerList, setShowMarkerList] = useState(false);
 
   const switch_icon = <AntDesign name={"picture"} style={{fontSize: 20, color: "white"}}/>
   const friends_icon = <MaterialIcons name="groups" style={{fontSize: 20, color: "white"}}/>
@@ -58,7 +60,7 @@ const Map = ({ getFriendList }) => {
 
   useEffect(() => {
     async function test() {
-      loadData(); //Freunde + deren letzte Einträge
+      fillMarkers(); //Freunde + deren letzte Einträge
       setLocalData(filterNull(await getLocalData(user, () => null))); //Einträge des Users für Heatmap
     }
     test();
@@ -75,8 +77,8 @@ const Map = ({ getFriendList }) => {
       setRegion({
         latitude: localData[localData.length-1].latitude,
         longitude: localData[localData.length-1].longitude,
-        latitudeDelta: .25,
-        longitudeDelta: .25
+        latitudeDelta: region.latitudeDelta,
+        longitudeDelta: region.longitudeDelta
       });
     }
 
@@ -84,13 +86,13 @@ const Map = ({ getFriendList }) => {
       setRegion({
         latitude: markers[0].latitude,
         longitude: markers[0].longitude,
-        latitudeDelta: 2,
-        longitudeDelta: 2
+        latitudeDelta: region.latitudeDelta,
+        longitudeDelta: region.longitudeDelta
       });
     }
   },[view]);
 
-  const loadData = async () => {
+  /* const loadData = async () => {
     try {
       const docRef = doc(firestore, "users", user.id);
       const docSnap = await getDoc(docRef);
@@ -101,8 +103,8 @@ const Map = ({ getFriendList }) => {
       }
       
       var buffer = [];
-      friendList.forEach(async (friend) => {
-        const docRef = doc(firestore, "users", friend);
+      for (let i = 0; i<friendList.length; i++) {
+        const docRef = doc(firestore, "users", friendList[i]);
         const friendSnap = await getDoc(docRef);
 
         if (
@@ -127,14 +129,43 @@ const Map = ({ getFriendList }) => {
           }) : null;
           
         }
-      });
+      };
       
       setMarkers(buffer);
       setLoading(false);
     } catch (e) {
       console.log("Load Data Error:", e);
     }
-  };
+  }; */
+
+  const fillMarkers = () => {
+    setLoading(true);
+    var buffer = [];
+      for (let i = 0; i<friendList.length; i++) {
+        if (
+          friendList[i].last_entry_latitude != null &&
+          friendList[i].last_entry_longitude != null
+        ) {
+          buffer.push({
+            latitude: friendList[i].last_entry_latitude,
+            longitude: friendList[i].last_entry_longitude,
+            timestamp: friendList[i].last_entry_timestamp,
+            type: friendList[i].last_entry_type,
+            photoUrl: friendList[i].photoUrl,
+            username: friendList[i].username,
+          });
+          buffer.length == 1 ? setRegion({
+            latitude: friendList[i].last_entry_latitude,
+            longitude: friendList[i].last_entry_longitude,
+            latitudeDelta: .25,
+            longitudeDelta: .25,
+          }) : null;
+          
+        }
+      };
+      setMarkers(buffer);
+      setLoading(false);
+  }
 
   const toggleMapType = () => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
@@ -306,6 +337,9 @@ const Map = ({ getFriendList }) => {
         
         </LinearGradient>
 
+
+        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)}/> : null}
+
         {!loading && localDataLoaded ? (
           <>
           <MapView
@@ -326,7 +360,6 @@ const Map = ({ getFriendList }) => {
             loadingEnabled={true}
             loadingBackgroundColor={"#131520"}
             loadingIndicatorColor={"#484F78"}
-            
           > 
             {view == "heatmap" ? 
             <>
@@ -355,12 +388,15 @@ const Map = ({ getFriendList }) => {
                       latitude: marker.latitude,
                       longitude: marker.longitude,
                     }}
-                    onPress={() => carouselRef.current.scrollToPage(index)}
                   >
-                    <CustomMarker
-                      photoUrl={marker.photoUrl}
-                      type={marker.type}
-                    />
+                    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)}>
+                      <View style={styles.touchable}>
+                      <CustomMarker
+                        photoUrl={marker.photoUrl}
+                        type={marker.type}
+                      />
+                      </View>
+                    </TouchableNativeFeedback>
                   </Marker>
                 ))}</>}
               </>
@@ -390,7 +426,7 @@ const Map = ({ getFriendList }) => {
 
         {view == "friends" ? (
           <View style={styles.iconbutton_container_left}>
-            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)}>
+            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={() => setShowMarkerList(true)}>
               <View style={styles.touchable2}>
                 <View>
                   {friendList.length != 0 ? friendList.map((friend) => {
@@ -480,7 +516,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     height: responsiveHeight(30),
-    overflow: "hidden"
+    overflow: "hidden",
+    
   },
   touchable2: {
     padding: 10,
