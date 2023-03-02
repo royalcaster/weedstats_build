@@ -4,17 +4,16 @@ import { View, StyleSheet, Text, Animated, Easing, Dimensions, TouchableNativeFe
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Custom Components
-import Feedback from "./Feedback/Feedback";
+import Feedback from './Feedback/Feedback'
 import Donation from "./Donation/Donation";
 import Levels from "./Levels/Levels";
-import ProfileImage from "../../../common/ProfileImage";
-import Button from "../../../common/Button";
-import BackButton from "../../../common/BackButton";
+import ProfileImage from "../../../../common/ProfileImage";
+import Button from "../../../../common/Button";
+import BackButton from "../../../../common/BackButton";
 import AppInfo from "./AppInfo/AppInfo";
-import ProfileImagePanel from "../../../common/ProfileImagePanel";
 
 //Tools
-import { convertMemberSince } from "../../../../data/DateConversion";
+import { convertMemberSince } from "../../../../../data/DateConversion";
 
 //Third Party
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -24,10 +23,9 @@ import Feather from "react-native-vector-icons/Feather";
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 
 //Service
-import { UserContext } from "../../../../data/UserContext";
-import { LanguageContext } from "../../../../data/LanguageContext";
-import TutorialPanel from "./TutorialPanel/TutorialPanel";
-import Tutorial from "../../../common/Tutorial";
+import { UserContext } from "../../../../../data/UserContext";
+import { LanguageContext } from "../../../../../data/LanguageContext";
+import Tutorial from "../../../../common/Tutorial";
 import ProfileEditor from "./ProfileEditor/ProfileEditor";
 
 const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refreshUser }) => {

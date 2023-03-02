@@ -13,7 +13,7 @@ import { LanguageContext } from "../../data/LanguageContext";
 import Authenticator from "./Authenticator";
 import TutorialDialog from "./TutorialDialog";
 
-const Intro = ({ onExit, onLanguageSelect, onAuthenticatorSelect }) => {
+const Intro = ({ onExit }) => {
 
     const language = useContext(LanguageContext);
 

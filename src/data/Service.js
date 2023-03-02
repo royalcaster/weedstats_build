@@ -74,34 +74,40 @@ export const getLocalData = async (user, callback) => {
 
 //nimmt eine Nutzer ID und gibt das Nutzer objekt zurück
 
-export const downloadUser = async ( id ) =>
+export const downloadUser = async ( id, config ) =>
 {
   const docSnap = await getDoc(doc(firestore, "users", id));
 
   if (docSnap.exists()) {
-    return {
-      username: docSnap.data().username,
-      id: docSnap.data().id,
-      email: docSnap.data().email,
-      photoUrl: docSnap.data().photoUrl,
-      friends: docSnap.data().friends,
-      requests: docSnap.data().requests,
-      joint_counter: docSnap.data().joint_counter,
-      bong_counter: docSnap.data().bong_counter,
-      vape_counter: docSnap.data().vape_counter,
-      pipe_counter: docSnap.data().pipe_counter,
-      cookie_counter: docSnap.data().cookie_counter,
-      member_since: docSnap.data().member_since,
-      last_entry_timestamp: docSnap.data().last_entry_timestamp,
-      last_entry_latitude: docSnap.data().last_entry_latitude,
-      last_entry_longitude: docSnap.data().last_entry_longitude,
-      last_entry_type: docSnap.data().last_entry_type,
-      main_counter: docSnap.data().main_counter,
-      username_array: docSnap.data().username_array
+
+    if (config) {
+      return docSnap.data().config;
+    }
+    else {
+      return {
+        username: docSnap.data().username,
+        id: docSnap.data().id,
+        email: docSnap.data().email,
+        photoUrl: docSnap.data().photoUrl,
+        friends: docSnap.data().friends,
+        requests: docSnap.data().requests,
+        joint_counter: docSnap.data().joint_counter,
+        bong_counter: docSnap.data().bong_counter,
+        vape_counter: docSnap.data().vape_counter,
+        pipe_counter: docSnap.data().pipe_counter,
+        cookie_counter: docSnap.data().cookie_counter,
+        member_since: docSnap.data().member_since,
+        last_entry_timestamp: docSnap.data().last_entry_timestamp,
+        last_entry_latitude: docSnap.data().last_entry_latitude,
+        last_entry_longitude: docSnap.data().last_entry_longitude,
+        last_entry_type: docSnap.data().last_entry_type,
+        main_counter: docSnap.data().main_counter,
+        username_array: docSnap.data().username_array
+      }
     }
   }
   else {
-    console.log("User not found, check downlaodUser in Service.js");
+    console.log("Check Method downlaodUser() in Service.js");
   }
 }
 

@@ -65,6 +65,10 @@ const Map = ({ getFriendList }) => {
     }
     test();
   }, []);
+/* 
+  useEffect(() => {
+      console.debug(region);
+  },[region]); */
 
   useEffect(() => {
     if (localData != null) {
@@ -334,11 +338,14 @@ const Map = ({ getFriendList }) => {
             marginTop: -20,
           }}
         >
-        
         </LinearGradient>
 
-
-        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)}/> : null}
+        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)} setRegion={(region) => setRegion({
+        latitude: 127,
+        longitude: 127,
+        latitudeDelta: 0.25,
+        longitudeDelta: 0.25
+      })}/> : null}
 
         {!loading && localDataLoaded ? (
           <>

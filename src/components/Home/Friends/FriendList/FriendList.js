@@ -7,6 +7,7 @@ import Empty from "../../../common/Empty";
 import FriendListItem from "./FriendListItem/FriendListItem";
 import CustomLoader from "../../../common/CustomLoader";
 import Button from "../../../common/Button";
+import FriendPage from "./FriendListItem/FriendPage/FriendPage";
 
 //Third Party
 import uuid from 'react-native-uuid'
@@ -18,29 +19,37 @@ import { responsiveHeight } from "react-native-responsive-dimensions";
 import { LanguageContext } from "../../../../data/LanguageContext";
 
 
-const FriendList = ({ setActiveFriend, setShowFriend, getFriendList, onSetShowSearchPanel }) => {
+const FriendList = ({ friendList, toggleNavbar }) => {
 
     const user = useContext(UserContext);
-    const [loading, setLoading] = useState(true);
-    const friendList = useContext(FriendListContext);
+    const [loading, setLoading] = useState(false);
+    
+    const [showFriend, setShowFriend] = useState(false);
+    const [activeFriend, setActiveFriend] = useState(friendList[0]);
 
     const language = useContext(LanguageContext);
 
-    useEffect(() => {
-        setLoading(false);
-    },[]);
-
     return (
+
+        <>
+
+        {friendList.length != 0 ?
+            <FriendPage
+                show={showFriend}
+                user={activeFriend}
+                onExit={() => {setShowFriend(false);}}
+                refresh={() => {getFriendList(); setActiveFriend(null); setShowFriend(false);}}
+                toggleNavbar={toggleNavbar}
+            /> 
+        : null}
+
         <Animated.View style={[styles.container]}>
             {!loading ?  
                 <>
                     {friendList.length != 0 ? 
                         <ScrollView>
                             {friendList.map((friend) => {
-                                return <FriendListItem key={uuid.v4()} userid={friend} onPress={() => {
-                                    setActiveFriend(friend);
-                                    setShowFriend(true);
-                                }}/>
+                                return <FriendListItem toggleNavbar={toggleNavbar} key={uuid.v4()} friend={friend} onPress={() => {setActiveFriend(friend); setShowFriend(true)}}/>
                             })}
                             <View style={{height: responsiveHeight(5)}}></View>
                         </ScrollView>
@@ -48,14 +57,13 @@ const FriendList = ({ setActiveFriend, setShowFriend, getFriendList, onSetShowSe
                         <View style={{justifyContent: "center", flex: 1}}>
                             <Text style={styles.empty_label}>{language.empty_no_friends_yet}</Text>
                             <View style={{height: responsiveHeight(2.5)}}></View>
-                            <Button title={language.groups_search_for_friends} color={"#484F78"} fontColor={"white"} onPress={() => onSetShowSearchPanel()}/>
                         </View>}
                 </> 
                 : 
                 <View style={{height: "90%", justifyContent: "center"}}>
                     <CustomLoader x={50} color={"#0080FF"}/>
                 </View>}
-        </Animated.View>
+        </Animated.View></>
     );
 }
 

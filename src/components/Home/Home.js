@@ -15,6 +15,8 @@ import Map from "./Map/Map";
 import Config from "./Config/Config";
 import Groups from "./Friends/Groups";
 import MenuButton from "./MenuButton";
+import Friends from "./Friends/Friends";
+import Intro from "../common/Intro";
 
 //Expo
 import * as NavigationBar from 'expo-navigation-bar'
@@ -24,12 +26,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import { responsiveHeight } from "react-native-responsive-dimensions"
+import { ConfigContext } from "../../data/ConfigContext";
 
-export default function Home({ handleLogOut, toggleCounter, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser}) {
+export default function Home({ friendList, handleLogOut, toggleCounter, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser, handleIntroFinish }) {
 
+  //Context
+  const config = useContext(ConfigContext);
+
+  //States
   const [view, setView] = useState("main");
-  const navSlide = useRef(new Animated.Value(0)).current;
 
+  //Refs
+  const navSlide = useRef(new Animated.Value(0)).current;
+  
   useEffect(() => {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
   }, [view]);
@@ -59,6 +68,10 @@ export default function Home({ handleLogOut, toggleCounter, toggleLanguage, dele
   }
 
   return (
+    <>
+
+    {config.first ? <Intro onExit={(introConfig) => handleIntroFinish(introConfig)}/> :
+
     <Animated.View style={[{ opacity: 1}, styles.container]}>
       <View style={styles.content_container}>
         {view == "main" ? (
@@ -66,9 +79,15 @@ export default function Home({ handleLogOut, toggleCounter, toggleLanguage, dele
         ) : null}
         {view == "stats" ? <Stats/> : null}
         {view == "map" ? <Map getFriendList={getFriendList}/> : null}
-        {view == "config" ? <Config deleteAccount={deleteAccount} toggleLanguage={toggleLanguage} loadSettings={loadSettings} /> : null}
+        {view == "config" ? <Config deleteAccount={deleteAccount} toggleLanguage={toggleLanguage} loadSettings={loadSettings} refreshUser={refreshUser}/> : null}
         {view == "groups" ? (
-          <Groups handleLogOut={handleLogOut} toggleNavbar={toggleNavbar} deleteAccount={deleteAccount} getFriendList={getFriendList} refreshUser={refreshUser}/>
+          <Friends
+            friendList={friendList}
+            handleLogOut={handleLogOut}
+            toggleNavbar={toggleNavbar}
+            deleteAccount={deleteAccount}
+            getFriendList={getFriendList}
+            refreshUser={refreshUser}/>
         ) : null}
       </View>
 
@@ -167,6 +186,7 @@ export default function Home({ handleLogOut, toggleCounter, toggleLanguage, dele
         </View>
       </Animated.View>
     </Animated.View>
+    }</>
   );
 }
 

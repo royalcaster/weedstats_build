@@ -4,8 +4,8 @@ import { StyleSheet, View, Text, Animated, Easing, Dimensions, TextInput, Modal 
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Third Party
-import BackButton from '../../../../common/BackButton';
-import Button from '../../../../common/Button';
+import BackButton from '../../../../../common/BackButton';
+import Button from '../../../../../common/Button';
 
 //Third Party
 /* import moment from "moment";
@@ -14,7 +14,7 @@ import uuid from 'react-native-uuid' */
 
 //Firebase
 import { setDoc, doc, getDoc, updateDoc } from "@firebase/firestore";
-import { firestore } from "../../../../../data/FirebaseConfig";
+import { firestore } from "../../../../../../data/FirebaseConfig";
 
 const Feedback = ( { onexit, userid } ) => {
 

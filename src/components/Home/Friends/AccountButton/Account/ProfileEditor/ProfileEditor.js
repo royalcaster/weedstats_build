@@ -2,16 +2,15 @@ import { useBackHandler } from "@react-native-community/hooks";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { View, StyleSheet, Animated, Dimensions, Easing, Text, TextInput, ScrollView } from 'react-native'
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
-import Button from "../../../../common/Button";
-import { LanguageContext } from "../../../../../data/LanguageContext";
-import { UserContext } from "../../../../../data/UserContext";
-import ProfileImage from "../../../../common/ProfileImage";
+import Button from "../../../../../common/Button";
+import { LanguageContext } from "../../../../../../data/LanguageContext";
+import { UserContext } from "../../../../../../data/UserContext";
+import ProfileImage from "../../../../../common/ProfileImage";
 import * as ImagePicker from 'expo-image-picker';
-import { firestore, storage } from "../../../../../data/FirebaseConfig";
-import CustomLoader from "../../../../common/CustomLoader";
+import { firestore, storage } from "../../../../../../data/FirebaseConfig";
+import CustomLoader from "../../../../../common/CustomLoader";
 import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
-import { doc, updateDoc } from "@firebase/firestore";
-import { createUsernameArray } from "../../../../../data/Service";
+import { createUsernameArray } from "../../../../../../data/Service";
 
 const ProfileEditor = ({ onExit, refreshUser}) => {
 

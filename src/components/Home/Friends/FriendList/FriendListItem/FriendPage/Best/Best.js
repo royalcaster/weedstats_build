@@ -3,7 +3,7 @@ import React, {useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, Easing } from "react-native";
 
 //Custom Components
-import LevelImage from "../../../../common/LevelImage";
+import LevelImage from "../../../../../../common/LevelImage";
 
 //Third Party
 import { LinearGradient } from "expo-linear-gradient";

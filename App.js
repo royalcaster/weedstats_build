@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect } from "react";
-import { View, Modal, Vibration, StatusBar, LogBox } from 'react-native'
+import { View, Modal, Vibration, StatusBar, LogBox, Text } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Service
@@ -66,10 +66,13 @@ export default function App() {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     NavigationBar.setBackgroundColorAsync("#1E2132");
     checkForUser();
-    loadSettings();
-    getFriendList();
-    console.debug(friendList);
   },[]);
+
+  useEffect(() => {
+    if (user != null) {
+      getFriendList();
+    }
+  },[user]);
 
   useEffect(() => {
     if (config != null) {
@@ -86,50 +89,25 @@ export default function App() {
   const loadSettings = async () => {
     setLoading(true);
     try {
-      const jsonValue = await AsyncStorage.getItem("settings");
-
-      if (jsonValue == null) {
-        //Settings-Objekt erstmalig einrichten
-        await AsyncStorage.setItem("settings",JSON.stringify({
-          "first": true,
-          "language": "en",
-          "localAuthenticationRequired": false,
-          "saveGPS": false,
-          "shareGPS": false,
-          "shareLastEntry": false,
-          "shareMainCounter": false,
-          "shareTypeCounters": false,
-          "showBong": true,
-          "showCookie": false,
-          "showJoint": true,
-          "showPipe": true,
-          "showVape": true,
-        }))
+      let docSnap = await getDoc(doc(firestore, "users", user.id));
+      if (docSnap.exists()) {
+        let configBuffer = docSnap.data().config;
         setConfig({
-          "first": true,
-          "language": "en",
-          "localAuthenticationRequired": false,
-          "saveGPS": false,
-          "shareGPS": false,
-          "shareLastEntry": false,
-          "shareMainCounter": false,
-          "shareTypeCounters": false,
-          "showBong": true,
-          "showCookie": false,
-          "showJoint": true,
-          "showPipe": true,
-          "showVape": true,
+          "first": configBuffer.first,
+          "language": configBuffer.language,
+          "localAuthenticationRequired": configBuffer.localAuthenticationRequired,
+          "saveGPS": configBuffer.saveGPS,
+          "shareGPS": configBuffer.shareGPS,
+          "shareLastEntry": configBuffer.shareLastEntry,
+          "shareMainCounter": configBuffer.shareMainCounter,
+          "shareTypeCounters": configBuffer.shareTypeCounters,
+          "showBong": configBuffer.showBong,
+          "showCookie": configBuffer.showCookie,
+          "showJoint": configBuffer.showJoint,
+          "showPipe": configBuffer.showPipe,
+          "showVape": configBuffer.showVape,
         });
       }
-      setConfig(JSON.parse(jsonValue));
-
-      /* //Local Counters
-      try {
-        const jsonValue = await AsyncStorage.getItem(user.id + "_counters");
-        jsonValue != null ? setLocalCounters(JSON.parse(jsonValue)) : null;
-      } catch (e) {
-        console.log("Error in App.js: ", e);
-      } */
 
       setLoading(false);
     } catch (e) {
@@ -145,6 +123,9 @@ export default function App() {
       if (accessToken != null) {
         handleLogin(accessToken.email, accessToken.password);
       }
+      else {
+        setLoading(false);
+      }
     }
     catch (error) {
       console.log("Fehler beim Laden des angemeldeten Nutzers:" + error)
@@ -154,17 +135,12 @@ export default function App() {
   //Lädt Freundesliste des angemeldeten Nutzers herunter
   const getFriendList = async () => {
     if (user != null) {
-      const docRef = doc(firestore, "users", user.id);
-      const docSnap = await getDoc(docRef);
-  
-      if (docSnap.exists()) {
-        let buffer = [];
-        docSnap.data().friends.forEach(async (friend) => {
-          buffer.push(await downloadUser(friend));
-        })
-        setFriendList(buffer);
-      }
-      setLoading(false);
+      let buffer = [];
+      user.friends.forEach(async (friend) => {
+        let data = await downloadUser(friend);
+        buffer.push(data);
+      });
+      setFriendList(buffer);
     }
   }
 
@@ -189,8 +165,27 @@ export default function App() {
       last_entry_longitude: settings.last_entry_longitude ? settings.last_entry_longitude : user.last_entry_longitude,
       last_entry_type: settings.last_entry_type ? settings.last_entry_type : user.last_entry_type,
       main_counter: settings.main_counter ? settings.main_counter : user.main_counter,
-      username_array: settings.username ? createUsernameArray(settings.username) : user.username_array
+      username_array: settings.username ? createUsernameArray(settings.username) : user.username_array,
     });
+
+    if (settings.config) {
+      setConfig({
+        first: settings.config.first != null ? settings.config.first : config.first,
+        language: settings.config.language != null ? settings.config.language : config.language,
+        localAuthenticationRequired: settings.config.localAuthenticationRequired != null ? settings.config.localAuthenticationRequired : config.localAuthenticationRequired,
+        saveGPS: settings.config.saveGPS != null ? settings.config.saveGPS : config.saveGPS,
+        shareGPS: settings.config.shareGPS != null ? settings.config.shareGPS : config.shareGPS,
+        shareLastEntry: settings.config.shareLastEntry != null ? settings.config.shareLastEntry : config.shareLastEntry,
+        shareMainCounter: settings.config.shareMainCounter != null ? settings.config.shareMainCounter : config.shareMainCounter,
+        shareTypeCounters: settings.config.shareTypeCounters != null ? settings.config.shareTypeCounters : config.shareTypeCounters,
+        showBong: settings.config.showBong != null ? settings.config.showBong : config.showBong,
+        showCookie: settings.config.showCookie != null ? settings.config.showCookie : config.showCookie,
+        showJoint: settings.config.showJoint != null ? settings.config.showJoint : config.showJoint,
+        showPipe: settings.config.showPipe != null ? settings.config.showPipe : config.showPipe, 
+        showVape: settings.config.showVape != null ? settings.config.showVape : config.showVape
+      });
+    }
+    
   }
 
   //behandelt Login-Event NEU 
@@ -224,7 +219,22 @@ export default function App() {
           last_entry_longitude: docSnap.data().last_entry_longitude,
           last_entry_type: docSnap.data().last_entry_type,
           main_counter: docSnap.data().main_counter,
-          username_array: docSnap.data().username_array
+          username_array: docSnap.data().username_array,
+        });
+        setConfig({
+          first: docSnap.data().config.first,
+          language: docSnap.data().config.language,
+          localAuthenticationRequired: docSnap.data().config.localAuthenticationRequired,
+          saveGPS: docSnap.data().config.saveGPS,
+          shareGPS: docSnap.data().config.shareGPS,
+          shareLastEntry: docSnap.data().config.shareLastEntry,
+          shareMainCounter: docSnap.data().config.shareMainCounter,
+          shareTypeCounters: docSnap.data().config.shareTypeCounters,
+          showBong: docSnap.data().config.showBong,
+          showCookie: docSnap.data().config.showCookie,
+          showJoint: docSnap.data().config.showJoint,
+          showPipe: docSnap.data().config.showPipe, 
+          showVape: docSnap.data().config.showVape
         });
       }
       setWrongPassword(false);
@@ -233,7 +243,7 @@ export default function App() {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log("Fehler beim Anmelden per Email: " + errorCode);
+      console.log("Fehler beim Anmelden per Email: " + errorMessage);
       if (errorCode == "auth/wrong-password") {
         setWrongPassword(true);
         setUser(null);
@@ -278,7 +288,22 @@ export default function App() {
         last_entry_longitude: null,
         last_entry_type: null,
         main_counter: 0,
-        username_array: createUsernameArray(username)
+        username_array: createUsernameArray(username),
+        config: {
+          first: true,
+          language: "en",
+          localAuthenticationRequired: false,
+          saveGPS: true,
+          shareGPS: false,
+          shareLastEntry: false,
+          shareMainCounter: false,
+          shareTypeCounters: false,
+          showBong: true,
+          showCookie: true,
+          showJoint: true,
+          showPipe: true, 
+          showVape: true
+        }
       });
 
       const docSnap = await getDoc(doc(firestore, "users", result.uid));
@@ -303,6 +328,21 @@ export default function App() {
           main_counter: docSnap.data().main_counter,
           username_array: docSnap.data().username_array
         });
+        setConfig({
+          first: docSnap.data().config.first,
+          language: docSnap.data().config.language,
+          localAuthenticationRequired: docSnap.data().config.localAuthenticationRequired,
+          saveGPS: docSnap.data().config.saveGPS,
+          shareGPS: docSnap.data().config.shareGPS,
+          shareLastEntry: docSnap.data().config.shareLastEntry,
+          shareMainCounter: docSnap.data().config.shareMainCounter,
+          shareTypeCounters: docSnap.data().config.shareTypeCounters,
+          showBong: docSnap.data().config.showBong,
+          showCookie: docSnap.data().config.showCookie,
+          showJoint: docSnap.data().config.showJoint,
+          showPipe: docSnap.data().config.showPipe, 
+          showVape: docSnap.data().config.showVape
+        });
       }
       setLoading(false);
     })
@@ -322,8 +362,25 @@ export default function App() {
   const handleIntroFinish = async (introConfig) => {
     handleAuthenticatorSelect(introConfig.enableAuthentication);
     toggleLanguage(introConfig.language);
-    await AsyncStorage.setItem("settings", JSON.stringify({...config, first: false}));
-    loadSettings();
+    updateDoc(doc(firestore, "users", user.id), {
+      config: {
+        first: false,
+        language: config.language,
+        localAuthenticationRequired: config.localAuthenticationRequired,
+        saveGPS: config.saveGPS,
+        shareGPS: config.shareGPS,
+        shareLastEntry: config.shareLastEntry,
+        shareMainCounter: config.shareMainCounter,
+        shareTypeCounters: config.shareTypeCounters,
+        showBong: config.showBong,
+        showCookie: config.showCookie,
+        showJoint: config.showJoint,
+        showPipe: config.showPipe, 
+        showVape: config.showVape
+      }
+    }).then(() => {
+      loadSettings();
+    });
   }
 
   //lädt Schriftarten aus Assets
@@ -337,13 +394,23 @@ export default function App() {
   const toggleLanguage = async ( lang ) => {
     if (lang == "de" && config.language == "en") {
       setLanguage(Languages.de);
-      await AsyncStorage.setItem("settings",JSON.stringify({...config, language: "de"}));
+      /* await AsyncStorage.setItem("settings",JSON.stringify({...config, language: "de"})); */
+      await updateDoc(doc(firestore, "users", user.id),{
+        config: {
+          language: "de"
+        }
+      });
       setConfig({...config, language: "de"});
       console.debug(lang);
     }
     if (lang == "en" && config.language == "de") {
       setLanguage(Languages.en);
-      await AsyncStorage.setItem("settings",JSON.stringify({...config, language: "en"}));
+      /* await AsyncStorage.setItem("settings",JSON.stringify({...config, language: "en"})); */
+      await updateDoc(doc(firestore, "users", user.id),{
+        config: {
+          language: "en"
+        }
+      });
       setConfig({...config, language: "en"});
       console.debug(lang);
     } 
@@ -351,7 +418,12 @@ export default function App() {
 
   //behandelt Auswahl des Nutzers, ob lokale Authentifizierung benutzt werden soll
   const handleAuthenticatorSelect = async ( bool ) => {
-    await AsyncStorage.setItem("settings", JSON.stringify({...config, localAuthenticationRequired: bool}));
+    /* await AsyncStorage.setItem("settings", JSON.stringify({...config, localAuthenticationRequired: bool})); */
+    updateDoc(doc(firestore, "users", user.id),{
+      config: {
+        localAuthenticationRequired: bool
+      }
+    });
 }
 
 //behandelt LogOut-Event
@@ -432,67 +504,6 @@ const toggleCounter = async (index, color) => {
   });
   
   setWriteComplete(true);
-
-  //------------------------------------------ALT-----------------------------------------
-  /* try {
-    const jsonValue = await AsyncStorage.getItem("settings");
-    jsonValue != null ? (settings = JSON.parse(jsonValue)) : null;
-  } catch (e) {
-    console.log("Error beim Laden der Einstellungen (Z. 456)", e);
-  } */
-
- /*  if (settings.shareMainCounter) {
-    await updateDoc(docRef, {
-      main_counter: user.main_counter + 1,
-    });
-  } else {
-    await updateDoc(docRef, {
-      main_counter: null,
-    });
-  } */
-
- /*  if (settings.shareTypeCounters && settings.shareMainCounter) {
-    await updateDoc(docRef, {
-      joint_counter: user.joint_counter,
-      bong_counter: user.bong_counter,
-      vape_counter: user.vape_counter,
-      pipe_counter: user.pipe_counter,
-      cookie_counter: user.cookie_counter,
-      [index + "_counter"]: user[index + "_counter"] + 1,
-    });
-  } else {
-    await updateDoc(docRef, {
-      joint_counter: null,
-      bong_counter: null,
-      vape_counter: null,
-      pipe_counter: null,
-      cookie_counter: null,
-    });
-  } */
-
-  /* if (settings.shareLastEntry) {
-    await updateDoc(docRef, {
-      last_entry_timestamp: new_entry.timestamp,
-      last_entry_type: new_entry.type,
-    });
-  } else {
-    await updateDoc(docRef, {
-      last_entry_timestamp: null,
-      last_entry_type: null,
-    });
-  } */
-
-  /* if (settings.shareGPS) {
-    await updateDoc(docRef, {
-      last_entry_latitude: new_entry.latitude,
-      last_entry_longitude: new_entry.longitude,
-    });
-  } else {
-    await updateDoc(docRef, {
-      last_entry_latitude: null,
-      last_entry_longitude: null,
-    });
-  } */
 };
 
 //erstellt Einträge im lokalen Gerätespeicher
@@ -507,26 +518,6 @@ const writeLocalStorage = async (new_entry) => {
   } catch (e) {
     console.log("Error:", e);
   }
-
-  // Updated betroffene Counters im AsyncStorage
-  /* let current_counters = {};
-
-  try {
-    const jsonValue = await AsyncStorage.getItem(user.id + "_counters");
-    jsonValue != null ? (current_counters = JSON.parse(jsonValue)) : null;
-  } catch (e) {
-    console.log("Error in App.js: ", e);
-  }
-
-  current_counters[new_entry.type] += 1;
-  current_counters.main += 1;
-
-  try {
-    const jsonValue = JSON.stringify(current_counters);
-    await AsyncStorage.setItem(user.id + "_counters", jsonValue);
-  } catch (e) {
-    console.log("Error:", e);
-  } */
 };
 
 //behandelt das Löschen des Nutzeraccounts
@@ -547,7 +538,7 @@ const deleteAccount = async () => {
   await deleteDoc(docRef);
   
   // AsyncStorage-Daten löschen
-  try {
+  /* try {
     await AsyncStorage.clear();
     setConfig({
       showJoint: true,
@@ -566,69 +557,54 @@ const deleteAccount = async () => {
     });
   } catch (e) {
     console.log("Fehler beim Löschen des AsyncStorage.", e);
-  }
+  } */
   setLoading(false);
 };
 
   return (
     <>
       <View style={{backgroundColor: "#1E2132", height: "100%"}}>
-      <ConfigContext.Provider value={config}>
-      <LanguageContext.Provider value={language}>
+        <ConfigContext.Provider value={config}>
+        <LanguageContext.Provider value={language}>
 
-      <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-            setWriteComplete(false);
-          }}
-      >
-        <CounterModal loadingColor={loadingColor} onExit={() => {setModalVisible(!modalVisible); setWriteComplete(false); StatusBar.setBackgroundColor("rgba(0,0,0,0)"); NavigationBar.setBackgroundColorAsync("#1E2132")}} writeComplete={writeComplete} sayingNr={sayingNr}/>    
-      </Modal>
-
-      { showSplash ? 
+        { showSplash ? 
         <Splash onExit={() => {setShowSplash(false);}}/>
         : 
-        <>
-          {loading ? <View style={{justifyContent: "center", height: "100%"}}><CustomLoader color={"#c4c4c4"} x={100} special={true}/></View>
-          :
           <>
-            
-            {config.localAuthenticationRequired && !unlocked ? <Authenticator first={false} onSubmit={() => setUnlocked(true)} onCancel={() => setUnlocked(false)} onExit={() => null}/>
-            :
+          {loading ? <View style={{justifyContent: "center", height: "100%"}}><CustomLoader color={"#c4c4c4"} x={100} special={true}/></View>
+          : 
             <>
-              {config.first ? <Intro 
-                                onExit={(introConfig) => handleIntroFinish(introConfig)}
-                                onLanguageSelect={(lang) => toggleLanguage(lang)}
-                                onAuthenticatorSelect={(bool) => handleAuthenticatorSelect(bool)}/>
-              :
-              <>
-                {user ? <UserContext.Provider value={user}>
-                          <FriendListContext.Provider value={friendList}>
-                            <Home
-                              handleLogOut={handleLogOut}
-                              toggleCounter={toggleCounter}
-                              toggleLanguage={toggleLanguage}
-                              deleteAccount={deleteAccount}
-                              getFriendList={getFriendList}
-                              loadSettings={loadSettings}
-                              borderColor={borderColor}
-                              onSetBorderColor={color => setBorderColor(color)}
-                              refreshUser={refreshUser}
-                              />
-                          </FriendListContext.Provider>
-                        </UserContext.Provider>
-                :
-                <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>
-                }
-              </>}
-            </>}
-            </>}
-        </>}
-      </LanguageContext.Provider>
-      </ConfigContext.Provider>
+              {user ? 
+              <UserContext.Provider value={user}>
+              <FriendListContext.Provider value={friendList}>
+
+                <Home
+                  friendList={friendList}
+                  handleLogOut={handleLogOut}
+                  toggleCounter={toggleCounter}
+                  toggleLanguage={toggleLanguage}
+                  deleteAccount={deleteAccount}
+                  getFriendList={getFriendList}
+                  loadSettings={loadSettings}
+                  borderColor={borderColor}
+                  onSetBorderColor={color => setBorderColor(color)}
+                  refreshUser={refreshUser}
+                  handleIntroFinish={handleIntroFinish}
+                  handleAuthenticatorSelect={handleAuthenticatorSelect}
+                />
+                  
+              </FriendListContext.Provider>
+              </UserContext.Provider>
+              : 
+              <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>}
+            </>
+          }
+          </>
+        }
+        
+
+        </LanguageContext.Provider>
+        </ConfigContext.Provider>
       </View>
     </>
   );

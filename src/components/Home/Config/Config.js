@@ -34,7 +34,7 @@ import { LanguageContext } from "../../../data/LanguageContext";
 import { useBackHandler } from "@react-native-community/hooks";
 import { ConfigContext } from "../../../data/ConfigContext";
 
-const Config = ({ toggleLanguage, loadSettings, deleteAccount }) => {
+const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) => {
 
   const language = useContext(LanguageContext);
   const config = useContext(ConfigContext);
@@ -62,9 +62,12 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount }) => {
 
   const storeSettings = async () => {
     try {
-      const jsonValue = JSON.stringify(localConfig);
-      await AsyncStorage.setItem("settings", jsonValue);
+      /* const jsonValue = JSON.stringify(localConfig);
+      await AsyncStorage.setItem("settings", jsonValue); */
       toggleLanguage(localConfig.language);
+      refreshUser({
+        config: localConfig
+      });
     } catch (e) {
       console.log("Error in Config beim Speichern: ", e);
     }

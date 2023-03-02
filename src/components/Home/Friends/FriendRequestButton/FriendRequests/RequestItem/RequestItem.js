@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, View, StyleSheet, Text, Easing, TouchableNativeFeedback } from "react-native";
 
 //Custom Components
-import ProfileImage from "../../../../common/ProfileImage";
+import ProfileImage from "../../../../../common/ProfileImage";
 
 //Firebase
 import { doc, getDoc } from "@firebase/firestore";
-import { firestore } from "../../../../../data/FirebaseConfig";
+import { firestore } from "../../../../../../data/FirebaseConfig";
 
 //Third Party
 import Feather from "react-native-vector-icons/Feather";
@@ -70,7 +70,7 @@ const RequestItem = ({ userid, onAccept, onDecline }) => {
   return (
     <>
       {!isLoading ? (
-        <Animated.View style={[{ opacity: opacityAnim, transform: [{translateX: slide1Anim}] }, styles.container]}>
+        <Animated.View style={[{ opacity: opacityAnim, transform: [{translateX: 0}] }, styles.container]}>
           <View
             style={{
               flexDirection: "column",
@@ -82,7 +82,7 @@ const RequestItem = ({ userid, onAccept, onDecline }) => {
           >
             <View style={{ flex: 3, flexDirection: "row", width: "100%", height: "100%", padding: 10}}>
               <Animated.View
-                style={{ transform: [{ translateX: slide1Anim }], zIndex: 2, justifyContent: "center"}}
+                style={{ transform: [{ translateX: 0 }], zIndex: 2, justifyContent: "center"}}
               >
                 <ProfileImage x={80} type={1} url={user.photoUrl} />
               </Animated.View>
@@ -90,7 +90,7 @@ const RequestItem = ({ userid, onAccept, onDecline }) => {
               <Animated.View
                 style={{
                   flexDirection: "column",
-                  transform: [{ translateX: slide2Anim }],
+                  transform: [{ translateX: 0 }],
                   zIndex: 1,
                   justifyContent: "center",
                   flex: 1,

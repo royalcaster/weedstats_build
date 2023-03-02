@@ -4,11 +4,11 @@ import { StyleSheet, Image, View, Text, Pressable, Animated, Easing, Dimensions 
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
-import BackButton from '../../../../common/BackButton';
+import BackButton from '../../../../../common/BackButton';
 
 //Third Party
 import { responsiveHeight } from 'react-native-responsive-dimensions';
-import { LanguageContext } from '../../../../../data/LanguageContext';
+import { LanguageContext } from '../../../../../../data/LanguageContext';
 
 const Donation = ( { onexit } ) => {
 
@@ -67,7 +67,7 @@ const Donation = ( { onexit } ) => {
             <View style={{ height: responsiveHeight(1) }}></View>
 
                 <View style={{height: 80}} />
-                <Image source={require('../../../../../data/img/Dön.png')} style={styles.image}></Image>
+                <Image source={require('../../../../../../data/img/Dön.png')} style={styles.image}></Image>
                 <View style={{height: 50}} />
                 <Text style={styles.text}>Du feierst <Text style={[styles.text, styles.bold]}>WeedStats</Text> und willst das Projekt weiterbringen?</Text>
                 <View style={{height: 10}} />

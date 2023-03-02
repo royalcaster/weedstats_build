@@ -4,21 +4,23 @@ import { Animated, View, StyleSheet, TextInput, Dimensions, Easing, Text, Scroll
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
-import BackButton from '../../../common/BackButton'
-import FriendListItem from "../FriendList/FriendListItem/FriendListItem";
+import BackButton from '../../../../common/BackButton'
+import FriendListItem from "../../FriendList/FriendListItem/FriendListItem";
+import Button from "../../../../common/Button";
 
 //Firebase
 import { doc, getDoc, updateDoc, getDocs, collection, query, where } from "@firebase/firestore";
-import { firestore } from "../../../../data/FirebaseConfig";
+import { firestore } from "../../../../../data/FirebaseConfig";
 import Antdesign from 'react-native-vector-icons/AntDesign'
 
 //Third Party
 import uuid from 'react-native-uuid'
 
 //Service
-import { UserContext } from "../../../../data/UserContext";
-import { LanguageContext } from "../../../../data/LanguageContext";
+import { UserContext } from "../../../../../data/UserContext";
+import { LanguageContext } from "../../../../../data/LanguageContext";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
+import { downloadUser } from "../../../../../data/Service";
 
 const SearchPanel = ({onExit}) => {
 
@@ -75,11 +77,7 @@ const SearchPanel = ({onExit}) => {
     
                 docSnap.forEach((doc) => {
                     if (doc.exists()) {
-                        resultBuffer.push({
-                            id: doc.data().id,
-                            username: doc.data().username,
-                            requests: doc.data().requests
-                        });
+                        resultBuffer.push(doc.data());
                        }
                 });
             }
@@ -135,14 +133,13 @@ const SearchPanel = ({onExit}) => {
 
     return (
         <Animated.View style={[styles.container,{transform: [{translateY: slideAnim}]}]}>
-            <View style={{height: 50}}></View>
+            <View style={{height: 10}}></View>
 
         <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}>
             <View style={{flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(0,0,0,0.5)"}}>
@@ -159,28 +156,21 @@ const SearchPanel = ({onExit}) => {
                     </View>
                     <View style={{flex: 1, flexDirection: "row"}}>
                         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.05)", true)} onPress={() => setModalVisible(false)}>
-                                <View style={styles.touchable}>
-                                    <Antdesign name="close" style={[styles.icon,{color: "#eb4034"}]}/>
-                                </View>
-                            </TouchableNativeFeedback>
+                            
+                            <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
                         </View>
                         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.05)", true)} onPress={() => makeFriendRequest(activeRequested.id)}>
-                                <View style={styles.touchable}>
-                                    <Antdesign name="check" style={[styles.icon,{color: "#3BA426"}]}/>
-                                </View>
-                            </TouchableNativeFeedback>
+                            <Button title={"Senden"} onPress={() => makeFriendRequest(activeRequested.id)} color={"#00DB4D"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
                         </View>
                     </View></> 
                     
-                    : <View style={{flex: 1, justifyContent: "center"}}><Antdesign style={styles.info_icon} name="exclamationcircleo"/><View style={{height: 30}}></View><Text style={[styles.heading,{textAlign: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text><View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.05)", true)} onPress={() => setModalVisible(false)}>
-                                <View style={styles.touchable}>
-                                    <Antdesign name="close" style={[styles.icon,{color: "#eb4034"}]}/>
-                                </View>
-                            </TouchableNativeFeedback>
-                        </View></View>}
+                    : <View style={{flex: 1, justifyContent: "center"}}><Antdesign style={styles.info_icon} name="exclamationcircleo"/>
+                        <View style={{height: 30}}></View>
+                        <Text style={[styles.heading,{textAlign: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text>
+                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}> 
+                            <Button title={"Ok"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+                        </View>
+                    </View>}
                 </View>
             </View>
         </Modal>
@@ -207,7 +197,7 @@ const SearchPanel = ({onExit}) => {
             </View> : <>
             {loading ? <ActivityIndicator color={"#0080FF"} size={"large"} style={{marginTop: 50}}/> : (
                 results.map((result) => {
-                    return <FriendListItem key={uuid.v4()} userid={result.id} onPress={() => {setActiveRequested(result);setModalVisible(true)}}/>
+                    return <FriendListItem key={uuid.v4()} friend={result} onPress={() => {setActiveRequested(result);setModalVisible(true)}}/>
                 })
             )}
             </>}
@@ -223,11 +213,14 @@ export default SearchPanel
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        width: "100%",
-        backgroundColor: "#131520",
-        zIndex: 10,
+        width: Dimensions.get("window").width,
         position: "absolute",
+        backgroundColor: "#131520",
+        height: Dimensions.get("window").height,
+        top: 0,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        zIndex: 1
     },
     input: {
         backgroundColor: "#1E2132",

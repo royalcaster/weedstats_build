@@ -9,11 +9,15 @@ import BackButton from "../../../common/BackButton";
 //Service
 import { UserContext } from "../../../../data/UserContext";
 import { LanguageContext } from "../../../../data/LanguageContext";
+import { FriendListContext } from "../../../../data/FriendListContext";
+import MarkerListItem from "./MarkerListItem/MarkerListItem";
+import { uuidv4 } from "@firebase/util";
 
-const MarkerList = ({onExit}) => {
+const MarkerList = ({onExit, setRegion}) => {
 
     const user = useContext(UserContext)
     const language = useContext(LanguageContext);
+    const friendList = useContext(FriendListContext)
 
     const screen_height = Dimensions.get("screen").height;
     const [modalVisible, setModalVisible] = useState(false);
@@ -51,11 +55,19 @@ const MarkerList = ({onExit}) => {
         return true
     })
 
-    
+    const handlePress = (friend) => {
+        setRegion({
+            latitude: friend.last_entry_latitude,
+            longitude: friend.last_entry_longitude,
+            latitudeDelta: 0.25,
+            longitudeDelta: 0.25
+        });
+        hide();
+    }
 
     return (
         <Animated.View style={[styles.container,{transform: [{translateY: slideAnim}]}]}>
-            <View style={{height: 50}}></View>
+            <View style={{height: 20}}></View>
      
             <View
             style={{ width: "100%", flexDirection: "row"}}
@@ -64,13 +76,18 @@ const MarkerList = ({onExit}) => {
                     <BackButton onPress={() => hide()} />
                 </View>
                 <View style={{ flex: 5, justifyContent: "center"}}>
-                    <Text style={[styles.heading,{textAlign: "left"}]}>{language.friends_friends}</Text>
+                    <Text style={[styles.heading,{textAlign: "left"}]}>{language.friends_friends} - {language.friendpage_last_activity}</Text>
                 </View>
             </View>
             
             <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}}>
 
-            
+            {
+                friendList.length != 0 ? friendList.map((friend) => {
+                    return <MarkerListItem key={uuidv4()} friend={friend} 
+                    onPress={() => handlePress(friend)}/>
+                }) : null
+            }
 
             </ScrollView>
 

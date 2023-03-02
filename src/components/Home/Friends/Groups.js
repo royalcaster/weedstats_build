@@ -11,11 +11,10 @@ import {
 } from "react-native";
 
 //Custom Components
-import Account from "./Account/Account";
-import FriendPage from "./FriendPage/FriendPage";
+/* import FriendPage from "./FriendPage/FriendPage";
 import SearchPanel from './SearchPanel/SearchPanel'
 import FriendRequests from "../Friends/FriendRequests/FriendRequests";
-import FriendList from "./FriendList/FriendList";
+import FriendList from "./FriendList/FriendList"; */
 
 //Third Party
 import Feather from 'react-native-vector-icons/Feather'
@@ -25,8 +24,10 @@ import { responsiveHeight, responsiveFontSize } from "react-native-responsive-di
 import { UserContext } from "../../../data/UserContext";
 import { LanguageContext } from "../../../data/LanguageContext";
 import { responsiveWidth } from "react-native-responsive-dimensions";
+import { FriendListContext } from "../../../data/FriendListContext";
+import FriendListItem from "./FriendList/FriendListItem/FriendListItem";
 
-const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refreshUser }) => {
+const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refreshUser, friendList }) => {
 
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
@@ -56,7 +57,6 @@ const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refr
       }).start()
   },[]);
 
-
   return (
     <>
       {showAddFriend ? <SearchPanel onExit={() => setShowAddFriend(false)}/> : null}
@@ -69,15 +69,6 @@ const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refr
         refresh={() => {getFriendList(); setActiveFriend(null); setShowFriend(false);}}
         toggleNavbar={toggleNavbar}
         />
-
-      <Account
-        handleLogOut={handleLogOut}
-        onexit={() => setShowAccount(false)}
-        toggleNavbar={toggleNavbar}
-        show={showAccount}
-        deleteAccount={deleteAccount}
-        refreshUser={refreshUser}
-      />
 
       <Animated.View style={[{ opacity: fadeAnim }, styles.container]}>
         <View style={{ height: responsiveHeight(7) }}></View>
@@ -122,8 +113,7 @@ const Groups = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refr
           </View>
         </View>
 
-      <FriendList setActiveFriend={setActiveFriend} setShowFriend={setShowFriend} getFriendList={getFriendList} onSetShowSearchPanel={() => setShowAddFriend(true)}/>
-
+        <FriendList friendList={friendList} setActiveFriend={setActiveFriend} setShowFriend={setShowFriend} getFriendList={getFriendList} onSetShowSearchPanel={() => setShowAddFriend(true)} />
 
         <Animated.View
           style={{

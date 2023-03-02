@@ -3,14 +3,11 @@ import React, { useRef, useContext } from "react";
 import { View, StyleSheet, Text, Animated, Easing, Dimensions } from "react-native";
 
 //Custom Components
-import BackButton from "../../../../common/BackButton";
-import LevelImage from "../../../../common/LevelImage";
-
-//Konstanten
-import levels from "../../../../../data/Levels.json";
+import BackButton from "../../../../../common/BackButton";
+import LevelImage from "../../../../../common/LevelImage";
 
 //Service
-import { LanguageContext } from "../../../../../data/LanguageContext";
+import { LanguageContext } from "../../../../../../data/LanguageContext";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
 import { useBackHandler } from "@react-native-community/hooks";
 

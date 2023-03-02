@@ -3,11 +3,10 @@ import React, { useRef, useContext } from "react";
 import { View, StyleSheet, Text, Animated, Easing, Dimensions, Image } from "react-native";
 
 //Custom Components
-import Button from "../../../../common/Button";
-import BackButton from "../../../../common/BackButton";
+import BackButton from "../../../../../common/BackButton";
 
 //Service
-import { LanguageContext } from "../../../../../data/LanguageContext";
+import { LanguageContext } from "../../../../../../data/LanguageContext";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
 
 //Third Party
@@ -62,7 +61,7 @@ const AppInfo = ({ onExit, show }) => {
               </View>
 
               <View style={{flex: 1, justifyContent: "center"}}>
-                <Image style={{height: responsiveHeight(12), width: responsiveHeight(12), alignSelf: "center"}} source={require('../../../../../data/img/logo.png')}/>
+                <Image style={{height: responsiveHeight(12), width: responsiveHeight(12), alignSelf: "center"}} source={require('../../../../../../data/img/logo.png')}/>
                 <Text style={[styles.text, { fontSize: responsiveFontSize(2) }]}>
                   Version 2.0
                 </Text>

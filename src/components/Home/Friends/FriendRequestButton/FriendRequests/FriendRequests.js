@@ -15,10 +15,10 @@ import {
 } from "react-native";
 
 //Custom Components
-import Empty from "../../../common/Empty";
-import BackButton from "../../../common/BackButton";
+import Empty from "../../../../common/Empty";
+import BackButton from "../../../../common/BackButton";
 import RequestItem from "./RequestItem/RequestItem";
-import CustomLoader from "../../../common/CustomLoader";
+import CustomLoader from "../../../../common/CustomLoader";
 
 //Third Party
 import uuid from "react-native-uuid";
@@ -30,12 +30,11 @@ import {
   getDoc,
   updateDoc,
 } from "@firebase/firestore";
-import { firestore } from "../../../../data/FirebaseConfig";
+import { firestore } from "../../../../../data/FirebaseConfig";
 
 //Service
-import { UserContext } from "../../../../data/UserContext";
-import { LanguageContext } from "../../../../data/LanguageContext";
-import { responsiveHeight } from "react-native-responsive-dimensions";
+import { UserContext } from "../../../../../data/UserContext";
+import { LanguageContext } from "../../../../../data/LanguageContext";
 
 const FriendRequests = ({ onExit, refresh, getFriendList }) => {
 
@@ -188,7 +187,7 @@ const FriendRequests = ({ onExit, refresh, getFriendList }) => {
     <Animated.View
       style={[styles.container, { transform: [{ translateY: slideAnim }] }]}
     >
-      <View style={{ height: 50 }}></View>
+      <View style={{ height: 10 }}></View>
 
       <Modal
         animationType="fade"
@@ -356,11 +355,14 @@ export default FriendRequests;
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
-    backgroundColor: "#131520",
-    zIndex: 10,
+    width: Dimensions.get("window").width,
     position: "absolute",
+    backgroundColor: "#131520",
+    height: Dimensions.get("window").height,
+    top: 0,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    zIndex: 1
   },
   modal_container: {
     backgroundColor: "#1E2132",
