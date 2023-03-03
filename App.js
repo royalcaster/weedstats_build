@@ -45,7 +45,6 @@ export default function App() {
    const [loading, setLoading] = useState(true);
    const [unlocked, setUnlocked] = useState(false);
    const [modalVisible, setModalVisible] = useState(false);
-   const [writeComplete, setWriteComplete] = useState(false);
    const [loadingColor, setLoadingColor] = useState("#0080FF");
    const [wrongPassword, setWrongPassword] = useState(false);
    const [emailInUse, setEmailInUse] = useState(false);
@@ -55,9 +54,7 @@ export default function App() {
    const [config, setConfig] = useState(null);
    const [user, setUser] = useState(null);
    const [language, setLanguage] = useState(Languages.en);
-   const [borderColor, setBorderColor] = useState("#1E2132");
    const [friendList, setFriendList] = useState([]);
-   const [sayingNr, setSayingNr] = useState(0);
 
   //Authentifizierung
   const auth = getAuth(app);
@@ -441,88 +438,6 @@ const handleLogOut = async () => {
   });
 };
 
-//erhöht den Counter für den jeweiligen Typ unter Berücksichtigung der momentanen Config
-//hier ist viel auskommentiert, weil das berücksichtigen der Einstellungen eigentlich fast nur nur in der Freunde ansicht passiert. (Was wird angezeigt und was nicht)
-const toggleCounter = async (index, color) => {
-  setBorderColor(color);
-  let settings = {};
-  let new_entry = {
-    number: user.main_counter + 1,
-    type: index,
-    timestamp: Date.now(),
-    latitude: null,
-    longitude: null,
-  };
-
-  Platform.OS === "android" ? Vibration.vibrate(50) : null;
-
-  // Neuen Index für Zitat ermitteln
-  setSayingNr(Math.floor(Math.random() * sayings.length));
-
-  setModalVisible(true);
-
-  if (config.saveGPS) {
-    // Die Bestimmung der Position dauert von den Schritten in der Funktion toggleCounter() mit Abstand am längsten
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("Permission to access location was denied");
-      return;
-    }
-    let location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest,
-    });
-
-    new_entry.latitude = location.coords.latitude;
-    new_entry.longitude = location.coords.longitude;
-  }
-
-  await writeLocalStorage(new_entry);
-
-  const docRef = doc(firestore, "users", user.id);
-  const docSnap = await getDoc(docRef);
-
-  await updateDoc(docRef, {
-    main_counter: user.main_counter + 1,
-    [index + "_counter"]: user[index + "_counter"] + 1,
-    last_entry_latitude: new_entry.latitude,
-    last_entry_longitude: new_entry.longitude,
-    last_entry_timestamp: new_entry.timestamp,
-    last_entry_type: new_entry.type
-  });
-
-  // Das sollte in Zukunft noch ersetzt werden
-  const docSnap_new = await getDoc(docRef);
-  setUser({
-    ...user,
-    main_counter: docSnap_new.data().main_counter,
-    joint_counter: docSnap_new.data().joint_counter, 
-    bong_counter: docSnap_new.data().bong_counter,
-    vape_counter: docSnap_new.data().vape_counter,
-    pipe_counter: docSnap_new.data().pipe_counter,
-    cookie_counter: docSnap_new.data().cookie_counter,
-    last_entry_timestamp: docSnap_new.data().last_entry_timestamp,
-    last_entry_type: docSnap_new.data().last_entry_type,
-    last_entry_latitude: docSnap_new.data().last_entry_latitude,
-    last_entry_longitude: docSnap_new.data().last_entry_longitude,
-  });
-  
-  setWriteComplete(true);
-};
-
-//erstellt Einträge im lokalen Gerätespeicher
-const writeLocalStorage = async (new_entry) => {
-  // Erstellt neuen Eintrag im AsyncStorage
-  try {
-    const jsonValue = JSON.stringify(new_entry);
-    await AsyncStorage.setItem(
-      user.id + "_entry_" + (user.main_counter + 1),
-      jsonValue
-    );
-  } catch (e) {
-    console.log("Error:", e);
-  }
-};
-
 //behandelt das Löschen des Nutzeraccounts
 const deleteAccount = async () => {
   setLoading(true);
@@ -584,16 +499,15 @@ const deleteAccount = async () => {
                 <Home
                   friendList={friendList}
                   handleLogOut={handleLogOut}
-                  toggleCounter={toggleCounter}
                   toggleLanguage={toggleLanguage}
                   deleteAccount={deleteAccount}
                   getFriendList={getFriendList}
                   loadSettings={loadSettings}
-                  borderColor={borderColor}
                   onSetBorderColor={color => setBorderColor(color)}
                   refreshUser={refreshUser}
                   handleIntroFinish={handleIntroFinish}
                   handleAuthenticatorSelect={handleAuthenticatorSelect}
+                  onSetUser={(user) => setUser(user)}
                 />
 
                <ModalPortal />

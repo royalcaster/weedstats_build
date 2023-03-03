@@ -35,8 +35,7 @@ const CounterModal = ({ onExit, writeComplete, sayingNr, borderColor, loadingCol
             <View
                 style={{
                   width: "100%",
-                  height: "100%",
-                  backgroundColor: "rgba(0,0,0,0)",
+                  height: "70%",
                   alignSelf: "center",
                   borderRadius: 25,
                 }}

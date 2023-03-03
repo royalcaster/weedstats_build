@@ -28,7 +28,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { responsiveHeight } from "react-native-responsive-dimensions"
 import { ConfigContext } from "../../data/ConfigContext";
 
-export default function Home({ friendList, handleLogOut, toggleCounter, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser, handleIntroFinish }) {
+export default function Home({ onSetUser, onWriteComplete, friendList, handleLogOut, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser, handleIntroFinish }) {
 
   //Context
   const config = useContext(ConfigContext);
@@ -41,6 +41,7 @@ export default function Home({ friendList, handleLogOut, toggleCounter, toggleLa
   
   useEffect(() => {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+    NavigationBar.setBackgroundColorAsync("#1E2132");
   }, [view]);
 
   const toggleNavbar = (x) => {
@@ -61,12 +62,6 @@ export default function Home({ friendList, handleLogOut, toggleCounter, toggleLa
     ).start();
   }
 
-  const toggleBorderColor = ( color ) => {
-    onSetBorderColor(color);
-    StatusBar.setBackgroundColor(color);
-    NavigationBar.setBackgroundColorAsync(color);
-  }
-
   return (
     <>
 
@@ -75,7 +70,7 @@ export default function Home({ friendList, handleLogOut, toggleCounter, toggleLa
     <Animated.View style={[{ opacity: 1}, styles.container]}>
       <View style={styles.content_container}>
         {view == "main" ? (
-          <Main toggleCounter={toggleCounter} toggleBorderColor={toggleBorderColor} borderColor={borderColor}/>
+          <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser}/>
         ) : null}
         {view == "stats" ? <Stats/> : null}
         {view == "map" ? <Map getFriendList={getFriendList}/> : null}
