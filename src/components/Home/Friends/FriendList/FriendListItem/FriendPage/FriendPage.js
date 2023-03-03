@@ -9,18 +9,21 @@ import BackButton from "../../../../../common/BackButton";
 import CustomLoader from "../../../../../common/CustomLoader";
 import ProfileImagePanel from '../../../../../common/ProfileImagePanel'
 import Button from "../../../../../common/Button";
+import IconButton from "../../../../../common/IconButton";
 import CustomMarker from "../../../../../common/CustomMarker";
+import CustomModal from "../../../../../common/CustomModal";
 
 //Third Party
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from "react-native-responsive-dimensions";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MapView, { Marker }  from "react-native-maps";
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import MapView, { Marker, PROVIDER_GOOGLE }  from "react-native-maps";
 
 //Konstanten
 import levels from "../../../../../../data/Levels.json";
 
 //Firebase
-import { clearIndexedDbPersistence, doc, getDoc, updateDoc } from "@firebase/firestore";
+import { doc, getDoc, updateDoc } from "@firebase/firestore";
 import { firestore } from "../../../../../../data/FirebaseConfig";
 
 //Service
@@ -44,12 +47,15 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     
   //Constants
   const screen_width = Dimensions.get("screen").width;
+  const switch_icon = <AntDesign name={"picture"} style={{fontSize: 20, color: "white"}}/>
 
   //State
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [showProfilePicture, setShowProfilePicture] = useState(false);
   const [friendConfig, setFriendConfig] = useState();
+  const [showMap, setShowMap] = useState(false);
+  const [mapType, setMapType] = useState("standard");
 
   //Refs
   const pan = useRef(new Animated.Value(0)).current;
@@ -61,7 +67,6 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
   useEffect(() => {
       getFriendConfig();
-      slideCounters();
   },[user]);
 
   useEffect(() => {
@@ -81,6 +86,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     const config = await downloadUser(user.id, true);
     setFriendConfig(config);
     setLoading(false);
+    slideCounters();
   }
 
   const slideCounters = () => {
@@ -109,7 +115,6 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
       duration: 300,
       useNativeDriver: true,
     }).start();
-    setLoading(false);
   }
 
   const slide = () => {
@@ -253,6 +258,60 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     }
  });
 
+  const toggleMapType = () => {
+    mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
+  }
+
+ const mapModalContent = <>
+ <View style={{height: "100%", width: "100%", position: "absolute", top: 0, zIndex: 1000000}}>
+
+ <View style={{bottom: responsiveHeight(10), position: "absolute", width: "100%", flexDirection: "column"}}>
+    <View style={{zIndex: 10000, alignSelf: "center"}}>
+    <IconButton icon={switch_icon} onPress={toggleMapType}/>
+    </View>
+    <View style={{height: responsiveHeight(2.5)}}></View>
+    <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => setShowMap(false)} fontColor={"white"}/>
+ </View>
+
+ <MapView
+   provider={PROVIDER_GOOGLE}
+   initialRegion={{
+       longitude: user.last_entry_longitude,
+       latitude: user.last_entry_latitude,
+       longitudeDelta: 0.02,
+       latitudeDelta: 0.02
+   }}
+   style={styles.map}
+   customMapStyle={mapStyle}
+   showsUserLocation={true}
+   followsUserLocation={true}
+   showsCompass={false}
+   showsTraffic={false}
+   showsIndoors={true}
+   mapType={mapType}
+   pitchEnabled={true}
+   showsMyLocationButton={false}
+   >
+     <><Marker
+         tracksViewChanges={false}
+         key={uuidv4()}
+         coordinate={{
+             latitude: user.last_entry_latitude,
+             longitude: user.last_entry_longitude,
+         }}
+         >
+           <CustomMarker
+               photoUrl={user.photoUrl}
+               username={user.username}
+               type={user.last_entry_type}
+               timestamp={user.last_entry_timestamp}
+           />
+         </Marker>
+       </>
+   </MapView> 
+ </View>
+ </>;
+
   return (
     <>
       {user ? (
@@ -264,6 +323,10 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
       <Modal animationType="fade" visible={showProfilePicture}>
         <ProfileImagePanel url={user.photoUrl} onExit={() => setShowProfilePicture(false)}/>
       </Modal>
+
+
+        {/** FRIEND MAP MODAL */}
+        <CustomModal show={showMap} child={mapModalContent}/>
 
           <Modal
             animationType="fade"
@@ -341,7 +404,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
               justifyContent: "center"
             }}
           >
-            <View style={{position: "absolute", zIndex: 20, left: 15, top: responsiveHeight(1)}}>
+            <View style={{position: "absolute", zIndex: 20, left: 15}}>
               <BackButton onPress={() => {onExit(); hide();}} />
             </View>
 
@@ -349,15 +412,8 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
               <View style={{justifyContent: "center", alignItems: "center"}}>
                 <Animated.Text style={[styles.username,{opacity: opacityAnim}]}>{!loading ? user.username : " "}</Animated.Text>
-                <View style={{height: responsiveHeight(0)}}></View>
-                <Animated.Text style={[styles.member_since,{opacity: opacityAnim}]}>
-                  {!loading ? <Text style={styles.email}>{user.email}</Text> : " "}
-                  
-                </Animated.Text>
-                <View style={{height: responsiveHeight(0)}}></View>
               </View>
             </View>
-            <View style={{height: responsiveHeight(1)}}></View>
           </View> 
 
           <View style={{height: responsiveHeight(2.5)}}></View>
@@ -442,9 +498,11 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
                 <View style={[styles.activity_container,{flexDirection: "column", overflow: "hidden"}]}>
                 
+                {!loading ? <>
                 <View style={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15, overflow: "hidden"}}>
 
                   <View style={{width: "100%", height: "40%", position: "absolute", zIndex: 2, top: 0, flexDirection: "row", padding: responsiveFontSize(2)}}>
+                    {friendConfig.shareLastEntry ? <>
                     <View style={{flex: 1, alignItems: "center"}}>
                       <TypeImage type={user.last_entry_type} x={40}/>
                     </View>
@@ -455,24 +513,30 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                       <View style={{flex: 1}}>
                         <Text style={styles.date}>{chopTimeStamp(user.last_entry_timestamp)}</Text>
                       </View>
-                    </View>
+                    </View></> : <MaterialIcons name="lock" style={styles.lock_icon}/> }
                   </View>
 
-                  <LinearGradient style={{width: "100%", height: "70%", position: "absolute", zIndex: 1, top: 0}} colors={["rgba(0,0,0,0.9)","rgba(0,0,0,0)"]}>
-                    
+                  <LinearGradient style={{width: "100%", height: friendConfig.shareGPS ? "70%" : "100%", position: "absolute", zIndex: 1, top: 0, justifyContent: "center"}} colors={["rgba(0,0,0,0.9)","rgba(0,0,0,0)"]}>
+                    {!friendConfig.shareGPS ? <MaterialIcons name="lock" style={styles.lock_icon}/> : null}
                   </LinearGradient>
 
                   <MapView 
                     style={{height: 200, width: "100%", zIndex: -1}}
                     customMapStyle={mapStyle}
                     scrollEnabled={false}
-                    region={{
+                    region={friendConfig.shareGPS ? {
                       latitude: user.last_entry_latitude + responsiveFontSize(0.005),
                       longitude: user.last_entry_longitude,
                       longitudeDelta: 0.1,
                       latitudeDelta: 0.1
+                    } : {
+                      latitude: 50.228293,
+                      longitude:  10.812738,
+                      longitudeDelta: 1000,
+                      latitudeDelta: 1000
                     }}
-                  >
+                    loadingBackgroundColor={"#1E2132"}
+                  >  
                   <Marker
                     tracksViewChanges={false}
                     key={uuidv4()}
@@ -488,10 +552,11 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                   </Marker>
                   </MapView>
                 </View>
+                </> : <CustomLoader x={responsiveFontSize(4)} color={"#0080FF"}/>}
                 </View>
                 </View>
                 <View style={{height: responsiveHeight(2.5)}}></View>
-                <Button title={"Auf Karte zeigen"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+                <Button title={"Auf Karte zeigen"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => setShowMap(true)}/>
               </View>
 
               <View style={{height: responsiveHeight(2.5)}}></View>
@@ -742,5 +807,11 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2.5),
     textAlign: "center",
     marginBottom: 10
-  }
+  },
+  map: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    backgroundColor: "#171717",
+  },
 });

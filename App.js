@@ -33,6 +33,9 @@ import Login from './src/components/Login/Login'
 import Home from './src/components/Home/Home'
 import { useBackHandler } from "@react-native-community/hooks";
 
+//Third Party
+import { ModalPortal } from 'react-native-modals';
+
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and will be removed in a future release.']);
 
 export default function App() {
@@ -592,6 +595,8 @@ const deleteAccount = async () => {
                   handleIntroFinish={handleIntroFinish}
                   handleAuthenticatorSelect={handleAuthenticatorSelect}
                 />
+
+               <ModalPortal />
                   
               </FriendListContext.Provider>
               </UserContext.Provider>
