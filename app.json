@@ -2,19 +2,12 @@
   "expo": {
     "name": "WeedStats",
     "slug": "WeedStats",
-    /* "originalFullName": "@royalcaster/WeedStats",
-    "currentFullName": "@royalcaster/WeedStats", */
+    "originalFullName": "@royalcaster/WeedStats",
+    "currentFullName": "@royalcaster/WeedStats",
     "scheme": "com.royalcaster.WeedStats_build_test",
-    "version": "32.0.0",
+    "version": "38.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "androidNavigationBar": {
-      "backgroundColor": "#1E2132"
-    },
-    "androidStatusBar": {
-      "barStyle": "light-content"
-    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -34,12 +27,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 32,
+      "versionCode": 38,
       "package": "com.royalcaster.WeedStats_build_test",
-      "userInterfaceStyle": "light",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyA5eCXRvrvJMPoF-6npMAWdfR2UNamw7go"
+          "apiKey": "AIzaSyB5qQ0ApePizK0VrhpKrNlTLmn4aLgEU6o"
         }
       }
       

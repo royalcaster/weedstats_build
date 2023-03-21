@@ -58,7 +58,7 @@ const Main = ({ onSetUser }) => {
   const [writeComplete, setWriteComplete] = useState(false);
 
   useEffect(() => {
-    !showCounterModal ? toggleBorderColor("#1E2132") : null;
+    !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
   },[showCounterModal]);
 
   useEffect(() => {
@@ -213,10 +213,15 @@ const Main = ({ onSetUser }) => {
     tutorialSeen();
   }
 
-  const toggleBorderColor = ( color ) => {
+  const toggleBorderColor = ( color, color2 ) => {
     setBorderColor(color);
     StatusBar.setBackgroundColor(color);
-    NavigationBar.setBackgroundColorAsync(color);
+    if (color2) {
+      NavigationBar.setBackgroundColorAsync(color2);
+    }
+    else {
+      NavigationBar.setBackgroundColorAsync(color);
+    }
   }
 
   //erhöht den Counter für den jeweiligen Typ unter Berücksichtigung der momentanen Config

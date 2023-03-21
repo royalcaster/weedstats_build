@@ -437,7 +437,7 @@ const Map = ({ getFriendList }) => {
               <View style={styles.touchable2}>
                 <View>
                   {friendList.length != 0 ? friendList.map((friend) => {
-                    return <View style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View>
+                    return <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View>
                   }) : null}
                 </View>
                 <LinearGradient colors={["rgba(0,0,0,0)","#1E2132"]} style={{width: 70, height: "50%", position: "absolute", bottom: 0}}/>

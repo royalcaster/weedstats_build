@@ -1,13 +1,12 @@
 //React
 import React, { useState, useEffect } from "react";
-import { View, Modal, Vibration, StatusBar, LogBox, Text } from 'react-native'
+import { View, StatusBar, LogBox } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Service
 import { UserContext } from "./src/data/UserContext";
 import { LanguageContext } from "./src/data/LanguageContext";
 import Languages from './src/data/languages.json'
-import Intro from "./src/components/common/Intro";
 import { FriendListContext } from "./src/data/FriendListContext";
 import { ConfigContext } from "./src/data/ConfigContext";
 import { app, firestore } from './src/data/FirebaseConfig'
@@ -15,26 +14,17 @@ import { doc, getDoc, updateDoc, deleteDoc, setDoc } from "@firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
 import { createUsernameArray, downloadUser } from "./src/data/Service";
 
-//Data
-import sayings from './src/data/Sayings'
-
 //Expo
 import { useFonts } from "expo-font";
-import * as Location from "expo-location";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen'
 
 //Custom Components
-import CounterModal from './src/components/common/CounterModal'
 import Splash from './src/components/Splash/Splash'
-import Authenticator from "./src/components/common/Authenticator";
 import CustomLoader from "./src/components/common/CustomLoader";
 import Login from './src/components/Login/Login'
 import Home from './src/components/Home/Home'
 import { useBackHandler } from "@react-native-community/hooks";
-
-//Third Party
-import { ModalPortal } from 'react-native-modals';
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and will be removed in a future release.']);
 
@@ -64,6 +54,9 @@ export default function App() {
 
   useEffect(() => {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+    StatusBar.setTranslucent(true);
+    StatusBar.setHidden(false);
+    StatusBar.setBarStyle("light-content")
     NavigationBar.setBackgroundColorAsync("#1E2132");
     checkForUser();
   },[]);
@@ -509,8 +502,6 @@ const deleteAccount = async () => {
                   handleAuthenticatorSelect={handleAuthenticatorSelect}
                   onSetUser={(user) => setUser(user)}
                 />
-
-               <ModalPortal />
                   
               </FriendListContext.Provider>
               </UserContext.Provider>
