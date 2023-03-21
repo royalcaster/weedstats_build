@@ -411,7 +411,8 @@ export default function App() {
 
   //behandelt Auswahl des Nutzers, ob lokale Authentifizierung benutzt werden soll
   const handleAuthenticatorSelect = async ( bool ) => {
-    /* await AsyncStorage.setItem("settings", JSON.stringify({...config, localAuthenticationRequired: bool})); */
+    const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
+    await AsyncStorage.setItem("accessToken", JSON.stringify({...config, localAuthenticationRequired: bool}));
     updateDoc(doc(firestore, "users", user.id),{
       config: {
         localAuthenticationRequired: bool
@@ -447,28 +448,6 @@ const deleteAccount = async () => {
   // Firestore-Doc löschen
   const docRef = doc(firestore, "users", user.id);
   await deleteDoc(docRef);
-  
-  // AsyncStorage-Daten löschen
-  /* try {
-    await AsyncStorage.clear();
-    setConfig({
-      showJoint: true,
-      showBong: true,
-      showVape: true,
-      showPipe: true,
-      showCookie: true,
-      shareMainCounter: false,
-      shareTypeCounters: false,
-      shareLastEntry: false,
-      saveGPS: false,
-      shareGPS: false,
-      localAuthenticationRequired: false,
-      language: "en",
-      first: true
-    });
-  } catch (e) {
-    console.log("Fehler beim Löschen des AsyncStorage.", e);
-  } */
   setLoading(false);
 };
 
