@@ -21,7 +21,7 @@ const SearchPanelButton = () => {
         {showAddFriend ? <SearchPanel onExit={() => setShowAddFriend(false)}/> : null}
 
         <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.1)", true)}
+        background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.0)", false)}
         onPress={() => setShowAddFriend(true)}
         >
         <View style={[styles.touchable, { height: 50, backgroundColor: "#1E2132", width: 50 }]}>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: responsiveFontSize(2.3),
         marginLeft: 10,
-        marginRight: 10,
+        marginRight: 20,
         marginBottom: 10
     },
 });

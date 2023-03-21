@@ -34,6 +34,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 
 import IconButton from "./IconButton";
 import Button from "./Button";
+import CustomModal from "./common/CustomModal";
 
 const StatsHistory = ({ user, history }) => {
   const [loaded] = useFonts({
@@ -71,59 +72,59 @@ const StatsHistory = ({ user, history }) => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
   }
 
+  const mapModalContent = <>
+  <View style={{position: "absolute", zIndex: 20, bottom: 70, width: "60%", alignSelf: "center"}}>
+    <View style={{alignSelf: "center"}}>
+      <IconButton icon={switch_icon} onPress={toggleMapType}/>
+    </View>
+    <View style={{height: 20}}></View>
+    <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => {setShowMap(false); setActiveEvent(null)}} fontColor={"white"}/>
+  </View>
+
+<MapView
+  provider={PROVIDER_GOOGLE}
+  initialRegion={{
+    longitude: activeEvent.longitude,
+    latitude: activeEvent.latitude,
+    longitudeDelta: 0.25,
+    latitudeDelta: 0.25
+  }}
+  style={styles.map}
+  customMapStyle={mapStyle}
+  showsUserLocation={true}
+  followsUserLocation={true}
+  showsCompass={false}
+  showsTraffic={false}
+  showsIndoors={true}
+  mapType={mapType}
+  pitchEnabled={true}
+  showsMyLocationButton={false}
+>
+    <>
+        <Marker
+          tracksViewChanges={false}
+          key={uuid.v4()}
+          coordinate={{
+            latitude: activeEvent.latitude,
+            longitude: activeEvent.longitude,
+          }}
+        >
+          <CustomMarker
+            photoUrl={user.photoUrl}
+            username={user.uername}
+            type={activeEvent.type}
+            timestamp={activeEvent.timestamp}
+          />
+        </Marker>
+    </>
+
+</MapView>
+</>;
+
   return (
     <>
-      {showMap ?
-        <Modal style={{height: 300, backgroundColor: "green"}}>
-
-              <View style={{position: "absolute", zIndex: 20, bottom: 70, width: "60%", alignSelf: "center"}}>
-                <View style={{alignSelf: "center"}}>
-                  <IconButton icon={switch_icon} onPress={toggleMapType}/>
-                </View>
-                <View style={{height: 20}}></View>
-                <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => {setShowMap(false); setActiveEvent(null)}} fontColor={"white"}/>
-              </View>
-
-        <MapView
-              provider={PROVIDER_GOOGLE}
-              initialRegion={{
-                longitude: activeEvent.longitude,
-                latitude: activeEvent.latitude,
-                longitudeDelta: 0.25,
-                latitudeDelta: 0.25
-              }}
-              style={styles.map}
-              customMapStyle={mapStyle}
-              showsUserLocation={true}
-              followsUserLocation={true}
-              showsCompass={false}
-              showsTraffic={false}
-              showsIndoors={true}
-              mapType={mapType}
-              pitchEnabled={true}
-              showsMyLocationButton={false}
-            >
-                <>
-                    <Marker
-                      tracksViewChanges={false}
-                      key={uuid.v4()}
-                      coordinate={{
-                        latitude: activeEvent.latitude,
-                        longitude: activeEvent.longitude,
-                      }}
-                    >
-                      <CustomMarker
-                        photoUrl={user.photoUrl}
-                        username={user.uername}
-                        type={activeEvent.type}
-                        timestamp={activeEvent.timestamp}
-                      />
-                    </Marker>
-                </>
-
-            </MapView>
-        </Modal>
-      : null}
+      
+      <CustomModal show={showMap} child={mapModalContent}/>
 
       <FlatList
         data={history.slice().reverse()}

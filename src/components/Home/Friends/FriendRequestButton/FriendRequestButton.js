@@ -24,8 +24,8 @@ const FriendRequestButton = ({ refreshUser, getFriendList }) => {
 
         <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple(
-            "rgba(255,255,255,0.1)",
-            true
+            "rgba(255,255,255,0.0)",
+            false
             )} onPress={() => setShowRequests(true)}
         >
             <View

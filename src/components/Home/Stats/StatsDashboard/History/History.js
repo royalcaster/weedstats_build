@@ -22,6 +22,7 @@ import { mapStyle } from "../../../../../data/CustomMapStyle";
 //Service
 import { LanguageContext } from "../../../../../data/LanguageContext";
 import { UserContext } from "../../../../../data/UserContext";
+import CustomModal from "../../../../common/CustomModal";
 
 const History = ({ show, onExit, history}) => {
     
@@ -81,63 +82,62 @@ const History = ({ show, onExit, history}) => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
   }
 
+  const mapModalContent =  <>
+    <View style={{position: "absolute", zIndex: 20, bottom: 70, width: "60%", alignSelf: "center"}}>
+      <View style={{alignSelf: "center"}}>
+        <IconButton icon={switch_icon} onPress={toggleMapType}/>
+      </View>
+      <View style={{height: 20}}></View>
+      <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => {setShowMap(false); setActiveEvent(null)}} fontColor={"white"}/>
+    </View>
+{showMap ? 
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      initialRegion={{
+        longitude: activeEvent.longitude,
+        latitude: activeEvent.latitude,
+        longitudeDelta: 0.25,
+        latitudeDelta: 0.25
+      }}
+      style={styles.map}
+      customMapStyle={mapStyle}
+      showsUserLocation={true}
+      followsUserLocation={true}
+      showsCompass={false}
+      showsTraffic={false}
+      showsIndoors={true}
+      mapType={mapType}
+      pitchEnabled={true}
+      showsMyLocationButton={false}
+    >
+        <>
+            <Marker
+              tracksViewChanges={false}
+              key={uuid.v4()}
+              coordinate={{
+                latitude: activeEvent.latitude,
+                longitude: activeEvent.longitude,
+              }}
+            >
+              <CustomMarker
+                photoUrl={user.photoUrl}
+                type={activeEvent.type}
+              />
+            </Marker>
+        </>
+
+    </MapView>: null}
+  </>;
+
   return (
     <>
         <Animated.View style={[styles.container, { transform: [{ translateX: pan }], height: Dimensions.get("window").height }]}>
 
           <View style={{height: 50}}></View>
 
-          <View style={{flexDirection: "column", flex: 1}}>  
+          <View style={{flexDirection: "column", height: Dimensions.get("screen").height, top: 0, position: "absolute"}}>  
 
-          {showMap ?
-        <Modal style={{height: 300, backgroundColor: "green"}}>
-
-              <View style={{position: "absolute", zIndex: 20, bottom: 70, width: "60%", alignSelf: "center"}}>
-                <View style={{alignSelf: "center"}}>
-                  <IconButton icon={switch_icon} onPress={toggleMapType}/>
-                </View>
-                <View style={{height: 20}}></View>
-                <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => {setShowMap(false); setActiveEvent(null)}} fontColor={"white"}/>
-              </View>
-
-        <MapView
-              provider={PROVIDER_GOOGLE}
-              initialRegion={{
-                longitude: activeEvent.longitude,
-                latitude: activeEvent.latitude,
-                longitudeDelta: 0.25,
-                latitudeDelta: 0.25
-              }}
-              style={styles.map}
-              customMapStyle={mapStyle}
-              showsUserLocation={true}
-              followsUserLocation={true}
-              showsCompass={false}
-              showsTraffic={false}
-              showsIndoors={true}
-              mapType={mapType}
-              pitchEnabled={true}
-              showsMyLocationButton={false}
-            >
-                <>
-                    <Marker
-                      tracksViewChanges={false}
-                      key={uuid.v4()}
-                      coordinate={{
-                        latitude: activeEvent.latitude,
-                        longitude: activeEvent.longitude,
-                      }}
-                    >
-                      <CustomMarker
-                        photoUrl={user.photoUrl}
-                        type={activeEvent.type}
-                      />
-                    </Marker>
-                </>
-
-            </MapView>
-        </Modal>
-      : null}
+          <CustomModal show={showMap} child={mapModalContent}/>
 
       <View style={{height: 60, alignItems: "center", flexDirection: "row"}}>
           <View style={{position: "absolute", zIndex: 2000, left: 15, top: responsiveHeight(0.2)}}>
