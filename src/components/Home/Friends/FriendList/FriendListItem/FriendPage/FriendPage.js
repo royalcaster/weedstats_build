@@ -312,6 +312,47 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
  </View>
  </>;
 
+ const deleteFriendModalContent = <View
+ style={{
+   flex: 1,
+   alignItems: "center",
+   justifyContent: "center",
+   backgroundColor: "rgba(0,0,0,0.5)",
+ }}
+>
+ <View style={styles.modal_container}>
+   <>
+     <View style={{ flex: 1, justifyContent: "center" }}>
+       {config.language == "de" ? <Text style={styles.heading}>
+         <Text style={{color: "#0080FF"}}>{user.username}</Text> {language.remove_friend}
+       </Text> : <Text style={styles.heading}>
+       {language.remove_friend} <Text style={{color: "#0080FF"}}>{user.username}</Text> ?         
+       </Text>}
+     </View>
+     <View style={{ flex: 1, flexDirection: "row" }}>
+       <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+         }}
+       >
+         <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+       </View>
+       <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+         }}
+       >
+         <Button title={"Entfernen"} onPress={() => setModalVisible(false)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+       </View>
+     </View>
+   </>
+ </View>
+</View>;
+
   return (
     <>
       {user ? (
@@ -325,60 +366,13 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
       </Modal>
 
 
-        {/** FRIEND MAP MODAL */}
+        {/** friend map modal */}
         <CustomModal show={showMap} child={mapModalContent}/>
 
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            >
-              <View style={styles.modal_container}>
-                <>
-                  <View style={{ flex: 1, justifyContent: "center" }}>
-                    {config.language == "de" ? <Text style={styles.heading}>
-                      <Text style={{color: "#0080FF"}}>{user.username}</Text> {language.remove_friend}
-                    </Text> : <Text style={styles.heading}>
-                    {language.remove_friend} <Text style={{color: "#0080FF"}}>{user.username}</Text> ?         
-                    </Text>}
-                  </View>
-                  <View style={{ flex: 1, flexDirection: "row" }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Button title={"Entfernen"} onPress={() => setModalVisible(false)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
-                    </View>
-                  </View>
-                </>
-              </View>
-            </View>
-          </Modal>
+        {/** delete friend modal */}
+        <CustomModal show={modalVisible} child={deleteFriendModalContent}/>
 
-        { //hier beginnt Sichtbarer Komponent
+        { //here begins visible component
         }
 
         <View style={{flex: 1}}>
@@ -398,7 +392,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
           <View
             style={{
               zIndex: 6,
-              marginTop: 0,
+              marginTop: 10,
               position: "relative",
               width: "100%",
               justifyContent: "center"

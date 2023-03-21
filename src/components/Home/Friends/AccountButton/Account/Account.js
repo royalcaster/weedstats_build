@@ -11,6 +11,7 @@ import ProfileImage from "../../../../common/ProfileImage";
 import Button from "../../../../common/Button";
 import BackButton from "../../../../common/BackButton";
 import AppInfo from "./AppInfo/AppInfo";
+import CustomModal from "../../../../common/CustomModal";
 
 //Tools
 import { convertMemberSince } from "../../../../../data/DateConversion";
@@ -98,6 +99,63 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
     }
  });
 
+ const logOutModalContent = <View
+ style={{
+   alignItems: "center",
+   justifyContent: "center",
+   backgroundColor: "rgba(0,0,0,0.5)",
+   flex: 1
+ }}
+>
+ <View
+   style={{
+     width: "90%",
+     height: 300,
+     backgroundColor: "#1E2132",
+     alignSelf: "center",
+     borderRadius: 25,
+   }}
+ >
+   <View style={{ flex: 1 }}>
+     <Text
+       style={[
+         styles.heading,
+         {
+           marginLeft: 0,
+           textAlign: "center",
+           height: "100%",
+           textAlignVertical: "center",
+           fontSize: responsiveFontSize(3.5),
+           fontFamily: "PoppinsMedium"
+         },
+       ]}
+     >
+       {language.signout_title}
+     </Text>
+   </View>
+   <View style={{ flex: 1, flexDirection: "row" }}>
+     <View
+       style={{
+         flex: 1,
+         justifyContent: "center",
+         alignItems: "center",
+       }}
+     >
+       <Button title={language.account_delete_account_cancel} onPress={() => setShowLogOut(false)} color={"#484F78"} fontColor={"white"}/>
+     </View>
+     <View
+       style={{
+         flex: 1,
+         justifyContent: "center",
+         alignItems: "center",
+       }}
+     >
+       <Button title={language.account_sign_out} onPress={() => handleLogOut()} color={"#eb4034"} fontColor={"white"}/>
+     </View>
+   </View>
+ </View>
+</View>;
+
   return (
     <Animated.View
       style={[
@@ -117,64 +175,8 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
       {showAppInfo ? <AppInfo show={showAppInfo} onExit={() => setShowAppInfo(false)}/> : null}
       {showProfileEditor ? <ProfileEditor onExit={() => {toggleNavbar(1); setShowProfileEditor(false)}} refreshUser={refreshUser}/> : null} 
 
-      <Modal animationType="fade" transparent={true} visible={showLogOut}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            flex: 1
-          }}
-        >
-          <View
-            style={{
-              width: "90%",
-              height: 300,
-              backgroundColor: "#1E2132",
-              alignSelf: "center",
-              borderRadius: 25,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Text
-                style={[
-                  styles.heading,
-                  {
-                    marginLeft: 0,
-                    textAlign: "center",
-                    height: "100%",
-                    textAlignVertical: "center",
-                    fontSize: responsiveFontSize(3.5),
-                    fontFamily: "PoppinsMedium"
-                  },
-                ]}
-              >
-                {language.signout_title}
-              </Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button title={language.account_delete_account_cancel} onPress={() => setShowLogOut(false)} color={"#484F78"} fontColor={"white"}/>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button title={language.account_sign_out} onPress={() => handleLogOut()} color={"#eb4034"} fontColor={"white"}/>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/** delete friend modal */}
+      <CustomModal show={showLogOut} child={logOutModalContent}/>
 
 
       <View

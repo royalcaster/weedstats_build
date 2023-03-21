@@ -62,8 +62,12 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) =>
 
   const storeSettings = async () => {
     try {
-      /* const jsonValue = JSON.stringify(localConfig);
-      await AsyncStorage.setItem("settings", jsonValue); */
+      const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
+      await AsyncStorage.setItem("accessToken", JSON.stringify({
+        email: accessToken.email,
+        password: accessToken.password,
+        localAuthenticationRequired: localConfig.localAuthenticationRequired  
+      }));
       toggleLanguage(localConfig.language);
       refreshUser({
         config: localConfig

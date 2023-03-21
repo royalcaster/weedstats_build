@@ -25,6 +25,7 @@ import CustomLoader from "./src/components/common/CustomLoader";
 import Login from './src/components/Login/Login'
 import Home from './src/components/Home/Home'
 import { useBackHandler } from "@react-native-community/hooks";
+import Authenticator from "./src/components/common/Authenticator";
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and will be removed in a future release.']);
 
@@ -39,6 +40,7 @@ export default function App() {
    const [wrongPassword, setWrongPassword] = useState(false);
    const [emailInUse, setEmailInUse] = useState(false);
    const [userNotFound, setUserNotFound] = useState(false);
+   const [localAuthenticationRequired, setLocalAuthenticationRequired] = useState(true);
  
    //States für Daten
    const [config, setConfig] = useState(null);
@@ -188,11 +190,15 @@ export default function App() {
     .then(async (userCredential) => {
       // Signed in 
       const result = userCredential.user;
-      const docSnap = await getDoc(doc(firestore, "users", result.uid));
+      //Async Storage handling
+      const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
       await AsyncStorage.setItem("accessToken", JSON.stringify({
         email: email,
-        password: password
+        password: password,
+        localAuthenticationRequired: accessToken.localAuthenticationRequired
       }));
+      setLocalAuthenticationRequired(accessToken.localAuthenticationRequired);
+      const docSnap = await getDoc(doc(firestore, "users", result.uid));
       if (docSnap.exists()) {
         setUser({
           username: docSnap.data().username,
@@ -263,6 +269,11 @@ export default function App() {
     createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const result = userCredential.user;
+      await AsyncStorage.setItem("accessToken", JSON.stringify({
+        email: email,
+        password: password,
+        localAuthenticationRequired: false
+      }));
       await setDoc(doc(firestore, "users", result.uid), {
         username: username,
         id: result.uid,
@@ -465,25 +476,30 @@ const deleteAccount = async () => {
           : 
             <>
               {user ? 
-              <UserContext.Provider value={user}>
-              <FriendListContext.Provider value={friendList}>
+              <>
+                {(localAuthenticationRequired && !unlocked) ? 
+                <Authenticator first={false} onSubmit={() => setUnlocked(true)} onCancel={() => setUnlocked(false)} onExit={() => null} />
+                : 
+                <UserContext.Provider value={user}>
+                <FriendListContext.Provider value={friendList}>
 
-                <Home
-                  friendList={friendList}
-                  handleLogOut={handleLogOut}
-                  toggleLanguage={toggleLanguage}
-                  deleteAccount={deleteAccount}
-                  getFriendList={getFriendList}
-                  loadSettings={loadSettings}
-                  onSetBorderColor={color => setBorderColor(color)}
-                  refreshUser={refreshUser}
-                  handleIntroFinish={handleIntroFinish}
-                  handleAuthenticatorSelect={handleAuthenticatorSelect}
-                  onSetUser={(user) => setUser(user)}
-                />
-                  
-              </FriendListContext.Provider>
-              </UserContext.Provider>
+                  <Home
+                    friendList={friendList}
+                    handleLogOut={handleLogOut}
+                    toggleLanguage={toggleLanguage}
+                    deleteAccount={deleteAccount}
+                    getFriendList={getFriendList}
+                    loadSettings={loadSettings}
+                    onSetBorderColor={color => setBorderColor(color)}
+                    refreshUser={refreshUser}
+                    handleIntroFinish={handleIntroFinish}
+                    handleAuthenticatorSelect={handleAuthenticatorSelect}
+                    onSetUser={(user) => setUser(user)}
+                  />
+                    
+                </FriendListContext.Provider>
+                </UserContext.Provider>}
+              </>
               : 
               <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>}
             </>

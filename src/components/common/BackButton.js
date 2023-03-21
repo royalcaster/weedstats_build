@@ -8,7 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 const BackButton = ({onPress}) => {
     return (
         <Animated.View style={styles.container}>
-            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={onPress}>
+            <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0)", true)} onPress={onPress}>
                 <View style={styles.touchable}>
                     <MaterialIcons name="arrow-back" style={styles.icon_back}/>
                 </View>
