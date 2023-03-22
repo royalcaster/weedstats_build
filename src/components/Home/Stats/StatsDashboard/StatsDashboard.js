@@ -26,6 +26,7 @@ import StreakPanel from "./StreakPanel/StreakPanel";
 import BreakPanel from "./BreakPanel/BreakPanel";
 import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
+import SelectorBar from "../../../common/SelectorBar";
 
 const StatsDashboard = ({ localData }) => {
 
@@ -154,19 +155,9 @@ const StatsDashboard = ({ localData }) => {
         
 
         <View style={{ width: "90%"}}>
-          <SwitchSelector
-            options={options_type}
-            initial={0}
-            onPress={(value) => toggleSelection(value)}
-            textColor={"white"}
-            backgroundColor={"#131520"}
-            selectedColor={"white"}
-            buttonColor={"#0080FF"}
-            textStyle={{ fontFamily: "PoppinsLight", fontSize: 12, height: "100%", width: "100%"}}
-            selectedTextStyle={{ fontFamily: "PoppinsBlack", fontSize: 12}}
-            style={{backgroundColor: "#131520", borderRadius: 10}}
-            selectedTextContainerStyle={{borderRadius: 10, backgroundColor: "#0080FF", height: "100%", width: "100%"}}
-          />
+          
+        <SelectorBar options={options_type} onPress={(value) => toggleSelection(value)} selectedType={selectedType}/>
+
         </View>
 
         <View style={{ height: 30 }}></View>
@@ -179,9 +170,7 @@ const StatsDashboard = ({ localData }) => {
           />
 
           <View style={{ height: responsiveHeight(2.5) }}></View>
-
-
-
+          
           <View
             style={{
               flexDirection: "row",
@@ -349,10 +338,7 @@ const StatsDashboard = ({ localData }) => {
 
           <View style={{ height: 30 }}></View>
 
-          <Text style={[styles.bold_heading,{alignSelf: "flex-start"}]}>{language.stats_graphs}</Text>
-          <View style={{ height: 10 }}></View>
-
-          <SwitchSelector
+          {/* <SwitchSelector
             options={options_time}
             initial={0}
             onPress={(value) => toggleSelection(value)}
@@ -364,14 +350,17 @@ const StatsDashboard = ({ localData }) => {
             selectedTextStyle={{ fontFamily: "PoppinsBlack", fontSize: 12}}
             style={{backgroundColor: "#131520", borderRadius: 10, width: "100%"}}
             selectedTextContainerStyle={{borderRadius: 10, backgroundColor: "#0080FF", height: "100%", width: "100%"}}
-          />
+          /> */}
+
+          <SelectorBar options={options_time} onPress={(value) => toggleSelection(value)} selectedType={selectedTime}/>
 
           <View style={{ height: 20 }}></View>
 
            <LineChart
             style={{
               marginVertical: 10,
-              borderRadius: 10
+              borderRadius: 10,
+              transform: [{translateX: -responsiveWidth(5)}]
             }}
             data={{
               labels: createLineChartData(
@@ -393,15 +382,15 @@ const StatsDashboard = ({ localData }) => {
                 },
               ],
             }}
-            width={Dimensions.get("window").width - 40} // from react-native
-            height={250}
+            width={Dimensions.get("window").width} // from react-native
+            height={350}
             yAxisInterval={1} // optional, defaults to 1
-            verticalLabelRotation={20}
+            verticalLabelRotation={Dimensions.get("screen").width < 300 ? 20 : 0}
             chartConfig={{
-              backgroundGradientFrom: "#131520",
-              backgroundGradientTo: "#131520",
+              backgroundGradientFrom: "#1E2132",
+              backgroundGradientTo: "#1E2132",
               decimalPlaces: 0, // optional, defaults to 2dp
-              color: () =>  {return "rgba(255,255,255,0.35)"},
+              color: () =>  {return "rgba(255,255,255,0.5)"},
               labelColor: () =>  {return "rgba(255,255,255,0.5)"},
               propsForLabels: {
                 fontSize: 8
@@ -418,8 +407,7 @@ const StatsDashboard = ({ localData }) => {
 
           <BarChart
             style={{
-              marginVertical: 10,
-              borderRadius: 10
+              marginVertical: 10
             }}
             data={{
               labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
@@ -437,8 +425,8 @@ const StatsDashboard = ({ localData }) => {
             width={Dimensions.get("window").width - 40}
             height={250}
             chartConfig={{
-              backgroundGradientFrom: "#131520",
-              backgroundGradientTo: "#131520",
+              backgroundGradientFrom: "#1E2132",
+              backgroundGradientTo: "#1E2132",
               decimalPlaces: 0, // optional, defaults to 2dp
               color: () =>  {return "rgba(255,255,255,0.35)"},
               labelColor: () =>  {return "rgba(255,255,255,0.5)"},
@@ -459,8 +447,8 @@ const StatsDashboard = ({ localData }) => {
                     selectedTime
                   ).length,
                   color: Levels[0].colors[0],
-                  legendFontColor: "#7F7F7F",
-                  legendFontSize: 15,
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
                 },
                 {
                   name: language.bong,
@@ -469,8 +457,8 @@ const StatsDashboard = ({ localData }) => {
                     selectedTime
                   ).length,
                   color: Levels[1].colors[0],
-                  legendFontColor: "#7F7F7F",
-                  legendFontSize: 15,
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
                 },
                 {
                   name: language.vape,
@@ -479,8 +467,8 @@ const StatsDashboard = ({ localData }) => {
                     selectedTime
                   ).length,
                   color: Levels[2].colors[0],
-                  legendFontColor: "#7F7F7F",
-                  legendFontSize: 15,
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
                 },
                 {
                   name: language.pipe,
@@ -489,8 +477,8 @@ const StatsDashboard = ({ localData }) => {
                     selectedTime
                   ).length,
                   color: Levels[3].colors[0],
-                  legendFontColor: "#7F7F7F",
-                  legendFontSize: 15,
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
                 },
                 {
                   name: language.cookie,
@@ -499,19 +487,20 @@ const StatsDashboard = ({ localData }) => {
                     selectedTime
                   ).length,
                   color: Levels[4].colors[0],
-                  legendFontColor: "#7F7F7F",
-                  legendFontSize: 15,
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
                 },
               ]}
               width={Dimensions.get("window").width - 40}
               height={250}
-              backgroundColor={"#131520"}
+              backgroundColor={"#1E2132"}
               chartConfig={{
                 color: () =>  {return "rgba(255,255,255,0.35)"},
-                labelColor: () =>  {return "rgba(255,255,255,0.5)"},
+                labelColor: () =>  {return "rgba(255,255,255,0.5)"}
               }}
               accessor={"count"}
               paddingLeft={"15"}
+
             />
           ) : null}
         </View> 

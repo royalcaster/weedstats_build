@@ -305,6 +305,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                username={user.username}
                type={user.last_entry_type}
                timestamp={user.last_entry_timestamp}
+               withOutDate={true}
            />
          </Marker>
        </>
@@ -542,6 +543,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                       <CustomMarker
                         photoUrl={user.photoUrl}
                         type={user.last_entry_type}
+                        withOutDate={true}
                       />
                   </Marker>
                   </MapView>

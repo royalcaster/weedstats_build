@@ -41,7 +41,7 @@ const TypeImage = ({ type, backgroundColor, x }) => {
         case "cookie": 
         return (
         <View style={[styles.container, {backgroundColor: backgroundColor ? backgroundColor : null}]}>
-            <Image style={[styles.image,{height: x-10, width: x-15}]} source={require('../../data/img/cookie.png')}/>
+            <Image style={[styles.image,{height: x, width: x-2.5}]} source={require('../../data/img/cookie.png')}/>
         </View>
         )
         break;

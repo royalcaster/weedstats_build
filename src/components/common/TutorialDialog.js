@@ -49,7 +49,6 @@ const TutorialDialog = ({ onSubmit, onCancel }) => {
         <View style={{height: responsiveHeight(10)}}></View>
 
         <Button title={language.see_now} color={"#0080FF"} color2={"white"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.3)"} onPress={() => onSubmit()}/>
-        <Button title={language.later} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.15)"} onPress={() => hide()}/>
         <View style={{height: responsiveHeight(10)}}></View>
     </Animated.View>
     </>

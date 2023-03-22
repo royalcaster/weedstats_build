@@ -33,6 +33,7 @@ import LanguageSelector from "./LanguageSelector/LanguageSelector";
 import { LanguageContext } from "../../../data/LanguageContext";
 import { useBackHandler } from "@react-native-community/hooks";
 import { ConfigContext } from "../../../data/ConfigContext";
+import CustomModal from "../../common/CustomModal";
 
 const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) => {
 
@@ -61,6 +62,7 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) =>
   });
 
   const storeSettings = async () => {
+    console.log(localConfig);
     try {
       const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
       await AsyncStorage.setItem("accessToken", JSON.stringify({
@@ -92,130 +94,131 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) =>
     setLocalConfig({...localConfig, language: lang});
   }
 
+  const lightmodeModalContent = <View
+  style={{
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    flex: 1,
+    height: Dimensions.get("screen").height,
+    top: 0,
+    zIndex: 1000
+  }}
+>
+  <View style={{flex:1, justifyContent: "flex-start"}}></View>
+  <View
+    style={{
+      width: "90%",
+      backgroundColor: "#1E2132",
+      alignSelf: "center",
+      borderRadius: 25,
+      height: "50%"
+    }}
+  >
+    <View style={{ flex: 1 }}>
+      <Text
+        style={[
+          styles.heading,
+          {
+            marginLeft: 0,
+            textAlign: "center",
+            height: "100%",
+            textAlignVertical: "center",
+            fontSize: responsiveFontSize(3.5),
+          },
+        ]}
+      >
+        {language.config_modal_title}
+      </Text>
+    </View>
+    <View style={{ flex: 2 }}>
+      <Text style={[styles.text, { fontSize: responsiveFontSize(1.8) }]}>
+        {language.config_modal_text}
+      </Text>
+    </View>
+    <View style={{ flex: 1 }}>
+      <Button
+        title={language.config_modal_thanks}
+        color={"#484F78"}
+        borderradius={25}
+        fontColor={"white"}
+        onPress={() => setLightMode(false)}
+        hovercolor={"rgba(255,255,255,0.3)"}
+      />
+    </View>
+  </View>
+  <View style={{flex:1, justifyContent: "flex-end"}}></View>
+</View>;
+
+const deleteAccountModalContent = <View
+style={{
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: "rgba(0,0,0,0.5)",
+  flex: 1
+}}
+>
+<View
+  style={{
+    width: "90%",
+    height: 300,
+    backgroundColor: "#1E2132",
+    alignSelf: "center",
+    borderRadius: 25,
+  }}
+>
+  <View style={{ flex: 1 }}>
+    <Text
+      style={[
+        styles.heading,
+        {
+          marginLeft: 0,
+          textAlign: "center",
+          height: "100%",
+          textAlignVertical: "center",
+          fontSize: responsiveFontSize(3.5),
+          fontFamily: "PoppinsMedium"
+        },
+      ]}
+    >
+      {language.delete_account_title}
+    </Text>
+  </View>
+  <View style={{ flex: 1}}>
+    <Text style={[styles.text, { fontSize: responsiveFontSize(2), maxWidth: "80%", fontFamily: "PoppinsMedium"}]}>
+      {language.delete_account_text}
+    </Text>
+  </View>
+  <View style={{ flex: 1, flexDirection: "row" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Button title={language.account_delete_account_cancel} onPress={() => setShowDelete(false)} color={"#484F78"} fontColor={"white"}/>
+    </View>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Button title={language.account_delete_account_submit} onPress={() => deleteAccount()} color={"#eb4034"} fontColor={"white"}/>
+    </View>
+  </View>
+</View>
+</View>;
+
   return (
     <>
       <Animated.View style={[{ opacity: fadeAnim }, styles.container]}>
-        <Modal animationType="fade" transparent={true} visible={lightmode}>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(0,0,0,0.5)",
-              flex: 1,
-              height: Dimensions.get("screen").height,
-              top: 0,
-              zIndex: 1000
-            }}
-          >
-            <View style={{flex:1, justifyContent: "flex-start"}}></View>
-            <View
-              style={{
-                width: "90%",
-                backgroundColor: "#1E2132",
-                alignSelf: "center",
-                borderRadius: 25,
-                height: "50%"
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <Text
-                  style={[
-                    styles.heading,
-                    {
-                      marginLeft: 0,
-                      textAlign: "center",
-                      height: "100%",
-                      textAlignVertical: "center",
-                      fontSize: responsiveFontSize(3.5),
-                    },
-                  ]}
-                >
-                  {language.config_modal_title}
-                </Text>
-              </View>
-              <View style={{ flex: 2 }}>
-                <Text style={[styles.text, { fontSize: responsiveFontSize(1.8) }]}>
-                  {language.config_modal_text}
-                </Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Button
-                  title={language.config_modal_thanks}
-                  color={"#484F78"}
-                  borderradius={25}
-                  fontColor={"white"}
-                  onPress={() => setLightMode(false)}
-                  hovercolor={"rgba(255,255,255,0.3)"}
-                />
-              </View>
-            </View>
-            <View style={{flex:1, justifyContent: "flex-end"}}></View>
-          </View>
-        </Modal>
+        
+        <CustomModal show={lightmode} child={lightmodeModalContent}/>
 
-        <Modal animationType="fade" transparent={true} visible={showDelete}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            flex: 1
-          }}
-        >
-          <View
-            style={{
-              width: "90%",
-              height: 300,
-              backgroundColor: "#1E2132",
-              alignSelf: "center",
-              borderRadius: 25,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Text
-                style={[
-                  styles.heading,
-                  {
-                    marginLeft: 0,
-                    textAlign: "center",
-                    height: "100%",
-                    textAlignVertical: "center",
-                    fontSize: responsiveFontSize(3.5),
-                    fontFamily: "PoppinsMedium"
-                  },
-                ]}
-              >
-                {language.delete_account_title}
-              </Text>
-            </View>
-            <View style={{ flex: 1}}>
-              <Text style={[styles.text, { fontSize: responsiveFontSize(2), maxWidth: "80%", fontFamily: "PoppinsMedium"}]}>
-                {language.delete_account_text}
-              </Text>
-            </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button title={language.account_delete_account_cancel} onPress={() => setShowDelete(false)} color={"#484F78"} fontColor={"white"}/>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button title={language.account_delete_account_submit} onPress={() => deleteAccount()} color={"#eb4034"} fontColor={"white"}/>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        <CustomModal show={showDelete} child={deleteAccountModalContent} />
 
         {loading ? (
           <View

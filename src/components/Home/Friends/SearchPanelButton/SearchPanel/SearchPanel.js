@@ -21,6 +21,7 @@ import { UserContext } from "../../../../../data/UserContext";
 import { LanguageContext } from "../../../../../data/LanguageContext";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
 import { downloadUser } from "../../../../../data/Service";
+import CustomModal from "../../../../common/CustomModal";
 
 const SearchPanel = ({onExit}) => {
 
@@ -128,54 +129,46 @@ const SearchPanel = ({onExit}) => {
             }
         setModalVisible(false);
         }
-        
     }
+
+    const friendModalContent = <View style={{flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(0,0,0,0.5)"}}>
+    <View style={styles.modal_container}>
+        {!alreadySent ? <><View style={{flex: 1, justifyContent: "center", paddingHorizontal: 50}}>
+
+            {language.language_short == "de" ? 
+            <Text style={styles.heading}><Text style={[{color: "#0080FF"}]}>{activeRequested ? activeRequested.username : null}</Text> {language.searchpanel_question}</Text>
+            :
+            <Text style={styles.heading}>{language.searchpanel_question}<Text style={[{color: "#0080FF"}]}> {activeRequested ? activeRequested.username : null}</Text> ? </Text>
+            }
+
+            
+        </View>
+        <View style={{flex: 1, flexDirection: "row"}}>
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                
+                <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+            </View>
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                <Button title={"Senden"} onPress={() => makeFriendRequest(activeRequested.id)} color={"#00DB4D"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+            </View>
+        </View></> 
+        
+        : <View style={{flex: 1, justifyContent: "center"}}><Antdesign style={styles.info_icon} name="exclamationcircleo"/>
+            <View style={{height: 30}}></View>
+            <Text style={[styles.heading,{textAlign: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text>
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}> 
+                <Button title={"Ok"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+            </View>
+        </View>}
+    </View>
+</View>;
 
     return (
         <Animated.View style={[styles.container,{transform: [{translateY: slideAnim}]}]}>
             <View style={{height: 10}}></View>
-
-        <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-            <View style={{flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(0,0,0,0.5)"}}>
-                <View style={styles.modal_container}>
-                    {!alreadySent ? <><View style={{flex: 1, justifyContent: "center", paddingHorizontal: 50}}>
-
-                        {language.language_short == "de" ? 
-                        <Text style={styles.heading}><Text style={[{color: "#0080FF"}]}>{activeRequested ? activeRequested.username : null}</Text> {language.searchpanel_question}</Text>
-                        :
-                        <Text style={styles.heading}>{language.searchpanel_question}<Text style={[{color: "#0080FF"}]}> {activeRequested ? activeRequested.username : null}</Text> ? </Text>
-                        }
-
-                        
-                    </View>
-                    <View style={{flex: 1, flexDirection: "row"}}>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            
-                            <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
-                        </View>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            <Button title={"Senden"} onPress={() => makeFriendRequest(activeRequested.id)} color={"#00DB4D"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
-                        </View>
-                    </View></> 
-                    
-                    : <View style={{flex: 1, justifyContent: "center"}}><Antdesign style={styles.info_icon} name="exclamationcircleo"/>
-                        <View style={{height: 30}}></View>
-                        <Text style={[styles.heading,{textAlign: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}> 
-                            <Button title={"Ok"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
-                        </View>
-                    </View>}
-                </View>
-            </View>
-        </Modal>
-
                 
+            <CustomModal show={modalVisible} child={friendModalContent}/>
+
             <View
             style={{ width: "100%", flexDirection: "row"}}
             >

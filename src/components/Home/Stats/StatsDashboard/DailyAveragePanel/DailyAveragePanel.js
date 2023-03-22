@@ -7,12 +7,13 @@ import { LinearGradient } from "expo-linear-gradient";
 
 //Service
 import { LanguageContext } from "../../../../../data/LanguageContext";
+import { responsiveFontSize } from "react-native-responsive-dimensions";
 
 const DailyAveragePanel = ({selectedType, value}) => {
 
     const language = useContext(LanguageContext);
 
-    return (<LinearGradient colors={["#369bff","#0080FF","#004e9c"]} style={{borderRadius: 10, padding: 20, width: "100%"}}>
+    return (<View  style={{borderRadius: 10, padding: 20, width: "100%"}}>
     {selectedType === "main" ? (
       <Animated.View
         style={{width: "50%", alignSelf: "center"}}>
@@ -58,7 +59,7 @@ const DailyAveragePanel = ({selectedType, value}) => {
     </Text>
     </View>
 
-    </LinearGradient>)
+    </View>)
 }
 
 export default DailyAveragePanel
@@ -105,14 +106,14 @@ const styles = StyleSheet.create({
         opacity: 1,
       },
       time_tag: {
-        fontSize: 18,
+        fontSize: responsiveFontSize(2),
         color: "white",
         fontFamily: "PoppinsLight",
       },
       value: {
-        fontSize: 60,
+        fontSize: responsiveFontSize(5),
         color: "white",
         fontFamily: "PoppinsBlack",
-        marginBottom: -25
+        marginBottom: responsiveFontSize(-2)
       }
 });

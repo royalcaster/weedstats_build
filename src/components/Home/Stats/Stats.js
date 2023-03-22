@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect, useRef, useContext } from "react";
-import {StyleSheet, Animated, Easing} from "react-native";
+import {StyleSheet, Animated, Easing, View} from "react-native";
 import { UserContext } from "../../../data/UserContext";
 import { LanguageContext } from "../../../data/LanguageContext";
 
@@ -10,6 +10,7 @@ import CustomLoader from "../.././common/CustomLoader";
 
 //Service
 import { getLocalData } from "./../../../data/Service";
+import Empty from "../../common/Empty";
 
 const Stats = () => {
 
@@ -57,9 +58,17 @@ const Stats = () => {
 
   return (
     <Animated.View style={[{ opacity: 1 }, styles.container]}>
-      {localDataLoaded && localData.length != 0 ? (
-        <StatsDashboard localData={localData} />
-      ) : <CustomLoader x={50} color={"#484F78"}/>}
+
+      {
+        !localDataLoaded ? <CustomLoader x={50} color={"#0080FF"}/> : 
+        <>
+          {
+            localData.length == 0 ? <View style={{height: "20%"}}><CustomLoader x={50} color={"#0080FF"}/><Empty title={"Noch keine Aktivitäten"} tip={"Mache Einträge, um Statistiken zu sehen"}/></View>
+            : <StatsDashboard localData={localData} />
+          }
+        </>
+      }
+
     </Animated.View>
   );
 };

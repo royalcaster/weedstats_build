@@ -97,7 +97,7 @@ const Intro = ({ onExit }) => {
             }
             {
                 step == 3 ? <>
-                    <TutorialDialog onSubmit={() => {setShowTutorial(true), handleStep()}} onCancel={() => handleStep()}/>
+                    <TutorialDialog onSubmit={() => {setShowTutorial(true)}} onCancel={() => handleStep()}/>
                 </>
                 : null
             }

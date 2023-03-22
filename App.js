@@ -195,9 +195,9 @@ export default function App() {
       await AsyncStorage.setItem("accessToken", JSON.stringify({
         email: email,
         password: password,
-        localAuthenticationRequired: accessToken.localAuthenticationRequired
+        /* localAuthenticationRequired: accessToken.localAuthenticationRequired */
       }));
-      setLocalAuthenticationRequired(accessToken.localAuthenticationRequired);
+      /* setLocalAuthenticationRequired(accessToken.localAuthenticationRequired); */
       const docSnap = await getDoc(doc(firestore, "users", result.uid));
       if (docSnap.exists()) {
         setUser({
@@ -423,10 +423,27 @@ export default function App() {
   //behandelt Auswahl des Nutzers, ob lokale Authentifizierung benutzt werden soll
   const handleAuthenticatorSelect = async ( bool ) => {
     const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
-    await AsyncStorage.setItem("accessToken", JSON.stringify({...config, localAuthenticationRequired: bool}));
+    await AsyncStorage.setItem("accessToken", JSON.stringify({
+        email: accessToken.email,
+        password: accessToken.password,
+        localAuthenticationRequired: bool
+      }));
     updateDoc(doc(firestore, "users", user.id),{
       config: {
-        localAuthenticationRequired: bool
+        localAuthenticationRequired: bool,
+
+        first: false,
+        language: config.language,
+        saveGPS: config.saveGPS,
+        shareGPS: config.shareGPS,
+        shareLastEntry: config.shareLastEntry,
+        shareMainCounter: config.shareMainCounter,
+        shareTypeCounters: config.shareTypeCounters,
+        showBong: config.showBong,
+        showCookie: config.showCookie,
+        showJoint: config.showJoint,
+        showPipe: config.showPipe, 
+        showVape: config.showVape
       }
     });
 }

@@ -96,52 +96,6 @@ const Map = ({ getFriendList }) => {
     }
   },[view]);
 
-  /* const loadData = async () => {
-    try {
-      const docRef = doc(firestore, "users", user.id);
-      const docSnap = await getDoc(docRef);
-
-      var friends;
-      if (docSnap.exists()) {
-        friends = docSnap.data().friends;
-      }
-      
-      var buffer = [];
-      for (let i = 0; i<friendList.length; i++) {
-        const docRef = doc(firestore, "users", friendList[i]);
-        const friendSnap = await getDoc(docRef);
-
-        if (
-         
-          docSnap.exists() &&
-          friendSnap.data().last_entry_latitude != null &&
-          friendSnap.data().last_entry_longitude != null
-        ) {
-          buffer.push({
-            latitude: friendSnap.data().last_entry_latitude,
-            longitude: friendSnap.data().last_entry_longitude,
-            timestamp: friendSnap.data().last_entry_timestamp,
-            type: friendSnap.data().last_entry_type,
-            photoUrl: friendSnap.data().photoUrl,
-            username: friendSnap.data().username,
-          });
-          buffer.length == 1 ? setRegion({
-            latitude: friendSnap.data().last_entry_latitude,
-            longitude: friendSnap.data().last_entry_longitude,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-          }) : null;
-          
-        }
-      };
-      
-      setMarkers(buffer);
-      setLoading(false);
-    } catch (e) {
-      console.log("Load Data Error:", e);
-    }
-  }; */
-
   const fillMarkers = () => {
     setLoading(true);
     var buffer = [];
@@ -193,10 +147,6 @@ const Map = ({ getFriendList }) => {
     return (
       <TouchableOpacity
         style={styles.item}
-        /* onPress={() => {
-                       carouselRef.current.scrollToIndex(index);
-                        console.log("test");
-                      }} */
       >
         <View
           style={{ flexDirection: "row", height: "100%", alignItems: "center" }}
@@ -340,12 +290,7 @@ const Map = ({ getFriendList }) => {
         >
         </LinearGradient>
 
-        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)} setRegion={(region) => setRegion({
-        latitude: 127,
-        longitude: 127,
-        latitudeDelta: 0.25,
-        longitudeDelta: 0.25
-      })}/> : null}
+        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)} setRegion={(region) => setRegion(region)}/> : null}
 
         {!loading && localDataLoaded ? (
           <>
@@ -357,7 +302,7 @@ const Map = ({ getFriendList }) => {
             mapType={mapType}
             followsUserLocation={true}
             region={region}
-            /* onRegionChangeComplete={(region) => setRegion(region)} */
+            onRegionChangeComplete={(region) => setRegion(region)}
             showsCompass={false}
             showsTraffic={false}
             showsIndoors={false}
@@ -399,8 +344,14 @@ const Map = ({ getFriendList }) => {
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)}>
                       <View style={styles.touchable}>
                       <CustomMarker
+                        region={region}
                         photoUrl={marker.photoUrl}
                         type={marker.type}
+                        coordinate={{
+                          latitude: marker.latitude,
+                          longitude: marker.longitude,
+                        }}
+                        timestamp={marker.timestamp}
                       />
                       </View>
                     </TouchableNativeFeedback>
@@ -412,7 +363,7 @@ const Map = ({ getFriendList }) => {
 
           {view == "heatmap" && localData.length == 0 ?
           <View style={{position: "absolute", backgroundColor: mapType == "standard" ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.9)", height: "100%", width: "100%"}}>
-            <Empty title={"Noch keine Einträge"} tip={"Mache Eintrge, um die Heatmap zu sehen."}/>
+            <Empty title={"Noch keine Einträge"} tip={"Mache Einträge, um die Heatmap zu sehen."}/>
           </View> : null}
 
           {view == "friends" && markers.length == 0 ?

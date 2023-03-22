@@ -83,7 +83,7 @@ const History = ({ show, onExit, history}) => {
   }
 
   const mapModalContent =  <>
-    <View style={{position: "absolute", zIndex: 20, bottom: 70, width: "60%", alignSelf: "center"}}>
+    <View style={{position: "absolute", zIndex: 20, bottom: "12.5%", width: "60%", alignSelf: "center"}}>
       <View style={{alignSelf: "center"}}>
         <IconButton icon={switch_icon} onPress={toggleMapType}/>
       </View>
@@ -122,6 +122,7 @@ const History = ({ show, onExit, history}) => {
               <CustomMarker
                 photoUrl={user.photoUrl}
                 type={activeEvent.type}
+                withOutDate={true}
               />
             </Marker>
         </>
@@ -131,11 +132,8 @@ const History = ({ show, onExit, history}) => {
 
   return (
     <>
-        <Animated.View style={[styles.container, { transform: [{ translateX: pan }], height: Dimensions.get("window").height }]}>
-
+        <Animated.View style={[styles.container, { transform: [{ translateX: pan }], height: Dimensions.get("screen").height}]}>
           <View style={{height: 50}}></View>
-
-          <View style={{flexDirection: "column", height: Dimensions.get("screen").height, top: 0, position: "absolute"}}>  
 
           <CustomModal show={showMap} child={mapModalContent}/>
 
@@ -154,7 +152,6 @@ const History = ({ show, onExit, history}) => {
         maxToRenderPerBatch={2}
       />
             
-          </View>
         </Animated.View>
     </>
   );

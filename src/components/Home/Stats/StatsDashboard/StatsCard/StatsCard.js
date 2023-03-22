@@ -1,6 +1,7 @@
 //React
 import React from "react";
 import { StyleSheet, Text, View, Image, Animated } from "react-native";
+import { responsiveFontSize } from "react-native-responsive-dimensions";
 
 //Third-Party
 
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
       card_value: {
         color: "white",
         fontFamily: "PoppinsBlack",
-        fontSize: 30,
-        marginTop: -10,
+        fontSize: responsiveFontSize(2.5),
+        marginTop: -5,
         textAlign: "left",
       }
 });

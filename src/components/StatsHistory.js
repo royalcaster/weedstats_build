@@ -114,6 +114,10 @@ const StatsHistory = ({ user, history }) => {
             username={user.uername}
             type={activeEvent.type}
             timestamp={activeEvent.timestamp}
+            coordinate={{
+              latitude: activeEvent.latitude,
+              longitude: activeEvent.longitude,
+            }}
           />
         </Marker>
     </>

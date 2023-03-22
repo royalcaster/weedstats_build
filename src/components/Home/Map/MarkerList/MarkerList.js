@@ -44,9 +44,7 @@ const MarkerList = ({onExit, setRegion}) => {
             duration: 300,
             useNativeDriver: true,
         }).start(({finished}) => {
-            if (finished) {
-                onExit();
-            }
+            onExit();
         });
     }
 
