@@ -185,6 +185,18 @@
         "groups_search_for_friends": "Nach Freunden suchen",
         "requests_no_requests": "Noch keine Anfragen",
 
+        "edit_your_profile": "Dein Profil bearbeiten",
+        "profile_image": "Profilbild",
+        "search_gallery": "Gallerie durchsuchen",
+        "username": "Nutzername",
+        "please_check_your_entries": "Bitte überprüfe deine ",
+
+        "map_no_entries": "Noch keine Einträge",
+        "map_no_entries_tip": "Mache Einträge, um die Heatmap zu sehen.",
+
+        "map_no_friends": "Noch keine Freunde",
+        "map_no_friends_tip": "Oder deine Freunde teilen ihre letzte Aktivität nicht.",
+
         "sayings": [  
             {  
                "saying":"Ich glaube, die Leute müssen über die Tatsache unterrichtet werden, dass Marihuana keine Droge ist. Marihuana ist eine Blume Gottes Gnade.",
@@ -491,6 +503,18 @@
 
         "groups_search_for_friends": "Search for friends",
         "requests_no_requests": "No requests yet",
+
+        "edit_your_profile": "Edit your profile",
+        "profile_image": "Profile image",
+        "search_gallery": "Search gallery",
+        "username": "Username",
+        "please_check_your_entries": "Please check your entries",
+
+        "map_no_entries": "No entries yet",
+        "map_no_entries_tip": "Make entries so see the heatmap",
+
+        "map_no_friends": "No friends yet",
+        "map_no_friends_tip": "Or your friends don't share their entries.",
         
         "sayings": [  
             {  

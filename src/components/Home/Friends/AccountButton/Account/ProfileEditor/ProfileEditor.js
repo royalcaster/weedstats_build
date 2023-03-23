@@ -119,9 +119,9 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
         <Animated.View style={[styles.container, {transform:  [{translateX: slideAnim}]}]}>
         <ScrollView>
 
-        <Text style={[styles.label, {fontSize: responsiveFontSize(3)}]}>Dein Profil bearbeiten</Text>
+        <Text style={[styles.label, {fontSize: responsiveFontSize(3)}]}>{language.edit_your_profile}</Text>
 
-        <Text style={styles.label}>Profilbild</Text>
+        <Text style={styles.label}>{language.profile_image}</Text>
         {loading ? <CustomLoader x={50}/> :
             <View style={{width: responsiveHeight(20), height: responsiveHeight(20), position: "relative", alignSelf: "center"}}>
                 <ProfileImage url={image} type={1}/>
@@ -131,25 +131,25 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
 
         <Button
           fontColor={"white"}
-          title={"Gallerie durchsuchen"}
+          title={language.search_gallery}
           borderradius={100}
           color={"#484F78"}
           onPress={async () => await pickImage()}
           hovercolor={"rgba(255,255,255,0.3)"}
         />
 
-        <Text style={styles.label}>Nutzername</Text>
+        <Text style={styles.label}>{language.username}</Text>
         <TextInput onChangeText={(text) => setUserName(text)} style={[styles.textinput, styles.password_input]} value={userName}/>
 
         <View style={{height: 10}}></View>
 
-        {showWarning ? <Text style={styles.warning}>Bitte überprüfe deine Angaben</Text> : null}
+        {showWarning ? <Text style={styles.warning}>{language.please_check_your_entries}</Text> : null}
 
         <View style={{height: 40}}></View>
         
         <Button
           fontColor={"white"}
-          title={"Speichern"}
+          title={language.config_save}
           borderradius={100}
           color={"#0080FF"}
           onPress={() => saveChanges()}
@@ -158,7 +158,7 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
         />
         <Button
             fontColor={"white"}
-            title={"Abbrechen"}
+            title={language.account_delete_account_cancel}
             borderradius={100}
             color={"#484F78"}
             onPress={() => hide()}

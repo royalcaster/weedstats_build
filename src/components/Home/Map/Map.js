@@ -65,10 +65,10 @@ const Map = ({ getFriendList }) => {
     }
     test();
   }, []);
-/* 
+
   useEffect(() => {
       console.debug(region);
-  },[region]); */
+  },[region]);
 
   useEffect(() => {
     if (localData != null) {
@@ -81,8 +81,8 @@ const Map = ({ getFriendList }) => {
       setRegion({
         latitude: localData[localData.length-1].latitude,
         longitude: localData[localData.length-1].longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta
+        latitudeDelta: 0.25,
+        longitudeDelta: 0.25
       });
     }
 
@@ -90,8 +90,8 @@ const Map = ({ getFriendList }) => {
       setRegion({
         latitude: markers[0].latitude,
         longitude: markers[0].longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta
+        latitudeDelta: 0.25,
+        longitudeDelta: 0.25
       });
     }
   },[view]);
@@ -363,12 +363,12 @@ const Map = ({ getFriendList }) => {
 
           {view == "heatmap" && localData.length == 0 ?
           <View style={{position: "absolute", backgroundColor: mapType == "standard" ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.9)", height: "100%", width: "100%"}}>
-            <Empty title={"Noch keine Einträge"} tip={"Mache Einträge, um die Heatmap zu sehen."}/>
+            <Empty title={language.map_no_entries} tip={language.map_no_entries_tip}/>
           </View> : null}
 
           {view == "friends" && markers.length == 0 ?
           <View style={{position: "absolute", backgroundColor: mapType == "standard" ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.9)", height: "100%", width: "100%"}}>
-            <Empty title={"Noch keine Freunde"} tip={"Oder deine Freunde teilen ihre letzte Aktivität nicht."}/>
+            <Empty title={language.map_no_friends} tip={language.map_no_friends_tip}/>
           </View> : null}
 
           <View style={styles.iconbutton_container}>
