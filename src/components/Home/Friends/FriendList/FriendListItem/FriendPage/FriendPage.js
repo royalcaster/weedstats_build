@@ -61,7 +61,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
   //Refs
   const pan = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(screen_width)).current;
-  const slideAnim2 = useRef(new Animated.Value(0)).current;
+  const slideAnim2 = useRef(new Animated.Value(-20)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim2 = useRef(new Animated.Value(0)).current;
   const scrollRef = useRef();
@@ -72,7 +72,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
   useEffect(() => {
     if (!show) {
-    setLoading(true);
+  
     }
     if (show && (user != null)) {
       setLoading(false);
@@ -81,8 +81,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
   useBackHandler(() => {
     onExit(); 
-    hide(); 
-    setLoading(true);
+    hide();
     return true;
   });
 
@@ -90,11 +89,9 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     const config = await downloadUser(user.id, true);
     setFriendConfig(config);
     setLoading(false);
-    slideCounters();
   }
 
   const slideCounters = () => {
-    console.log("test");
     slideAnim2.setValue(-50);
     opacityAnim.setValue(0);
     opacityAnim2.setValue(0);
@@ -139,6 +136,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
         useNativeDriver: true
       }).start(({ finished }) => {
         if (finished) {
+          setLoading(true);
           onExit();
           setModalVisible(false);
           scrollRef.current?.scrollTo({
@@ -146,6 +144,9 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
             y: 0,
             animated: false,
           });
+          slideAnim2.setValue(-20);
+          opacityAnim.setValue(0);
+          opacityAnim2.setValue(0);
         }
       });
     }
@@ -156,6 +157,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
         useNativeDriver: true
       }).start(({ finished }) => {
         if (finished) {
+          setLoading(true);
           setModalVisible(false);
           scrollRef.current?.scrollTo({
             x: 0,

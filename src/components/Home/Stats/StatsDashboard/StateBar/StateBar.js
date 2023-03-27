@@ -6,10 +6,12 @@ import {View, Text, Animated, StyleSheet, Image} from 'react-native'
 import moment from "moment";
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-const StateBar = ({ type, value }) => {
+const StateBar = ({ type, value, activeLastDay }) => {
 
     const today = moment(new Date(), "YYYY-MM-DD HH:mm:ss")
     today.locale("de");
+
+    console.log(value);
 
     if (type=="streak") {
         return (
@@ -93,7 +95,7 @@ const StateBar = ({ type, value }) => {
 
                 <View style={styles.div}>
                     <View style={styles.image_container}>
-                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 3 ? "#eb4034" : "#484F78"}]}/>
+                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 2 ? "#eb4034" : "#484F78"}]}/>
                     </View>
                     <View style={styles.day_container}>
                         <Text style={styles.day}>{today.day(-2).format("dddd").substring(0,2)}</Text>
@@ -102,7 +104,7 @@ const StateBar = ({ type, value }) => {
     
                 <View style={styles.div}>
                     <View style={styles.image_container}>
-                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 2 ? "#eb4034" : "#484F78"}]}/>
+                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 1 ? "#eb4034" : "#484F78"}]}/>
                     </View>
                     <View style={styles.day_container}>
                         <Text style={styles.day}>{today.day(-1).format("dddd").substring(0,2)}</Text>
@@ -111,7 +113,7 @@ const StateBar = ({ type, value }) => {
     
                 <View style={styles.div}>
                     <View style={styles.image_container}>
-                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 1 ? "#eb4034" : "#484F78"}]}/>
+                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: value > 0 ? "#eb4034" : "#484F78"}]}/>
                     </View>
                     <View style={styles.day_container}>
                         <Text style={styles.day}>{today.day(0).format("dddd").substring(0,2)}</Text>
@@ -120,7 +122,7 @@ const StateBar = ({ type, value }) => {
     
                 <View style={[styles.div, styles.div_selected]}>
                     <View style={styles.image_container}>
-                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: "#eb4034"}]}/>
+                        <AntDesign name="closecircleo" style={[styles.close_icon,{color: !activeLastDay ? "#eb4034" : "#484F78"}]}/>
                     </View>
                     <View style={styles.day_container}>
                         <Text style={styles.day}>{today.day(1).format("dddd").substring(0,2)}</Text>

@@ -47,8 +47,7 @@ const CreatePanel = ({ handleCreate, onExit, emailInUse }) => {
         {
             toValue: Dimensions.get("screen").width,
             duration: 300,
-            useNativeDriver: true,
-            easing: Easing.bezier(0.07, 1, 0.33, 0.89)
+            useNativeDriver: true
         }).start((finished) => {
             if (finished){
                 

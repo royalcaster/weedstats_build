@@ -169,7 +169,73 @@ const StatsDashboard = ({ localData }) => {
             value={Math.round(calcDailyAverage(filterByType(localData, selectedType), localData) * 100) / 100}
           />
 
-          <View style={{ height: responsiveHeight(2.5) }}></View>
+          {selectedType === "main" ? (
+            <PieChart              data={[
+                {
+                  name: language.joint,
+                  count: filterByMostRecent(
+                    filterByType(localData, "joint"),
+                    selectedTime
+                  ).length,
+                  color: Levels[0].colors[0],
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
+                },
+                {
+                  name: language.bong,
+                  count: filterByMostRecent(
+                    filterByType(localData, "bong"),
+                    selectedTime
+                  ).length,
+                  color: Levels[1].colors[0],
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
+                },
+                {
+                  name: language.vape,
+                  count: filterByMostRecent(
+                    filterByType(localData, "vape"),
+                    selectedTime
+                  ).length,
+                  color: Levels[2].colors[0],
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
+                },
+                {
+                  name: language.pipe,
+                  count: filterByMostRecent(
+                    filterByType(localData, "pipe"),
+                    selectedTime
+                  ).length,
+                  color: Levels[3].colors[0],
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
+                },
+                {
+                  name: language.cookie,
+                  count: filterByMostRecent(
+                    filterByType(localData, "cookie"),
+                    selectedTime
+                  ).length,
+                  color: Levels[4].colors[0],
+                  legendFontColor: "white",
+                  legendFontSize: responsiveFontSize(1.5)
+                },
+              ]}
+              width={Dimensions.get("window").width - 40}
+              height={150}
+              backgroundColor={"#1E2132"}
+              chartConfig={{
+                color: () =>  {return "rgba(255,255,255,0.35)"},
+                labelColor: () =>  {return "rgba(255,255,255,0.5)"}
+              }}
+              accessor={"count"}
+              paddingLeft={"15"}
+
+            />
+          ) : null}
+
+          <View style={{ height: responsiveHeight(5) }}></View>
           
           <View
             style={{
@@ -330,8 +396,9 @@ const StatsDashboard = ({ localData }) => {
                 currentBreak={streakData.currentBreak}
                 currentBreakStart={streakData.startCurrentBreak}
                 longestBreak={streakData.longestBreak}
-                /* longestBreakStart={streakData.rangeLongestBreak.start ? toGermanDate(streakData.rangeLongestBreak.start) : null} */
-                /* longestBreakEnd={toGermanDate(streakData.rangeLongestBreak.end)} */
+                longestBreakStart={streakData.rangeLongestBreak.start ? toGermanDate(streakData.rangeLongestBreak.start) : null}
+                longestBreakEnd={toGermanDate(streakData.rangeLongestBreak.end)}
+                activeLastDay={filterByMostRecent(filterByType(localData, selectedType), 1).length > 0}
               />
             </>
           ) : null}
@@ -433,76 +500,6 @@ const StatsDashboard = ({ localData }) => {
             }}
           />
 
-          {selectedType === "main" ? (
-            <PieChart
-              style={{
-                marginVertical: 10,
-                borderRadius: 10
-              }}
-              data={[
-                {
-                  name: language.joint,
-                  count: filterByMostRecent(
-                    filterByType(localData, "joint"),
-                    selectedTime
-                  ).length,
-                  color: Levels[0].colors[0],
-                  legendFontColor: "white",
-                  legendFontSize: responsiveFontSize(1.5)
-                },
-                {
-                  name: language.bong,
-                  count: filterByMostRecent(
-                    filterByType(localData, "bong"),
-                    selectedTime
-                  ).length,
-                  color: Levels[1].colors[0],
-                  legendFontColor: "white",
-                  legendFontSize: responsiveFontSize(1.5)
-                },
-                {
-                  name: language.vape,
-                  count: filterByMostRecent(
-                    filterByType(localData, "vape"),
-                    selectedTime
-                  ).length,
-                  color: Levels[2].colors[0],
-                  legendFontColor: "white",
-                  legendFontSize: responsiveFontSize(1.5)
-                },
-                {
-                  name: language.pipe,
-                  count: filterByMostRecent(
-                    filterByType(localData, "pipe"),
-                    selectedTime
-                  ).length,
-                  color: Levels[3].colors[0],
-                  legendFontColor: "white",
-                  legendFontSize: responsiveFontSize(1.5)
-                },
-                {
-                  name: language.cookie,
-                  count: filterByMostRecent(
-                    filterByType(localData, "cookie"),
-                    selectedTime
-                  ).length,
-                  color: Levels[4].colors[0],
-                  legendFontColor: "white",
-                  legendFontSize: responsiveFontSize(1.5)
-                },
-              ]}
-              width={Dimensions.get("window").width - 40}
-              height={250}
-              backgroundColor={"#1E2132"}
-              chartConfig={{
-                color: () =>  {return "rgba(255,255,255,0.35)"},
-                labelColor: () =>  {return "rgba(255,255,255,0.5)"}
-              }}
-              accessor={"count"}
-              paddingLeft={"15"}
-
-            />
-          ) : null}
         </View> 
       </Animated.View>
       <View style={{height: responsiveHeight(20)}}></View>

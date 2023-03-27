@@ -6,7 +6,7 @@ import StateBar from "../StateBar/StateBar";
 //Service
 import { LanguageContext } from "../../../../../data/LanguageContext";
 
-const BreakPanel = ({ streakData, currentBreak, currentBreakStart, longestBreak, longestBreakStart, longestBreakEnd }) => {
+const BreakPanel = ({ streakData, currentBreak, currentBreakStart, longestBreak, longestBreakStart, longestBreakEnd, activeLastDay }) => {
 
     const language = useContext(LanguageContext);
 
@@ -34,7 +34,7 @@ const BreakPanel = ({ streakData, currentBreak, currentBreakStart, longestBreak,
                 >
                   {currentBreak} {currentBreak == 1 ? <Text style={{fontSize: 15}}>{language.stats_DAY}</Text> : <Text style={{fontSize: 15}}>{language.stats_DAYS}</Text>}
                 </Text>
-                <StateBar type="break" value={currentBreak}/>
+                <StateBar type="break" value={currentBreak} activeLastDay={activeLastDay}/>
                 <View style={{height: 10}}></View>
             </View>
             <View style={styles.card_container_half}>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   card_value2: {
-    color: "#484F78",
+    color: "white",
     fontFamily: "PoppinsLight",
     fontSize: 11,
     position: "absolute",

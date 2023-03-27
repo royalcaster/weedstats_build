@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
       },
       card_value2: {
-        color: "#484F78",
+        color: "white",
         fontFamily: "PoppinsLight",
         fontSize: 11,
         position: "absolute",
