@@ -25,7 +25,7 @@ const FriendList = ({ friendList, toggleNavbar }) => {
     const [loading, setLoading] = useState(false);
     
     const [showFriend, setShowFriend] = useState(false);
-    const [activeFriend, setActiveFriend] = useState(friendList[0]);
+    const [activeFriend, setActiveFriend] = useState(user);
 
     const language = useContext(LanguageContext);
 

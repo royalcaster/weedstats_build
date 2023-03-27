@@ -37,6 +37,7 @@ import toGermanDate, { convertMemberSince } from "../../../../../../data/DateCon
 import { mapStyle } from "../../../../../../data/CustomMapStyle";
 import { uuidv4 } from "@firebase/util";
 import TypeImage from "../../../../../common/TypeImage";
+import Empty from "../../../../../common/Empty";
 
 const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
@@ -73,6 +74,9 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     if (!show) {
     setLoading(true);
     }
+    if (show && (user != null)) {
+      setLoading(false);
+    }
   }, [show]);
 
   useBackHandler(() => {
@@ -90,6 +94,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
   }
 
   const slideCounters = () => {
+    console.log("test");
     slideAnim2.setValue(-50);
     opacityAnim.setValue(0);
     opacityAnim2.setValue(0);
@@ -484,13 +489,14 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
               <View style={{height: responsiveHeight(2.5)}}></View>
 
               {/**LAST ACTIVITY */}
+               
 
               <View style={{position: "relative", width: "100%", alignSelf: "center", flex: 4}}>
                 <View style={{width: "80%", alignSelf: "center"}}>
                 
                 <Text style={styles.label}>{language.friendpage_last_activity}</Text>
+                {user.last_entry_latitude != null ?<>
                 <View style={{ height: responsiveHeight(1)}}></View>
-
                 <View style={[styles.activity_container,{flexDirection: "column", overflow: "hidden"}]}>
                 
                 {!loading ? <>
@@ -550,10 +556,13 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                 </View>
                 </> : <CustomLoader x={responsiveFontSize(4)} color={"#0080FF"}/>}
                 </View>
+                </>: <Empty title={"Nutzer hat keine letzten Einträge"}/>}
                 </View>
                 <View style={{height: responsiveHeight(2.5)}}></View>
-                <Button title={"Auf Karte zeigen"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => setShowMap(true)}/>
+                {loading ? null : <> 
+                {friendConfig.shareGPS && user.last_entry_latitude != null ? <Button title={"Auf Karte zeigen"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => setShowMap(true)}/> : null}</>}
               </View>
+
 
               <View style={{height: responsiveHeight(2.5)}}></View>
 

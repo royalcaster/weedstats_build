@@ -1,15 +1,22 @@
 // nimmt ein Date Objekt und wandelt es in deutsche Notation um (TT.MM.JJJJ)
-const toGermanDate = (date) => {
+const toGermanDate = (date, onlyTime) => {
   if (!date) {
     return null;
   }
-  return (
-    addZero(date.getDate()) +
-    "." +
-    addZero(date.getMonth() + 1) +
-    "." +
-    date.getFullYear()
-  );
+  else {
+    if (onlyTime){
+      return date.toUTCString().substring(17,22);
+    }
+    else {
+      return (
+        addZero(date.getDate()) +
+        "." +
+        addZero(date.getMonth() + 1) +
+        "." +
+        date.getFullYear()
+      );
+    }
+  }
 };
 
 export const convertMemberSince = (datestring) => {

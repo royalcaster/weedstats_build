@@ -76,6 +76,7 @@ export const getLocalData = async (user, callback) => {
 
 export const downloadUser = async ( id, config ) =>
 {
+  console.log(id);
   const docSnap = await getDoc(doc(firestore, "users", id));
 
   if (docSnap.exists()) {
@@ -190,8 +191,11 @@ export const createLineChartData = (array, datapoints) => {
 
   const first = array[0].timestamp;
   const step = (Date.now() - first) / datapoints;
+  //Wenn der Zeitbereich zwischen jetzt und erstem Eintrag im selben Tag liegt (86 Mio ms), dann zeige nur Uhrzeit und kein Datum
+  const singleDay = (Date.now() - first) < 86400000;
   let chartData = new Array(datapoints).fill(0);
   let chartLabels = new Array(datapoints);
+
 
   array.forEach((entry) => {
     for (let i = 0; i < datapoints; i++) {
@@ -206,7 +210,7 @@ export const createLineChartData = (array, datapoints) => {
   });
 
   for (let i = 0; i < datapoints; i++) {
-    chartLabels[i] = toGermanDate(new Date(first + (i + 0.5) * step));
+    chartLabels[i] = toGermanDate(new Date(first + (i + 0.5) * step), singleDay);
   }
 
   return [chartLabels, chartData];

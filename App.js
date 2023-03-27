@@ -86,24 +86,24 @@ export default function App() {
     try {
       let docSnap = await getDoc(doc(firestore, "users", user.id));
       if (docSnap.exists()) {
-        let configBuffer = docSnap.data().config;
         setConfig({
-          "first": configBuffer.first,
-          "language": configBuffer.language,
-          "localAuthenticationRequired": configBuffer.localAuthenticationRequired,
-          "saveGPS": configBuffer.saveGPS,
-          "shareGPS": configBuffer.shareGPS,
-          "shareLastEntry": configBuffer.shareLastEntry,
-          "shareMainCounter": configBuffer.shareMainCounter,
-          "shareTypeCounters": configBuffer.shareTypeCounters,
-          "showBong": configBuffer.showBong,
-          "showCookie": configBuffer.showCookie,
-          "showJoint": configBuffer.showJoint,
-          "showPipe": configBuffer.showPipe,
-          "showVape": configBuffer.showVape,
+          "first": docSnap.data().config.first,
+          "language": docSnap.data().config.language,
+          "localAuthenticationRequired": docSnap.data().config.localAuthenticationRequired,
+          "saveGPS": docSnap.data().config.saveGPS,
+          "shareGPS": docSnap.data().config.shareGPS,
+          "shareLastEntry": docSnap.data().config.shareLastEntry,
+          "shareMainCounter": docSnap.data().config.shareMainCounter,
+          "shareTypeCounters": docSnap.data().config.shareTypeCounters,
+          "showBong": docSnap.data().config.showBong,
+          "showCookie": docSnap.data().config.showCookie,
+          "showJoint": docSnap.data().config.showJoint,
+          "showPipe": docSnap.data().config.showPipe,
+          "showVape": docSnap.data().config.showVape,
         });
+        /* setLocalAuthenticationRequired(docSnap.data().config.localAuthenticationRequired);
+        console.log(docSnap.data().config.localAuthenticationRequired); */
       }
-
       setLoading(false);
     } catch (e) {
       console.log("Error in Config beim Laden: ", e);
@@ -190,15 +190,12 @@ export default function App() {
     .then(async (userCredential) => {
       // Signed in 
       const result = userCredential.user;
-      //Async Storage handling
-      const accessToken = JSON.parse(await AsyncStorage.getItem("accessToken"));
       await AsyncStorage.setItem("accessToken", JSON.stringify({
         email: email,
-        password: password,
-        /* localAuthenticationRequired: accessToken.localAuthenticationRequired */
+        password: password
       }));
-      /* setLocalAuthenticationRequired(accessToken.localAuthenticationRequired); */
       const docSnap = await getDoc(doc(firestore, "users", result.uid));
+      loadSettings();
       if (docSnap.exists()) {
         setUser({
           username: docSnap.data().username,
@@ -494,7 +491,7 @@ const deleteAccount = async () => {
             <>
               {user ? 
               <>
-                {(localAuthenticationRequired && !unlocked) ? 
+                {(config.localAuthenticationRequired && !unlocked) ? 
                 <Authenticator first={false} onSubmit={() => setUnlocked(true)} onCancel={() => setUnlocked(false)} onExit={() => null} />
                 : 
                 <UserContext.Provider value={user}>

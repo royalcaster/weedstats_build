@@ -67,10 +67,6 @@ const Map = ({ getFriendList }) => {
   }, []);
 
   useEffect(() => {
-      console.debug(region);
-  },[region]);
-
-  useEffect(() => {
     if (localData != null) {
       setLocalDataLoaded(true);
     }
