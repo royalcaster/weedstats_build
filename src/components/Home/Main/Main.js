@@ -28,13 +28,15 @@ import { ConfigContext } from '../../../data/ConfigContext'
 import { doc, updateDoc, getDoc } from "@firebase/firestore";
 import { firestore } from "../../../data/FirebaseConfig";
 import CounterModal from "../../common/CounterModal";
+import { FriendListContext } from "../../../data/FriendListContext";
 
-const Main = ({ onSetUser, sendNotification }) => {
+const Main = ({ onSetUser, sendPushNotification }) => {
 
   //Context
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
   const config = useContext(ConfigContext);
+  const friendList = useContext(FriendListContext);
   
   //Refs
   const headingAnim = useRef(new Animated.Value(-100)).current;
@@ -225,86 +227,93 @@ const Main = ({ onSetUser, sendNotification }) => {
   }
 
   //erhöht den Counter für den jeweiligen Typ unter Berücksichtigung der momentanen Config
-//hier ist viel auskommentiert, weil das berücksichtigen der Einstellungen eigentlich fast nur nur in der Freunde ansicht passiert. (Was wird angezeigt und was nicht)
-const toggleCounter = async (index, color) => {
-  sendNotification();
-  setBorderColor(color);
-  let settings = {};
-  let new_entry = {
-    number: user.main_counter + 1,
-    type: index,
-    timestamp: Date.now(),
-    latitude: null,
-    longitude: null,
-  };
+  //hier ist viel auskommentiert, weil das berücksichtigen der Einstellungen eigentlich fast nur nur in der Freunde ansicht passiert. (Was wird angezeigt und was nicht)
+  const toggleCounter = async (index, color) => {
+    sendCounterPushNotification(index);
+    setBorderColor(color);
+    let settings = {};
+    let new_entry = {
+      number: user.main_counter + 1,
+      type: index,
+      timestamp: Date.now(),
+      latitude: null,
+      longitude: null,
+    };
 
-  Platform.OS === "android" ? Vibration.vibrate(50) : null;
+    Platform.OS === "android" ? Vibration.vibrate(50) : null;
 
-  // Neuen Index für Zitat ermitteln
-  setSayingNr(Math.floor(Math.random() * sayings.length));
+    // Neuen Index für Zitat ermitteln
+    setSayingNr(Math.floor(Math.random() * sayings.length));
 
-  setShowCounterModal(true);
+    setShowCounterModal(true);
 
-  if (config.saveGPS) {
-    // Die Bestimmung der Position dauert von den Schritten in der Funktion toggleCounter() mit Abstand am längsten
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("Permission to access location was denied");
-      return;
+    if (config.saveGPS) {
+      // Die Bestimmung der Position dauert von den Schritten in der Funktion toggleCounter() mit Abstand am längsten
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
+
+      new_entry.latitude = location.coords.latitude;
+      new_entry.longitude = location.coords.longitude;
     }
-    let location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest,
+
+    await writeLocalStorage(new_entry);
+
+    const docRef = doc(firestore, "users", user.id);
+    const docSnap = await getDoc(docRef);
+
+    await updateDoc(docRef, {
+      main_counter: user.main_counter + 1,
+      [index + "_counter"]: user[index + "_counter"] + 1,
+      last_entry_latitude: new_entry.latitude,
+      last_entry_longitude: new_entry.longitude,
+      last_entry_timestamp: new_entry.timestamp,
+      last_entry_type: new_entry.type
     });
 
-    new_entry.latitude = location.coords.latitude;
-    new_entry.longitude = location.coords.longitude;
+    const docSnap_new = await getDoc(docRef);
+    onSetUser({
+      ...user,
+      main_counter: docSnap_new.data().main_counter,
+      joint_counter: docSnap_new.data().joint_counter, 
+      bong_counter: docSnap_new.data().bong_counter,
+      vape_counter: docSnap_new.data().vape_counter,
+      pipe_counter: docSnap_new.data().pipe_counter,
+      cookie_counter: docSnap_new.data().cookie_counter,
+      last_entry_timestamp: docSnap_new.data().last_entry_timestamp,
+      last_entry_type: docSnap_new.data().last_entry_type,
+      last_entry_latitude: docSnap_new.data().last_entry_latitude,
+      last_entry_longitude: docSnap_new.data().last_entry_longitude,
+    });
+    setWriteComplete(true);
+  };
+
+  //erstellt Einträge im lokalen Gerätespeicher
+  const writeLocalStorage = async (new_entry) => {
+    // Erstellt neuen Eintrag im AsyncStorage
+    try {
+      const jsonValue = JSON.stringify(new_entry);
+      await AsyncStorage.setItem(
+        user.id + "_entry_" + (user.main_counter + 1),
+        jsonValue
+      );
+    } catch (e) {
+      console.log("Error:", e);
+    }
+  };
+
+  const sendCounterPushNotification = ( type ) => {
+    friendList.forEach((friend) => {
+      var title = friend.userame + " raucht " + type;
+      var body = "Tippe hier, um weitere Details zu sehen"
+      sendPushNotification(friend.expo_push_token, title, body);
+    });
   }
-
-  await writeLocalStorage(new_entry);
-
-  const docRef = doc(firestore, "users", user.id);
-  const docSnap = await getDoc(docRef);
-
-  await updateDoc(docRef, {
-    main_counter: user.main_counter + 1,
-    [index + "_counter"]: user[index + "_counter"] + 1,
-    last_entry_latitude: new_entry.latitude,
-    last_entry_longitude: new_entry.longitude,
-    last_entry_timestamp: new_entry.timestamp,
-    last_entry_type: new_entry.type
-  });
-
-  // Das sollte in Zukunft noch ersetzt werden
-  const docSnap_new = await getDoc(docRef);
-  onSetUser({
-    ...user,
-    main_counter: docSnap_new.data().main_counter,
-    joint_counter: docSnap_new.data().joint_counter, 
-    bong_counter: docSnap_new.data().bong_counter,
-    vape_counter: docSnap_new.data().vape_counter,
-    pipe_counter: docSnap_new.data().pipe_counter,
-    cookie_counter: docSnap_new.data().cookie_counter,
-    last_entry_timestamp: docSnap_new.data().last_entry_timestamp,
-    last_entry_type: docSnap_new.data().last_entry_type,
-    last_entry_latitude: docSnap_new.data().last_entry_latitude,
-    last_entry_longitude: docSnap_new.data().last_entry_longitude,
-  });
-  setWriteComplete(true);
-};
-
-//erstellt Einträge im lokalen Gerätespeicher
-const writeLocalStorage = async (new_entry) => {
-  // Erstellt neuen Eintrag im AsyncStorage
-  try {
-    const jsonValue = JSON.stringify(new_entry);
-    await AsyncStorage.setItem(
-      user.id + "_entry_" + (user.main_counter + 1),
-      jsonValue
-    );
-  } catch (e) {
-    console.log("Error:", e);
-  }
-};
 
   const CounterModalContent = <CounterModal borderColor={borderColor} sayingNr={sayingNr} loadingColor={borderColor} onExit={() => setShowCounterModal(false)} writeComplete={writeComplete}/> 
 

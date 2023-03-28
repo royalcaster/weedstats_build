@@ -66,7 +66,7 @@ export default function App() {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
     StatusBar.setHidden(false);
-    StatusBar.setBarStyle("light-content")
+    StatusBar.setBarStyle("light-content");
     NavigationBar.setBackgroundColorAsync("#1E2132");
     checkForUser();
 
@@ -78,7 +78,7 @@ export default function App() {
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      /* console.log(response); */
     });
 
     return () => {

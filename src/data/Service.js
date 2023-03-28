@@ -103,7 +103,8 @@ export const downloadUser = async ( id, config ) =>
         last_entry_longitude: docSnap.data().last_entry_longitude,
         last_entry_type: docSnap.data().last_entry_type,
         main_counter: docSnap.data().main_counter,
-        username_array: docSnap.data().username_array
+        username_array: docSnap.data().username_array,
+        expo_push_token: docSnap.data().expo_push_token
       }
     }
   }
