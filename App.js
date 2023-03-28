@@ -1,6 +1,6 @@
 //React
-import React, { useState, useEffect } from "react";
-import { View, StatusBar, LogBox } from 'react-native'
+import React, { useState, useEffect, useRef } from "react";
+import { View, StatusBar, LogBox, Platform } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Service
@@ -18,6 +18,8 @@ import { createUsernameArray, downloadUser } from "./src/data/Service";
 import { useFonts } from "expo-font";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen'
+  import * as Device from 'expo-device';
+  import * as Notifications from 'expo-notifications';
 
 //Custom Components
 import Splash from './src/components/Splash/Splash'
@@ -31,28 +33,34 @@ LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and w
 
 export default function App() {
 
-   //States für Frontend
-   const [showSplash, setShowSplash] = useState(true);
-   const [loading, setLoading] = useState(true);
-   const [unlocked, setUnlocked] = useState(false);
-   const [modalVisible, setModalVisible] = useState(false);
-   const [loadingColor, setLoadingColor] = useState("#0080FF");
-   const [wrongPassword, setWrongPassword] = useState(false);
-   const [emailInUse, setEmailInUse] = useState(false);
-   const [userNotFound, setUserNotFound] = useState(false);
-   const [localAuthenticationRequired, setLocalAuthenticationRequired] = useState(true);
+  //States für Frontend
+  const [showSplash, setShowSplash] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [unlocked, setUnlocked] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [loadingColor, setLoadingColor] = useState("#0080FF");
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const [emailInUse, setEmailInUse] = useState(false);
+  const [userNotFound, setUserNotFound] = useState(false);
+  const [localAuthenticationRequired, setLocalAuthenticationRequired] = useState(true);
  
-   //States für Daten
-   const [config, setConfig] = useState(null);
-   const [user, setUser] = useState(null);
-   const [language, setLanguage] = useState(Languages.en);
-   const [friendList, setFriendList] = useState([]);
+  //States für Daten
+  const [config, setConfig] = useState(null);
+  const [user, setUser] = useState(null);
+  const [language, setLanguage] = useState(Languages.en);
+  const [friendList, setFriendList] = useState([]);
+
+  //States für Notifications
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   //Authentifizierung
   const auth = getAuth(app);
 
   SplashScreen.preventAutoHideAsync();
-  setTimeout(SplashScreen.hideAsync, 500);
+  setTimeout(SplashScreen.hideAsync, 300);
 
   useEffect(() => {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -61,7 +69,35 @@ export default function App() {
     StatusBar.setBarStyle("light-content")
     NavigationBar.setBackgroundColorAsync("#1E2132");
     checkForUser();
-  },[]);
+
+    //Notification Setup
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (user != null && expoPushToken != null) {
+      syncExpoPushToken(expoPushToken)
+    }
+  },[user, expoPushToken]);
+
+  const syncExpoPushToken = async (token) => {
+    await updateDoc(doc(firestore, "users", user.id),{
+      expo_push_token: token
+    });
+  }
 
   useEffect(() => {
     if (user != null) {
@@ -79,6 +115,68 @@ export default function App() {
     modalVisible ? StatusBar.setBackgroundColor("rgba(0,0,0,0)") : null;
     return true;
   });
+
+  //Setup for Push-Notifications
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+  // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
+  async function sendPushNotification(expoPushToken, title, body) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: title,
+      body: body,
+      data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+
+  //Notification Setup
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return token;
+  }
 
   //Holt Einstellungen aus dem AsyncStorage
   const loadSettings = async () => {
@@ -509,6 +607,7 @@ const deleteAccount = async () => {
                     handleIntroFinish={handleIntroFinish}
                     handleAuthenticatorSelect={handleAuthenticatorSelect}
                     onSetUser={(user) => setUser(user)}
+                    sendPushNotification={sendPushNotification}
                   />
                     
                 </FriendListContext.Provider>

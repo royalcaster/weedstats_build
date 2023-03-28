@@ -42,7 +42,9 @@
     "react-native-switch-selector": "^2.3.0",
     "react-native-toggle-element": "^2.0.1",
     "react-native-uuid": "^2.0.1",
-    "uri-scheme": "^1.1.0"
+    "uri-scheme": "^1.1.0",
+    "expo-notifications": "~0.17.0",
+    "expo-device": "~5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

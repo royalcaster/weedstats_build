@@ -29,7 +29,7 @@ import { doc, updateDoc, getDoc } from "@firebase/firestore";
 import { firestore } from "../../../data/FirebaseConfig";
 import CounterModal from "../../common/CounterModal";
 
-const Main = ({ onSetUser }) => {
+const Main = ({ onSetUser, sendNotification }) => {
 
   //Context
   const user = useContext(UserContext);
@@ -227,6 +227,7 @@ const Main = ({ onSetUser }) => {
   //erhöht den Counter für den jeweiligen Typ unter Berücksichtigung der momentanen Config
 //hier ist viel auskommentiert, weil das berücksichtigen der Einstellungen eigentlich fast nur nur in der Freunde ansicht passiert. (Was wird angezeigt und was nicht)
 const toggleCounter = async (index, color) => {
+  sendNotification();
   setBorderColor(color);
   let settings = {};
   let new_entry = {

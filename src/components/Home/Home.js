@@ -28,7 +28,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { responsiveHeight } from "react-native-responsive-dimensions"
 import { ConfigContext } from "../../data/ConfigContext";
 
-export default function Home({ onSetUser, onWriteComplete, friendList, handleLogOut, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser, handleIntroFinish }) {
+export default function Home({ sendPushNotification ,onSetUser, onWriteComplete, friendList, handleLogOut, toggleLanguage, deleteAccount, getFriendList, loadSettings, onSetBorderColor, borderColor, refreshUser, handleIntroFinish }) {
 
   //Context
   const config = useContext(ConfigContext);
@@ -70,7 +70,7 @@ export default function Home({ onSetUser, onWriteComplete, friendList, handleLog
     <Animated.View style={[{ opacity: 1}, styles.container]}>
       <View style={styles.content_container}>
         {view == "main" ? (
-          <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser}/>
+          <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification}/>
         ) : null}
         {view == "stats" ? <Stats/> : null}
         {view == "map" ? <Map getFriendList={getFriendList}/> : null}
