@@ -50,7 +50,7 @@ const Friends = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, ref
             <View style={{ width: 20 }}></View>
         </View>
 
-        <FriendList toggleNavbar={toggleNavbar} friendList={friendList} getFriendList={getFriendList}  />
+        <FriendList toggleNavbar={toggleNavbar} friendList={friendList} getFriendList={getFriendList} refreshUser={refreshUser} />
 
         <AccountButton handleLogOut={handleLogOut} toggleNavbar={toggleNavbar} deleteAccount={deleteAccount} refreshUser={refreshUser}/>
 

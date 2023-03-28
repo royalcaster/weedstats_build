@@ -32,6 +32,7 @@ const Stats = () => {
       useNativeDriver: true,
       easing: Easing.bezier(0.07, 1, 0.33, 0.89),
     }).start();
+    console.log(user);
   }, []);
 
   // Zum Löschen einzelner Daten aus der History. Erstmal entfernt, da die Konsistenz der Daten nach aktuellem Stand darunter leidet

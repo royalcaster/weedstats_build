@@ -327,8 +327,8 @@ const Map = ({ getFriendList }) => {
 
             {view == "friends" ? (
               <>
-                {<>{
-                markers.map((marker, index) => (
+                {<>
+                {markers.map((marker, index) => (
                   <Marker
                     tracksViewChanges={false}
                     key={uuid.v4()}
@@ -377,11 +377,11 @@ const Map = ({ getFriendList }) => {
           </>
         ) : null}
 
-
         {view == "friends" ? (
           <View style={styles.iconbutton_container_left}>
             <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={() => setShowMarkerList(true)}>
               <View style={styles.touchable2}>
+                <MaterialIcons name="groups" style={{fontSize: responsiveFontSize(3), color: "white", alignSelf: "center", marginBottom: 3}}/>
                 <View>
                   {friendList.length != 0 ? friendList.map((friend) => {
                     return <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View>
@@ -476,5 +476,6 @@ const styles = StyleSheet.create({
   touchable2: {
     padding: 10,
     width: "100%",
+    height: "100%"
   },
 });

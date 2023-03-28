@@ -36,7 +36,7 @@ import { firestore } from "../../../../../data/FirebaseConfig";
 import { UserContext } from "../../../../../data/UserContext";
 import { LanguageContext } from "../../../../../data/LanguageContext";
 
-const FriendRequests = ({ onExit, refresh, getFriendList }) => {
+const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
 
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
@@ -162,7 +162,7 @@ const FriendRequests = ({ onExit, refresh, getFriendList }) => {
       friends: friends_buffer,
     });
 
-    refresh({
+    refreshUser({
       friends: friends_buffer,
       requests: buffer
     });
@@ -178,7 +178,7 @@ const FriendRequests = ({ onExit, refresh, getFriendList }) => {
       friends: friends_buffer,
     });
 
-    getFriendList();
+    /* getFriendList(); */
     loadRequests();
     setLoading(false);
   };

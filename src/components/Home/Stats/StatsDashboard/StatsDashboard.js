@@ -79,6 +79,10 @@ const StatsDashboard = ({ localData }) => {
     { label: language.stats_year, value: 9 },
   ];
 
+  useEffect(() => {
+    console.log(streakData.rangeLongestBreak == null);
+  },[]);
+
   const toggleSelection = (index) => {
     switch (index) {
       case 0:
@@ -396,28 +400,14 @@ const StatsDashboard = ({ localData }) => {
                 currentBreak={streakData.currentBreak}
                 currentBreakStart={streakData.startCurrentBreak}
                 longestBreak={streakData.longestBreak}
-                longestBreakStart={streakData.rangeLongestBreak.start ? toGermanDate(streakData.rangeLongestBreak.start) : null}
-                longestBreakEnd={toGermanDate(streakData.rangeLongestBreak.end)}
+                longestBreakStart={streakData.rangeLongestBreak == null ? null : toGermanDate(streakData.rangeLongestBreak.start)}
+                longestBreakEnd={streakData.rangeLongestBreak == null ? null : toGermanDate(streakData.rangeLongestBreak.end)}
                 activeLastDay={filterByMostRecent(filterByType(localData, selectedType), 1).length > 0}
               />
             </>
           ) : null}
 
           <View style={{ height: 30 }}></View>
-
-          {/* <SwitchSelector
-            options={options_time}
-            initial={0}
-            onPress={(value) => toggleSelection(value)}
-            textColor={"white"}
-            backgroundColor={"#131520"}
-            selectedColor={"white"}
-            buttonColor={"#0080FF"}
-            textStyle={{ fontFamily: "PoppinsLight", fontSize: 12, height: "100%", width: "100%"}}
-            selectedTextStyle={{ fontFamily: "PoppinsBlack", fontSize: 12}}
-            style={{backgroundColor: "#131520", borderRadius: 10, width: "100%"}}
-            selectedTextContainerStyle={{borderRadius: 10, backgroundColor: "#0080FF", height: "100%", width: "100%"}}
-          /> */}
 
           <SelectorBar options={options_time} onPress={(value) => toggleSelection(value)} selectedType={selectedTime}/>
 

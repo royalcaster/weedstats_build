@@ -20,7 +20,7 @@ const FriendRequestButton = ({ refreshUser, getFriendList }) => {
     
 
     return (<>
-        {showRequests ? <FriendRequests onExit={() => setShowRequests(false)} refresh={refreshUser} getFriendList={getFriendList}/> : null}
+        {showRequests ? <FriendRequests onExit={() => setShowRequests(false)} refreshUser={refreshUser} getFriendList={getFriendList}/> : null}
 
         <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple(

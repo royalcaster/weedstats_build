@@ -19,7 +19,7 @@ import { responsiveHeight } from "react-native-responsive-dimensions";
 import { LanguageContext } from "../../../../data/LanguageContext";
 
 
-const FriendList = ({ friendList, toggleNavbar }) => {
+const FriendList = ({ friendList, toggleNavbar, getFriendList, refreshUser }) => {
 
     const user = useContext(UserContext);
     const [loading, setLoading] = useState(false);
@@ -38,7 +38,8 @@ const FriendList = ({ friendList, toggleNavbar }) => {
                 show={showFriend}
                 user={activeFriend}
                 onExit={() => {setShowFriend(false);}}
-                refresh={() => {getFriendList(); setActiveFriend(null); setShowFriend(false);}}
+                onRemoveFriend={() => {setActiveFriend(null); setShowFriend(false);}}
+                refreshUser={refreshUser}
                 toggleNavbar={toggleNavbar}
             /> 
         : null}

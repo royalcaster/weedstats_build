@@ -39,7 +39,7 @@ import { uuidv4 } from "@firebase/util";
 import TypeImage from "../../../../../common/TypeImage";
 import Empty from "../../../../../common/Empty";
 
-const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
+const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFriend }) => {
 
   //Context
   const language = useContext(LanguageContext);
@@ -67,7 +67,9 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
   const scrollRef = useRef();
 
   useEffect(() => {
+    if (user) {
       getFriendConfig();
+    }
   },[user]);
 
   useEffect(() => {
@@ -198,6 +200,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
   };
 
   const removeFriend = async (id) => {
+    setLoading(true);
     try {
       const docRef = doc(firestore, "users", realuser.id);
       const docSnap = await getDoc(docRef);
@@ -211,7 +214,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
         friends: buffer.filter((item) => item != id),
       });
 
-      refresh({
+      refreshUser({
         friends: buffer.filter((item) => item != id)
       });
     } catch (e) {
@@ -234,6 +237,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
       console.log("Error", e);
     }
     setModalVisible(false);
+    onRemoveFriend();
   };
 
   const getSortedCounters = (array) => {
@@ -269,7 +273,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
   }
 
- const mapModalContent = <>
+ const mapModalContent = !loading ?  <>
  <View style={{height: "100%", width: "100%", position: "absolute", top: 0, zIndex: 1000000}}>
 
  <View style={{bottom: responsiveHeight(10), position: "absolute", width: "100%", flexDirection: "column"}}>
@@ -318,9 +322,9 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
        </>
    </MapView> 
  </View>
- </>;
+ </> : null;
 
- const deleteFriendModalContent = <View
+ const deleteFriendModalContent = !loading ? <View
  style={{
    flex: 1,
    alignItems: "center",
@@ -354,12 +358,12 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
            alignItems: "center",
          }}
        >
-         <Button title={"Entfernen"} onPress={() => setModalVisible(false)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+         <Button title={"Entfernen"} onPress={() => removeFriend(user.id)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
        </View>
      </View>
    </>
  </View>
-</View>;
+</View> : null;
 
   return (
     <>
@@ -413,7 +417,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
             <View style={{alignSelf: "center"}}>
 
               <View style={{justifyContent: "center", alignItems: "center"}}>
-                <Animated.Text style={[styles.username,{opacity: opacityAnim}]}>{!loading ? user.username : " "}</Animated.Text>
+                <Animated.Text style={[styles.username,{opacity: 1}]}>{!loading ? user.username : " "}</Animated.Text>
               </View>
             </View>
           </View> 
@@ -444,43 +448,43 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
                 <View style={{flexDirection: "row"}}>
                   
                     <View style={{flex: 1, justifyContent: "center"}}>
-                        <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
+                        <Animated.View style={{opacity: 1, transform: [{translateX: 0}]}}>
                           {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.joint_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                         </Animated.View>
                         <Text style={styles.small_label}>JOINT</Text>
-                        <Animated.Image style={[styles.small_image,{opacity: opacityAnim2}]} source={require('../../../../../../data/img/joint.png')}/>
+                        <Animated.Image style={[styles.small_image,{opacity: 0.2}]} source={require('../../../../../../data/img/joint.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
-                     <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
+                     <Animated.View style={{opacity: 1, transform: [{translateX: 0}]}}>
                      {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.bong_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>BONG</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(8), width: responsiveHeight(5), marginTop: responsiveHeight(-1), opacity: opacityAnim2}]} source={require('../../../../../../data/img/bong.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(8), width: responsiveHeight(5), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/bong.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
-                      <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
+                      <Animated.View style={{opacity: 1, transform: [{translateX: 0}]}}>
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.vape_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>VAPE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(7), marginTop: responsiveHeight(-1), opacity: opacityAnim2}]} source={require('../../../../../../data/img/vape.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(7), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/vape.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
-                     <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
+                     <Animated.View style={{opacity: 1, transform: [{translateX: 0}]}}>
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.pipe_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>PFEIFE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(10), marginTop: responsiveHeight(0), opacity: opacityAnim2}]} source={require('../../../../../../data/img/pipe.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(10), marginTop: responsiveHeight(0), opacity: 0.2}]} source={require('../../../../../../data/img/pipe.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
-                      <Animated.View style={{opacity: opacityAnim, transform: [{translateX: slideAnim2}]}}>
+                      <Animated.View style={{opacity: 1, transform: [{translateX: 0}]}}>
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.cookie_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>EDIBLE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(7), width: responsiveWidth(13), marginTop: responsiveHeight(1), opacity: opacityAnim2}]} source={require('../../../../../../data/img/cookie.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(7), width: responsiveWidth(13), marginTop: responsiveHeight(1), opacity: 0.2}]} source={require('../../../../../../data/img/cookie.png')}/>
                     </View>
 
                 </View>
@@ -506,7 +510,7 @@ const FriendPage = ({ show, user, onExit, refresh, toggleNavbar }) => {
 
                   <View style={{width: "100%", height: "40%", position: "absolute", zIndex: 2, top: 0, flexDirection: "row", padding: responsiveFontSize(2)}}>
                     {friendConfig.shareLastEntry ? <>
-                    <View style={{flex: 1, alignItems: "center"}}>
+                    <View style={{flex: 2, alignItems: "center"}}>
                       <TypeImage type={user.last_entry_type} x={40}/>
                     </View>
                     <View style={{flex: 8, flexDirection: "column"}}>
