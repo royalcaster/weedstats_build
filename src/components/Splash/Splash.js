@@ -1,6 +1,7 @@
 //React
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useRef, useEffect } from "react";
-import { StyleSheet, Animated, Image, Easing } from 'react-native'
+import { StyleSheet, Animated, Image, Easing, View } from 'react-native'
 import { responsiveHeight } from "react-native-responsive-dimensions";
 
 const Splash = ({onExit}) => {
@@ -128,7 +129,7 @@ const Splash = ({onExit}) => {
 
     return (
         <Animated.View style={[{opacity: fadeAnim}, styles.container]}>
-            <Animated.View style={{transform: [{translateY: 200}],height: 50, width: 50, justifyContent: "center", alignItems: "center"}}>
+            <Animated.View style={{transform: [{translateY: 0}],height: 50, width: 50, justifyContent: "center", alignItems: "center"}}>
 
                 <Animated.Image style={[styles.img,{transform: [{scale: scale1}]}]} source={require('../../data/img/loading_animation/01.png')}/>
                 <Animated.Image style={[styles.img,{transform: [{scale: scale2}]}]} source={require('../../data/img/loading_animation/02.png')}/>

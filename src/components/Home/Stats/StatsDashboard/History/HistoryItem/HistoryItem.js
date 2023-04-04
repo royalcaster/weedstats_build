@@ -11,6 +11,7 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
 import IconButton from "../../../../../common/IconButton";
+import TypeImage from "../../../../../common/TypeImage";
 
 const HistoryTable = ({ event, showOnMap }) => {
 
@@ -27,27 +28,14 @@ const HistoryTable = ({ event, showOnMap }) => {
       borderRadius: 10,
       overflow: "hidden"
     }}>
-    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} onPress={() => showOnMap(event)} delayPressIn={50}>
+    <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} onPress={() => showOnMap(event)} delayPressIn={30}>
     <View
       style={[styles.touchable]}
     >
-      <View style={{ flex: 1 }}>
-        {event.type == "joint" ? (
-          <Image style={styles.j_img} source={require("../../../../../../data/img/joint.png")} />
-        ) : null}
-        {event.type == "bong" ? (
-          <Image style={styles.b_img} source={require("../../../../../../data/img/bong.png")} />
-        ) : null}
-        {event.type == "vape" ? (
-          <Image style={styles.v_img} source={require("../../../../../../data/img/vape.png")} />
-        ) : null}
-        {event.type == "pipe" ? (
-          <Image style={styles.p_img} source={require("../../../../../../data/img/pipe.png")} />
-        ) : null}
-        {event.type == "cookie" ? (
-          <Image style={styles.c_img} source={require("../../../../../../data/img/cookie.png")} />
-        ) : null}
+      <View style={{ flex: 1, alignItems: "center"}}>
+        <TypeImage type={event.type} x={50}/>
       </View>
+      
       <View style={{ flex: 2, justifyContent: "center" }}>
         <Text style={styles.date}>
           <Fontisto name="date" style={styles.icon_date} />{"  "}

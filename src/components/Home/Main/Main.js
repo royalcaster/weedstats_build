@@ -20,6 +20,7 @@ import CustomModal from "../../common/CustomModal";
 //Third Party
 import moment from "moment";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
 
 //Service
 import sayings from '../../../data/Sayings.json'
@@ -59,6 +60,9 @@ const Main = ({ onSetUser, sendPushNotification }) => {
   const [showCounterModal, setShowCounterModal] = useState(false);
   const [sayingNr, setSayingNr] = useState(0);
   const [writeComplete, setWriteComplete] = useState(false);
+
+  //Ads hier ergänzen wenn Admob mehr integriert ist!
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
@@ -331,7 +335,7 @@ const Main = ({ onSetUser, sendPushNotification }) => {
         <View style={{zIndex: 3000, position: "absolute", height: Dimensions.get("screen").height, width: "100%"}}>
           <Tutorial renderItem={renderItem} slides={slides} onDone={onDone} extraHeight={50}/>
         </View> : <> 
-
+          <View style={{flex: 7}}>
           {loading ? (
             <View
               style={{
@@ -431,6 +435,18 @@ const Main = ({ onSetUser, sendPushNotification }) => {
               </ScrollView>}
             </>
           )}
+          </View>
+
+          <View style={{flex: 1}}>
+            {/* <BannerAd
+              unitId={TestIds.BANNER}
+              size={BannerAdSize.FULL_BANNER}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: true,
+              }}
+            /> */}
+          </View>
+          <View style={{flex: 1}}></View>
           </>}
     </>
   );
@@ -443,7 +459,7 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: "#1E2132",
     width: "100%",
-    height: "100%"
+    height: "80%"
   },
   tut_img: {
     height: 200,

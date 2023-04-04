@@ -13,13 +13,15 @@ import { app, firestore } from './src/data/FirebaseConfig'
 import { doc, getDoc, updateDoc, deleteDoc, setDoc } from "@firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
 import { createUsernameArray, downloadUser } from "./src/data/Service";
+import { MobileAds, MaxAdContentRating } from "react-native-google-mobile-ads";
+/* import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions"; */
 
 //Expo
 import { useFonts } from "expo-font";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen'
-  import * as Device from 'expo-device';
-  import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 
 //Custom Components
 import Splash from './src/components/Splash/Splash'
@@ -59,9 +61,6 @@ export default function App() {
   //Authentifizierung
   const auth = getAuth(app);
 
-  SplashScreen.preventAutoHideAsync();
-  setTimeout(SplashScreen.hideAsync, 300);
-
   useEffect(() => {
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
@@ -69,6 +68,7 @@ export default function App() {
     StatusBar.setBarStyle("light-content");
     NavigationBar.setBackgroundColorAsync("#1E2132");
     checkForUser();
+    configureAdMob();
 
     //Notification Setup
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -115,6 +115,51 @@ export default function App() {
     modalVisible ? StatusBar.setBackgroundColor("rgba(0,0,0,0)") : null;
     return true;
   });
+
+  //Config-Request für Google Ad-Mob
+  const configureAdMob = async () => {
+    try {
+      //IOS Persmission scheiße ich hasse Apple btw... Funktioniert noch nicht, da Invariant Violation mit react-native-persmissions
+      /* const result = await check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
+      if (result === RESULTS.DENIED) {
+        // The permission has not been requested, so request it.
+        await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
+      } */
+
+      MobileAds()
+      .setRequestConfiguration({
+        // Update all future requests suitable for parental guidance
+        maxAdContentRating: MaxAdContentRating.PG,
+  
+        // Indicates that you want your content treated as child-directed for purposes of COPPA.
+        tagForChildDirectedTreatment: false,
+  
+        // Indicates that you want the ad request to be handled in a
+        // manner suitable for users under the age of consent.
+        tagForUnderAgeOfConsent: false,
+      })
+      .then(() => {
+        // Request config successfully set!
+        initializeAdMob();
+      });
+    }
+    catch(e){
+      console.log("Error in configureAdMob (App.js): " + e);
+    }
+  }
+
+  //Initialisierung für google-admob
+  const initializeAdMob = () => {
+    try {
+      MobileAds().initialize()
+      .then((adapterStatuses) => {
+        // Initialization complete!
+      });
+    }
+    catch(e) {
+      console.log("Error in initializeAdMob (App.js): " + e);
+    }
+  }
 
   //Setup for Push-Notifications
   Notifications.setNotificationHandler({
