@@ -67,6 +67,14 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
   const scrollRef = useRef();
 
   useEffect(() => {
+    /* onst subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      const url = response.notification.request.content.data.url;
+      Linking.openURL(url);
+    });
+    return () => subscription.remove(); */
+  },[]);
+
+  useEffect(() => {
     if (user) {
       getFriendConfig();
     }

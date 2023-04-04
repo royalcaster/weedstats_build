@@ -11,8 +11,6 @@ const StateBar = ({ type, value, activeLastDay }) => {
     const today = moment(new Date(), "YYYY-MM-DD HH:mm:ss")
     today.locale("de");
 
-    console.log(value);
-
     if (type=="streak") {
         return (
             <View style={styles.container}>

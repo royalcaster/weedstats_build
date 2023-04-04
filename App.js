@@ -78,7 +78,7 @@ export default function App() {
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      /* console.log(response); */
+      handleNotificationResponse(response);
     });
 
     return () => {
@@ -126,13 +126,13 @@ export default function App() {
   });
 
   // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
-  async function sendPushNotification(expoPushToken, title, body) {
+  async function sendPushNotification(expoPushToken, title, body, data) {
     const message = {
       to: expoPushToken,
       sound: 'default',
       title: title,
       body: body,
-      data: { someData: 'goes here' },
+      data: data,
     };
 
     await fetch('https://exp.host/--/api/v2/push/send', {
@@ -144,6 +144,11 @@ export default function App() {
       },
       body: JSON.stringify(message),
     });
+  }
+
+  //Hier eventuell zu FriendPage linken -> kann sein dass dafür erst React-Navigation implementiert werden muss :(
+  const handleNotificationResponse = ( response ) => {
+    console.debug("Notification beantwortet: " + response.notification.request.content.data);
   }
 
   //Notification Setup
@@ -161,7 +166,6 @@ export default function App() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -500,7 +504,6 @@ export default function App() {
         }
       });
       setConfig({...config, language: "de"});
-      console.debug(lang);
     }
     if (lang == "en" && config.language == "de") {
       setLanguage(Languages.en);
@@ -511,7 +514,7 @@ export default function App() {
         }
       });
       setConfig({...config, language: "en"});
-      console.debug(lang);
+      
     } 
   }
 

@@ -5,7 +5,7 @@
     "originalFullName": "@royalcaster/WeedStats",
     "currentFullName": "@royalcaster/WeedStats",
     "scheme": "com.royalcaster.WeedStats_build_test",
-    "version": "42.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 42,
+      "versionCode": 46,
       "package": "com.royalcaster.WeedStats_build_test",
       "config": {
         "googleMaps": {

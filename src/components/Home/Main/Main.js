@@ -29,6 +29,7 @@ import { doc, updateDoc, getDoc } from "@firebase/firestore";
 import { firestore } from "../../../data/FirebaseConfig";
 import CounterModal from "../../common/CounterModal";
 import { FriendListContext } from "../../../data/FriendListContext";
+import { getCounterNotificationTitle } from "../../../data/Service";
 
 const Main = ({ onSetUser, sendPushNotification }) => {
 
@@ -309,9 +310,13 @@ const Main = ({ onSetUser, sendPushNotification }) => {
 
   const sendCounterPushNotification = ( type ) => {
     friendList.forEach((friend) => {
-      var title = friend.userame + " raucht " + type;
-      var body = "Tippe hier, um weitere Details zu sehen"
-      sendPushNotification(friend.expo_push_token, title, body);
+      var title = getCounterNotificationTitle(type, user.username, friend.config.language);
+      var body = friend.config.language == "de" ? "Schau's dir jetzt an!" : "Check it out now!"
+      var data = {
+        notification_type: "counter",
+        friend_id: user.id
+      }
+      sendPushNotification(friend.expo_push_token, title, body, data);
     });
   }
 

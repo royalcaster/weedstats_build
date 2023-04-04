@@ -16,7 +16,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import toGermanDate from "../../../../data/DateConversion";
 
 //Third Party
-import SwitchSelector from "react-native-switch-selector";
 import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
 import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 
@@ -30,15 +29,19 @@ import SelectorBar from "../../../common/SelectorBar";
 
 const StatsDashboard = ({ localData }) => {
 
+  //Context
   const language = useContext(LanguageContext);
   
+  //State
   const [selectedType, setSelectedType] = useState("main");
   const [selectedTime, setSelectedTime] = useState(0);
-
+  const [streakData, setStreakData] = useState(calcStreak(localData));
   const [showHistory, setShowHistory] = useState(false);
 
+  //Ref
   const icon_slide = useRef(new Animated.Value(-50)).current;
   const icon_opacity = useRef(new Animated.Value(1)).current;
+
   useEffect(() => {
     icon_slide.setValue(-50);
     Animated.timing(
@@ -60,8 +63,6 @@ const StatsDashboard = ({ localData }) => {
       }
     ).start();
   },[selectedType]);
-
-  const [streakData, setStreakData] = useState(calcStreak(localData));
   
   const options_type = [
     { label: language.stats_all, value: 0 },
@@ -78,10 +79,6 @@ const StatsDashboard = ({ localData }) => {
     { label: language.stats_month, value: 8 },
     { label: language.stats_year, value: 9 },
   ];
-
-  useEffect(() => {
-    console.log(streakData.rangeLongestBreak == null);
-  },[]);
 
   const toggleSelection = (index) => {
     switch (index) {
@@ -119,7 +116,6 @@ const StatsDashboard = ({ localData }) => {
   };
 
   return (
-
     <>
 
     {showHistory ? <History show={showHistory} onExit={() => setShowHistory(false)} history={localData}/> : null}

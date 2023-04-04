@@ -104,7 +104,8 @@ export const downloadUser = async ( id, config ) =>
         last_entry_type: docSnap.data().last_entry_type,
         main_counter: docSnap.data().main_counter,
         username_array: docSnap.data().username_array,
-        expo_push_token: docSnap.data().expo_push_token
+        expo_push_token: docSnap.data().expo_push_token,
+        config: docSnap.data().config
       }
     }
   }
@@ -273,6 +274,28 @@ else {
 
 export const getLastMessage = (timestamp) => {
   const last_entry = new Date(timestamp * 1000);
-
   return last_entry.toISOString()
+}
+
+export const getCounterNotificationTitle = (type, name, language) => {
+  var smokes = language == "de" ? "raucht" : "is smoking";
+  if (type == "cookie") {
+    smokes = language == "de" ? "genießt" : "is enjoying";
+  }
+
+  var typename
+  switch(type){
+    case "joint": typename = language == "de" ? "einen Joint" : "a joint";
+    break;
+    case "bong": typename = language == "de" ? "eine Bong" : "a bong";
+    break;
+    case "vape": typename = language == "de" ? "eine Vape" : "a vape";
+    break;
+    case "pipe": typename = language == "de" ? "eine Pfeife" : "a pipe";
+    break;
+    case "cookie": typename = language == "de" ? "ein Edible" : "an edible";
+    break;
+  };
+
+  return name + " " + smokes + " " + typename;
 }

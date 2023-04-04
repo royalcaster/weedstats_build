@@ -384,7 +384,9 @@ const Map = ({ getFriendList }) => {
                 <MaterialIcons name="groups" style={{fontSize: responsiveFontSize(3), color: "white", alignSelf: "center", marginBottom: 3}}/>
                 <View>
                   {friendList.length != 0 ? friendList.map((friend) => {
-                    return <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View>
+                    return <>
+                            {friend.config.shareGPS ? <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View> : null}
+                           </>
                   }) : null}
                 </View>
                 <LinearGradient colors={["rgba(0,0,0,0)","#1E2132"]} style={{width: 70, height: "50%", position: "absolute", bottom: 0}}/>

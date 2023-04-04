@@ -12,6 +12,7 @@ import { LanguageContext } from "../../../../data/LanguageContext";
 import { FriendListContext } from "../../../../data/FriendListContext";
 import MarkerListItem from "./MarkerListItem/MarkerListItem";
 import { uuidv4 } from "@firebase/util";
+import Empty from "../../../common/Empty";
 
 const MarkerList = ({onExit, setRegion}) => {
 
@@ -82,8 +83,11 @@ const MarkerList = ({onExit, setRegion}) => {
 
             {
                 friendList.length != 0 ? friendList.map((friend) => {
-                    return <MarkerListItem key={uuidv4()} friend={friend} 
-                    onPress={() => handlePress(friend)}/>
+                    return (
+                    <>
+                        {friend.config.shareGPS ? <MarkerListItem key={uuidv4()} friend={friend} 
+                    onPress={() => handlePress(friend)}/> : <Empty title={"..."}/>}
+                    </>)
                 }) : null
             }
 

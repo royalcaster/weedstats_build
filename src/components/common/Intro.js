@@ -63,7 +63,6 @@ const Intro = ({ onExit }) => {
         }
         else {
             setStep(step + 1);
-            console.log(step);
         }
     }
 
