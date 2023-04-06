@@ -20,7 +20,6 @@ import CustomModal from "../../common/CustomModal";
 //Third Party
 import moment from "moment";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
-import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
 
 //Service
 import sayings from '../../../data/Sayings.json'
@@ -60,9 +59,6 @@ const Main = ({ onSetUser, sendPushNotification }) => {
   const [showCounterModal, setShowCounterModal] = useState(false);
   const [sayingNr, setSayingNr] = useState(0);
   const [writeComplete, setWriteComplete] = useState(false);
-
-  //Ads hier ergänzen wenn Admob mehr integriert ist!
-  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
@@ -436,17 +432,6 @@ const Main = ({ onSetUser, sendPushNotification }) => {
             </>
           )}
           </View>
-
-          <View style={{flex: 1}}>
-            {/* <BannerAd
-              unitId={TestIds.BANNER}
-              size={BannerAdSize.FULL_BANNER}
-              requestOptions={{
-                requestNonPersonalizedAdsOnly: true,
-              }}
-            /> */}
-          </View>
-          <View style={{flex: 1}}></View>
           </>}
     </>
   );

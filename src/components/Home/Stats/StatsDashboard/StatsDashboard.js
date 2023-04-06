@@ -378,7 +378,7 @@ const StatsDashboard = ({ localData }) => {
           <View style={{height: responsiveHeight(2.5)}}></View>
           
           
-          {selectedType === "main" ? (
+          {/* {selectedType === "main" ? (
             <>
               <StreakPanel
                 streakData={streakData}
@@ -401,7 +401,7 @@ const StatsDashboard = ({ localData }) => {
                 activeLastDay={filterByMostRecent(filterByType(localData, selectedType), 1).length > 0}
               />
             </>
-          ) : null}
+          ) : null} */}
 
           <View style={{ height: 30 }}></View>
 

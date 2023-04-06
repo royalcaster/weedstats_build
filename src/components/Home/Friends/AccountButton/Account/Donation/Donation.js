@@ -5,10 +5,12 @@ import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
 import BackButton from '../../../../../common/BackButton';
+import Button from '../../../../../common/Button';
 
 //Third Party
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
 import { LanguageContext } from '../../../../../../data/LanguageContext';
+import uuid from 'react-native-uuid'
 
 const Donation = ( { onexit } ) => {
 
@@ -64,14 +66,25 @@ const Donation = ( { onexit } ) => {
                 </View>
             </View>
 
-            <View style={{ height: responsiveHeight(1) }}></View>
+            <View style={{width: "80%", alignSelf: "center"}}>
 
-                <View style={{height: 80}} />
-                <Image source={require('../../../../../../data/img/Dön.png')} style={styles.image}></Image>
-                <View style={{height: 50}} />
-                <Text style={styles.text}>Du feierst <Text style={[styles.text, styles.bold]}>WeedStats</Text> und willst das Projekt weiterbringen?</Text>
-                <View style={{height: 10}} />
-                <Text style={[styles.text]}>Gib uns einen Döner aus!</Text>
+                <View style={{ height: responsiveHeight(4)}}></View>
+
+                <Text style={[styles.bold]}>{language.account_support_catch}</Text>
+
+                <Text style={[styles.text]}>{language.account_support_text}{"\n"}</Text>
+            
+                {language.account_support_features.map((feature) => {
+                    return <Text style={styles.feature} key={uuid.v4()}>{feature}</Text>
+                })}
+
+                <View style={{ height: responsiveHeight(4)}}></View>
+
+    
+                <Text style={[styles.bold, {fontSize: responsiveFontSize(5)}]}>{language.language_short == "de" ? "4,20 €" : "€4.20"}<Text style={[styles.text,{fontSize: responsiveFontSize(1.5)}]}>   ({language.account_support_one_time_fee})</Text></Text>
+            </View>
+
+            <Button title={language.account_support_go_premium} color={"#F2338C"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.5)"}/>
 
         </Animated.View>
     )
@@ -91,15 +104,23 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 25
     },
     text: {
-        alignSelf: "center",
         fontFamily: "PoppinsLight",
-        fontSize: 18,
+        fontSize: responsiveFontSize(2),
         color: "white",
-        maxWidth: 200,
-        textAlign: "center"
+    },
+    feature: {
+        fontFamily: "PoppinsLight",
+        fontSize: responsiveFontSize(2),
+        color: "white",
+        backgroundColor: "#1E2132",
+        borderRadius: 10,
+        margin: 5,
+        padding: 15,
     },
     bold: {
-        fontFamily: "PoppinsBlack"
+        fontFamily: "PoppinsBlack",
+        fontSize: responsiveFontSize(3),
+        color: "#F2338C",
     },
     image: {
         height: 150,

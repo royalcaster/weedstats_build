@@ -27,14 +27,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 47,
+      "versionCode": 48,
       "package": "com.royalcaster.WeedStats_build_test",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyB5qQ0ApePizK0VrhpKrNlTLmn4aLgEU6o"
         }
       }
-      
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -44,10 +43,5 @@
         "projectId": "745d1412-8cd1-4bb9-a3f0-3639efef0bdf"
       }
     }
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-4385648611822924~5765960202",
-    "ios_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx",
-    "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
   }
 }

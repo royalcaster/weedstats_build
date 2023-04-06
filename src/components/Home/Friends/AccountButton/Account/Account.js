@@ -28,6 +28,7 @@ import { UserContext } from "../../../../../data/UserContext";
 import { LanguageContext } from "../../../../../data/LanguageContext";
 import Tutorial from "../../../../common/Tutorial";
 import ProfileEditor from "./ProfileEditor/ProfileEditor";
+import MemberSince from "../../../../common/MemberSince";
 
 const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refreshUser }) => {
 
@@ -257,6 +258,8 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
           </Text>
         </View>
 
+        <MemberSince backgroundColor={"#1E2132"} timestamp={1680637124582}/>
+
         <View style={{flex: 4, justifyContent: "center"}}>
 
         <View style={{flexDirection: "row", width: "80%", alignSelf: "center"}}>
@@ -283,6 +286,7 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
                 fontColor={"white"}
                 hovercolor={"rgba(255,255,255,0.15)"}
                 small={true}
+                borderColor={"#F2338C"}
               />
             </View>
         </View>
