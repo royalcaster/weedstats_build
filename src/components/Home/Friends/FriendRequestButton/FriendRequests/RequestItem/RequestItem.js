@@ -115,6 +115,7 @@ const RequestItem = ({ userid, onAccept, onDecline }) => {
                   "rgba(255,255,255,0.05)",
                   false
                 )}
+                onPress={() => onDecline()}
               >
                 <View style={styles.touchable}>
                   <Feather

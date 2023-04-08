@@ -38,7 +38,7 @@ const Friends = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, ref
     
     <Animated.View style={[{ opacity: fadeAnim }, styles.container]}>
         <View style={{ height: responsiveHeight(7) }}></View>
-        <View style={{ alignItems: "center", flexDirection: "row", marginBottom: 0}}>
+        <View style={{ alignItems: "center", flexDirection: "row", marginBottom: 0, zIndex: 10000}}>
           <Text style={styles.bold_heading}>{language.friends_friends}</Text>
   
             <View style={{flex: 1}}></View>
@@ -66,7 +66,7 @@ container: {
     backgroundColor: "#1E2132",
     height: "100%",
     width: "100%",
-    zIndex: 0
+    zIndex: 10
     },
     heading: {
     fontFamily: "PoppinsMedium",

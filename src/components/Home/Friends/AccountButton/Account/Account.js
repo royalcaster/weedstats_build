@@ -244,21 +244,9 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
           </TouchableNativeFeedback>
         </View>
         
-
-        <View style={{ flex: 0.5, justifyContent: "center", backgroundColor: "#1E2132", width: "80%", alignSelf: "center", borderRadius: 15, marginTop: 10}}>
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "rgba(255,255,255,1)",
-              fontSize: responsiveFontSize(1.8),
-              fontFamily: "PoppinsMedium",
-            }}
-          >
-            {language.account_member_since} <Text style={{color: "#0781E1", fontFamily: "PoppinsBlack"}}>{convertMemberSince(user.member_since)}</Text>
-          </Text>
+        <View style={{flex: 1, justifyContent: "center"}}>
+          <MemberSince backgroundColor={"#1E2132"} timestamp={user.member_since}/>
         </View>
-
-        <MemberSince backgroundColor={"#1E2132"} timestamp={1680637124582}/>
 
         <View style={{flex: 4, justifyContent: "center"}}>
 
@@ -340,11 +328,11 @@ export default Account;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    zIndex: 1,
     position: "absolute",
     backgroundColor: "#1E2132",
     alignSelf: "center",
-    marginTop: 50
+    marginTop: 50,
+    zIndex: 10000
   },
   username: {
     color: "white",

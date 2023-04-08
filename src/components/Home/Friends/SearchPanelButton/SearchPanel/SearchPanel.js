@@ -7,6 +7,7 @@ import { useBackHandler } from '@react-native-community/hooks'
 import BackButton from '../../../../common/BackButton'
 import FriendListItem from "../../FriendList/FriendListItem/FriendListItem";
 import Button from "../../../../common/Button";
+import Empty from "../../../../common/Empty";
 
 //Firebase
 import { doc, getDoc, updateDoc, getDocs, collection, query, where } from "@firebase/firestore";
@@ -186,7 +187,7 @@ const SearchPanel = ({onExit}) => {
 
             {!results || results.length == 0 ? 
             <View style={{width: "100%", marginTop: 100}}>
-                <Text style={{fontFamily: "PoppinsMedium", fontSize: responsiveFontSize(2), color: "white", alignSelf: "center"}}>{language.searchpanel_empty}</Text>
+                <Empty title={language.searchpanel_empty}/>
             </View> : <>
             {loading ? <ActivityIndicator color={"#0080FF"} size={"large"} style={{marginTop: 50}}/> : (
                 results.map((result) => {
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
         top: 0,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        zIndex: 1
+        zIndex: 1000000
     },
     input: {
         backgroundColor: "#1E2132",

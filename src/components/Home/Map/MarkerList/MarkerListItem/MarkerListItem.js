@@ -6,7 +6,7 @@ import toGermanDate from "../../../../../data/DateConversion";
 import ProfileImage from "../../../../common/ProfileImage";
 import TypeImage from "../../../../common/TypeImage";
 
-const MarkerListItem = ({ friend, onPress }) => {
+const MarkerListItem = ({ marker, onPress }) => {
 
     const screen_height = Dimensions.get("screen").height;
     const screen_width = Dimensions.get("screen").width;
@@ -41,23 +41,23 @@ const MarkerListItem = ({ friend, onPress }) => {
                 <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", false)} onPress={() => onPress()}>
                     <View style={styles.touchable}>
                         {
-                            friend ?
+                            marker ?
                             <>
                                 <View style={{flex: 1}}>
-                                    <ProfileImage url={friend.photoUrl} x={60}/>
+                                    <ProfileImage url={marker.photoUrl} x={60}/>
                                 </View>
 
                                 <View style={{flex: 3, flexDirection: "column", paddingVertical: 10}}>
                                     <View style={{flex: 1, justifyContent: "center"}}>
-                                        <Text style={styles.username}>{friend.username}</Text>
+                                        <Text style={styles.username}>{marker.username}</Text>
                                     </View>
                                     <View style={{flex: 1, justifyContent: "center"}}>
-                                        <Text style={styles.date}>{toGermanDate(new Date(friend.last_entry_timestamp))}</Text>
+                                        <Text style={styles.date}>{toGermanDate(new Date(marker.timestamp))}</Text>
                                     </View>
                                 </View>
 
                                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                                    <TypeImage type={friend.last_entry_type} x={40}/>
+                                    <TypeImage type={marker.type} x={40}/>
                                 </View>
                             </>
                             : null

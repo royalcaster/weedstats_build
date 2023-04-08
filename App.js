@@ -60,11 +60,13 @@ export default function App() {
   const auth = getAuth(app);
 
   useEffect(() => {
-    StatusBar.setBackgroundColor("rgba(0,0,0,0)");
-    StatusBar.setTranslucent(true);
-    StatusBar.setHidden(false);
-    StatusBar.setBarStyle("light-content");
-    NavigationBar.setBackgroundColorAsync("#1E2132");
+    if (Platform.OS == "android") {
+      NavigationBar.setBackgroundColorAsync("#1E2132");
+      StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+      StatusBar.setTranslucent(true);
+      StatusBar.setHidden(false);
+      StatusBar.setBarStyle("light-content");
+    }
     checkForUser();
 
     //Notification Setup
@@ -109,7 +111,7 @@ export default function App() {
   },[config]);
 
   useBackHandler(() => {
-    modalVisible ? StatusBar.setBackgroundColor("rgba(0,0,0,0)") : null;
+    modalVisible && Platform.OS == "android" ? StatusBar.setBackgroundColor("rgba(0,0,0,0)") : null;
     return true;
   });
 
@@ -228,13 +230,23 @@ export default function App() {
 
   //Lädt Freundesliste des angemeldeten Nutzers herunter
   const getFriendList = async () => {
-    if (user != null) {
-      let buffer = [];
-      user.friends.forEach(async (friend) => {
-        let data = await downloadUser(friend);
-        buffer.push(data);
-      });
-      setFriendList(buffer);
+    const docSnap = await getDoc(doc(firestore, "users", user.id));
+    var friends;
+    try {
+      if (docSnap.exists()) {
+        friends = docSnap.data().friends;
+        var buffer = [];
+        setFriendList([]);
+        if (user != null) {
+          friends.forEach(async (friend) => {
+            let data = await downloadUser(friend);
+            setFriendList(oldFriendList => [...oldFriendList, data]);
+          });
+        }
+      }
+    }
+    catch(e){
+      console.log("Check getFriendList (App.js): " + e);
     }
   }
 
@@ -382,7 +394,7 @@ export default function App() {
         pipe_counter: 0,
         vape_counter: 0,
         cookie_counter: 0,
-        member_since: new Date().toISOString().slice(0, 10),
+        member_since: Date.now(),
         last_entry_timestamp: null,
         last_entry_latitude: null,
         last_entry_longitude: null,

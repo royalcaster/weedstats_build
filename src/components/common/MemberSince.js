@@ -21,38 +21,77 @@ const MemberSince = ({ backgroundColor, timestamp }) => {
 
     if (years > 0) {
         if (language.language_short == "de") {
-            final_string += years + " Jahren"
+            if (years == 1) {
+                final_string += years + " Jahr"
+            }
+            else {
+                final_string += years + " Jahren"
+            }
         }
         else {
-            final_string += years + " Years"
+            if (years == 1) {
+                final_string += years + " year"
+            }
+            else {
+                final_string += years + " years"
+            }
         }
     }
 
     if (months > 0) {
         if (language.language_short == "de") {
-            final_string += months + " Monaten"
+            if (months == 1) {
+                final_string += months + " Monat"
+            }
+            else {
+                final_string += months + " Monaten"
+            }
         }
         else {
-            final_string += months + " months"
+            if (months == 1) {
+                final_string += months + " month"
+            }
+            else {
+                final_string += months + " months"
+            }
         }
     }
 
     if (days > 0) {
         if (language.language_short == "de") {
-            final_string += days + " Tagen"
+            if (days == 1) {
+                final_string += days + " Tag"
+            }
+            else {
+                final_string += days + " Tagen"
+            }
         }
         else {
-            final_string += days + " day"
+            if (days == 1) {
+                final_string += days + " day"
+            }
+            else {
+                final_string += days + " days"
+            }
         }
     }
+
+    if (years == 0 && months == 0 && days == 0) {
+        if (language.language_short == "de") {
+            final_string = "heute";
+        }
+        else {
+            final_string = "today";
+        }
+    }
+
+    
 
     return (
         <Animated.View style={[styles.container,{backgroundColor: backgroundColor}]}>
             <View style={styles.part}>
-                <Text>{language.account_member_since} {final_string}</Text>
-            </View>
-            <View style={styles.part}>
-                <Text>{date.toLocaleDateString()}</Text>
+                <Text style={styles.text}>{language.account_member_since} {final_string}</Text>
+                <Text style={styles.date}>{date.toLocaleDateString()}</Text>
             </View>
         </Animated.View>
     );
@@ -62,16 +101,22 @@ export default MemberSince
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "green",
         width: "80%",
         alignSelf: "center",
         borderRadius: 15,
-        display: "flex",
-        flexDirection: "column"
+        padding: 15
     },
     part: {
-        flex: 1,
-        padding: 10
+        justifyContent: "center"
+    },
+    text: {
+        color: "white",
+        textAlign: "center",
+        fontFamily: "PoppinsMedium"
+    },
+    date: {
+        color: "#0080FF",
+        textAlign: "center",
+        fontFamily: "PoppinsMedium"
     }
 });

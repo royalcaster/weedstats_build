@@ -14,7 +14,7 @@ import MarkerListItem from "./MarkerListItem/MarkerListItem";
 import { uuidv4 } from "@firebase/util";
 import Empty from "../../../common/Empty";
 
-const MarkerList = ({onExit, setRegion}) => {
+const MarkerList = ({onExit, setRegion, markers}) => {
 
     const user = useContext(UserContext)
     const language = useContext(LanguageContext);
@@ -54,13 +54,11 @@ const MarkerList = ({onExit, setRegion}) => {
         return true
     })
 
-    const handlePress = (friend) => {
+    const handlePress = (marker) => {
         setRegion({
-            latitude: friend.last_entry_latitude,
-            longitude: friend.last_entry_longitude,
-            latitudeDelta: 0.25,
-            longitudeDelta: 0.25
-        });
+            latitude: marker.latitude,
+            longitude: marker.longitude
+        }, 1000);
         hide();
     }
 
@@ -80,20 +78,12 @@ const MarkerList = ({onExit, setRegion}) => {
             </View>
             
             <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}}>
-
             {
-                friendList.length != 0 ? friendList.map((friend) => {
-                    return (
-                    <>
-                        {friend.config.shareGPS ? <MarkerListItem key={uuidv4()} friend={friend} 
-                    onPress={() => handlePress(friend)}/> : <Empty title={"..."}/>}
-                    </>)
+                markers.length != 0 ? markers.map((marker) => {
+                    return <MarkerListItem key={uuidv4()} marker={marker} onPress={() => handlePress(marker)}/>
                 }) : null
             }
-
             </ScrollView>
-
-            
         </Animated.View>
     );
 }

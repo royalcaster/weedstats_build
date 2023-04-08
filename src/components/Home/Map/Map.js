@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext, createRef } from "react";
 import { StyleSheet, LogBox, Image, View, Text, ScrollView, Dimensions, TouchableOpacity, TouchableNativeFeedback, Vibration } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -58,13 +58,36 @@ const Map = ({ getFriendList }) => {
   const friends_icon = <MaterialIcons name="groups" style={{fontSize: 20, color: "white"}}/>
   const map_icon = <MaterialCommunityIcons name="map-marker-radius-outline" style={{fontSize: 20, color: "white"}}/>
 
+  const mapViewRef = createRef();
+
+  async function init() {
+    fillMarkers(); //Freunde + deren letzte Einträge
+    setLocalData(filterNull(await getLocalData(user, () => null))); //Einträge des Users für Heatmap
+  }
+
   useEffect(() => {
-    async function test() {
-      fillMarkers(); //Freunde + deren letzte Einträge
-      setLocalData(filterNull(await getLocalData(user, () => null))); //Einträge des Users für Heatmap
-    }
-    test();
+    init();
   }, []);
+
+  useEffect(() => {
+    if (markers.length != 0) {
+      setRegion({
+        latitude: markers[0].latitude,
+        longitude: markers[0].longitude,
+        latitudeDelta: 0.25,
+        longitudeDelta: 0.25
+      });
+    }
+    else {
+      setRegion({
+        latitude: 50,
+        longitude: 39,
+        latitudeDelta: 0.25,
+        longitudeDelta: 0.25
+      });
+      setLoading(false);
+    }
+  },[markers]);
 
   useEffect(() => {
     if (localData != null) {
@@ -94,31 +117,26 @@ const Map = ({ getFriendList }) => {
 
   const fillMarkers = () => {
     setLoading(true);
-    var buffer = [];
-      for (let i = 0; i<friendList.length; i++) {
-        if (
-          friendList[i].last_entry_latitude != null &&
-          friendList[i].last_entry_longitude != null
+    setMarkers([]);
+    friendList.forEach((friend) => {
+      if (
+          friend.config.shareLastEntry && 
+          friend.config.shareGPS &&
+          friend.last_entry_latitude != null &&
+          friend.last_entry_longitude != null &&
+          friend.last_entry_timestamp != null &&
+          friend.last_entry_type != null
         ) {
-          buffer.push({
-            latitude: friendList[i].last_entry_latitude,
-            longitude: friendList[i].last_entry_longitude,
-            timestamp: friendList[i].last_entry_timestamp,
-            type: friendList[i].last_entry_type,
-            photoUrl: friendList[i].photoUrl,
-            username: friendList[i].username,
-          });
-          buffer.length == 1 ? setRegion({
-            latitude: friendList[i].last_entry_latitude,
-            longitude: friendList[i].last_entry_longitude,
-            latitudeDelta: .25,
-            longitudeDelta: .25,
-          }) : null;
-          
-        }
-      };
-      setMarkers(buffer);
-      setLoading(false);
+        setMarkers(oldMarkers => [...oldMarkers, {
+          latitude: friend.last_entry_latitude,
+          longitude: friend.last_entry_longitude,
+          timestamp: friend.last_entry_timestamp,
+          type: friend.last_entry_type,
+          photoUrl: friend.photoUrl,
+          username: friend.username
+        }])
+      }
+    });
   }
 
   const toggleMapType = () => {
@@ -286,11 +304,12 @@ const Map = ({ getFriendList }) => {
         >
         </LinearGradient>
 
-        {showMakerList ? <MarkerList onExit={() => setShowMarkerList(false)} setRegion={(region) => setRegion(region)}/> : null}
+        {showMakerList ? <MarkerList markers={markers} onExit={() => setShowMarkerList(false)} setRegion={(region) => mapViewRef.current.animateToRegion(region)}/> : null}
 
         {!loading && localDataLoaded ? (
           <>
           <MapView
+            ref = {mapViewRef}
             provider={PROVIDER_GOOGLE}
             style={[{ height: windowHeight }, styles.map]}
             customMapStyle={mapStyle}
@@ -298,13 +317,12 @@ const Map = ({ getFriendList }) => {
             mapType={mapType}
             followsUserLocation={true}
             region={region}
-            onRegionChangeComplete={(region) => setRegion(region)}
+            /* onRegionChangeComplete={(region) => setRegion(region)} */
             showsCompass={false}
             showsTraffic={false}
             showsIndoors={false}
             pitchEnabled={true}
             showsMyLocationButton={false}
-            ref={camref}
             loadingEnabled={true}
             loadingBackgroundColor={"#131520"}
             loadingIndicatorColor={"#484F78"}
@@ -325,7 +343,7 @@ const Map = ({ getFriendList }) => {
               /> } 
               </> : null}
 
-            {view == "friends" ? (
+            {view == "friends" && !loading ? (
               <>
                 {<>
                 {markers.map((marker, index) => (
@@ -383,9 +401,9 @@ const Map = ({ getFriendList }) => {
               <View style={styles.touchable2}>
                 <MaterialIcons name="groups" style={{fontSize: responsiveFontSize(3), color: "white", alignSelf: "center", marginBottom: 3}}/>
                 <View>
-                  {friendList.length != 0 ? friendList.map((friend) => {
+                  {markers.length != 0 ? markers.map((marker) => {
                     return <>
-                            {friend.config.shareGPS ? <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={friend.photoUrl} type={1}/></View> : null}
+                              <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={marker.photoUrl} type={1}/></View>
                            </>
                   }) : null}
                 </View>

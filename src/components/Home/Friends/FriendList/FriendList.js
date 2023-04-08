@@ -1,6 +1,6 @@
 //React
 import React, {useEffect, useRef, useState, memo, useContext} from "react";
-import { Animated, View, StyleSheet, ScrollView, Text } from "react-native";
+import { Animated, View, StyleSheet, ScrollView, Text, RefreshControl } from "react-native";
 
 //Custom Components
 import Empty from "../../../common/Empty";
@@ -21,18 +21,18 @@ import { LanguageContext } from "../../../../data/LanguageContext";
 
 const FriendList = ({ friendList, toggleNavbar, getFriendList, refreshUser }) => {
 
+    //Context
     const user = useContext(UserContext);
-    const [loading, setLoading] = useState(false);
-    
-    const [showFriend, setShowFriend] = useState(false);
-    const [activeFriend, setActiveFriend] = useState(user);
-
     const language = useContext(LanguageContext);
 
+    //State
+    const [loading, setLoading] = useState(false);
+    const [showFriend, setShowFriend] = useState(false);
+    const [activeFriend, setActiveFriend] = useState(user);
+    const [refreshing, setRefreshing] = useState(false);
+
     return (
-
         <>
-
         {friendList.length != 0 ?
             <FriendPage
                 show={showFriend}
@@ -47,18 +47,23 @@ const FriendList = ({ friendList, toggleNavbar, getFriendList, refreshUser }) =>
         <Animated.View style={[styles.container]}>
             {!loading ?  
                 <>
-                    {friendList.length != 0 ? 
-                        <ScrollView>
-                            {friendList.map((friend) => {
-                                return <FriendListItem toggleNavbar={toggleNavbar} key={uuid.v4()} friend={friend} onPress={() => {setActiveFriend(friend); setShowFriend(true)}}/>
-                            })}
-                            <View style={{height: responsiveHeight(5)}}></View>
-                        </ScrollView>
-                        : 
-                        <View style={{justifyContent: "center", flex: 1}}>
-                            <Text style={styles.empty_label}>{language.empty_no_friends_yet}</Text>
-                            <View style={{height: responsiveHeight(2.5)}}></View>
-                        </View>}
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={() => getFriendList()} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>
+                        }>
+                        {friendList.length != 0 ?
+                        <>
+                        {friendList.map((friend) => {
+                            return <FriendListItem toggleNavbar={toggleNavbar} key={uuid.v4()} friend={friend} onPress={() => {setActiveFriend(friend); setShowFriend(true)}}/>
+                        })}
+
+                        </> : <View style={{justifyContent: "center", flex: 1}}>
+                                <View style={{height: responsiveHeight(5)}}></View>
+                                <Empty title={language.empty_no_friends_yet}/>
+                            </View>}
+
+                        <View style={{height: responsiveHeight(5)}}></View>
+                    </ScrollView>
                 </> 
                 : 
                 <View style={{height: "90%", justifyContent: "center"}}>

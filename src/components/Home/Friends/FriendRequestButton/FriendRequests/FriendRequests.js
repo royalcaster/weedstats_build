@@ -12,6 +12,7 @@ import {
   Modal,
   BackHandler,
   Alert,
+  RefreshControl
 } from "react-native";
 
 //Custom Components
@@ -38,17 +39,24 @@ import { LanguageContext } from "../../../../../data/LanguageContext";
 
 const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
 
+  //Context
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
 
-  const screen_height = Dimensions.get("screen").height;
+  //State
   const [modalVisible, setModalVisible] = useState(false);
   const [activeRequested, setActiveRequested] = useState(null);
   const [alreadySent, setAlreadySent] = useState(false);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  
+  //Constants
+  const screen_height = Dimensions.get("screen").height;
 
+  //Refs
   const slideAnim = useRef(new Animated.Value(screen_height)).current;
+
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -182,6 +190,25 @@ const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
     loadRequests();
     setLoading(false);
   };
+
+  const declineFriend = async (result) => {
+    setLoading(true);
+    const docSnap = await getDoc(doc(firestore, "users", user.id));
+    var requests;
+    if (docSnap.exists()) {
+      requests = docSnap.data().requests;
+      var new_array = requests.filter(r => r != result);
+      await updateDoc(doc(firestore, "users", user.id),{
+        requests: new_array
+      });
+      setResults(new_array);
+    }
+    refreshUser({
+      requests: new_array
+    });
+    loadRequests();
+    setLoading(false);
+  }
 
   return (
     <Animated.View
@@ -326,7 +353,9 @@ const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
         ) : (
           <>
             {results ? (
-              <ScrollView style={{ width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} contentContainerStyle={results.length != 0 ? null : {justifyContent: "center", flex: 1}}>
+              <ScrollView refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={() => loadRequests()} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>
+              } style={{ width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} contentContainerStyle={results.length != 0 ? null : {justifyContent: "center", flex: 1}}>
                 {results.length != 0 ? (
                   results.map((result) => {
                     return (
@@ -334,6 +363,7 @@ const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
                         key={uuid.v4()}
                         userid={result}
                         onAccept={() => acceptFriend(result)}
+                        onDecline={() => declineFriend(result)}
                       />
                     );
                   })

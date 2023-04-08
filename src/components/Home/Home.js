@@ -2,6 +2,7 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import {
   Animated,
+  Platform,
   StatusBar,
   StyleSheet,
   Vibration,
@@ -40,8 +41,10 @@ export default function Home({ sendPushNotification ,onSetUser, onWriteComplete,
   const navSlide = useRef(new Animated.Value(0)).current;
   
   useEffect(() => {
-    StatusBar.setBackgroundColor("rgba(0,0,0,0)");
-    NavigationBar.setBackgroundColorAsync("#1E2132");
+    if (Platform.OS == "android") {
+      NavigationBar.setBackgroundColorAsync("#1E2132");
+      StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+    }
   }, [view]);
 
   const toggleNavbar = (x) => {

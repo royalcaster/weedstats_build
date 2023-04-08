@@ -38,6 +38,7 @@ import { mapStyle } from "../../../../../../data/CustomMapStyle";
 import { uuidv4 } from "@firebase/util";
 import TypeImage from "../../../../../common/TypeImage";
 import Empty from "../../../../../common/Empty";
+import MemberSince from "../../../../../common/MemberSince";
 
 const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFriend }) => {
 
@@ -66,13 +67,6 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
   const opacityAnim2 = useRef(new Animated.Value(0)).current;
   const scrollRef = useRef();
 
-  useEffect(() => {
-    /* onst subscription = Notifications.addNotificationResponseReceivedListener(response => {
-      const url = response.notification.request.content.data.url;
-      Linking.openURL(url);
-    });
-    return () => subscription.remove(); */
-  },[]);
 
   useEffect(() => {
     if (user) {
@@ -588,18 +582,8 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
                 <Text style={styles.label}>{language.account_member_since}</Text>
                 <View style={{ height: 10 }}></View>
 
-                <View style={[styles.activity_container,{padding: responsiveFontSize(2)}]}>
-                  <Text
-                    style={{
-                      alignSelf: "center",
-                      color: "rgba(255,255,255,1)",
-                      fontSize: responsiveFontSize(1.8),
-                      fontFamily: "PoppinsMedium",
-                    }}
-                  >
-                    <Text style={{color: "white", fontFamily: "PoppinsMedium"}}>{convertMemberSince(user.member_since)}</Text>
-                  </Text>
-                </View>
+                <MemberSince timestamp={user.member_since} backgroundColor={"#1E2132"}/>
+                
               </View>
 
               {/**FREUND ENTFERNEN */}
@@ -621,17 +605,9 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
               </View>
 
               <View style={{height: 100}}></View>
-
           </View>
-
           </ScrollView> 
-
-
         </View>
-
-       
-
-
         </Animated.View>
         
       ) : null}
@@ -646,7 +622,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    zIndex: 10,
+    zIndex: 10000,
     backgroundColor: "#1E2132",
     borderRadius: 25,
     overflow: "hidden"

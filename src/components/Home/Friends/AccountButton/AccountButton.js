@@ -35,7 +35,7 @@ const AccountButton = ({ handleLogOut, toggleNavbar, deleteAccount, refreshUser 
 
     return (<>
 
-    <Account
+      <Account
         handleLogOut={handleLogOut}
         onexit={() => setShowAccount(false)}
         toggleNavbar={toggleNavbar}

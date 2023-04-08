@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Image, ScrollView, Animated, Easing, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, Animated, Easing, Dimensions, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../../../data/UserContext";
 import { Vibration } from "react-native";
@@ -218,12 +218,14 @@ const Main = ({ onSetUser, sendPushNotification }) => {
 
   const toggleBorderColor = ( color, color2 ) => {
     setBorderColor(color);
-    StatusBar.setBackgroundColor(color);
-    if (color2) {
-      NavigationBar.setBackgroundColorAsync(color2);
-    }
-    else {
-      NavigationBar.setBackgroundColorAsync(color);
+    if (Platform.OS == "android") {
+      StatusBar.setBackgroundColor(color);
+      if (color2) {
+        NavigationBar.setBackgroundColorAsync(color2);
+      }
+      else {
+        NavigationBar.setBackgroundColorAsync(color);
+      }
     }
   }
 
