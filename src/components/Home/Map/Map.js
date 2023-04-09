@@ -287,6 +287,13 @@ const Map = ({ getFriendList }) => {
     );
   };
 
+  const refreshMarkers = () => {
+    setLoading(true);
+    fillMarkers();
+    setLoading(false);
+    setShowMarkerList(true);
+  }
+
   return (
     <View style={styles.container} scrollEnabled={false}>
       <View style={{ alignItems: "center" }}>
@@ -304,7 +311,7 @@ const Map = ({ getFriendList }) => {
         >
         </LinearGradient>
 
-        {showMakerList ? <MarkerList markers={markers} onExit={() => setShowMarkerList(false)} setRegion={(region) => mapViewRef.current.animateToRegion(region)}/> : null}
+        {showMakerList ? <MarkerList onRefresh={() => refreshMarkers()} markers={markers} onExit={() => setShowMarkerList(false)} setRegion={(region) => mapViewRef.current.animateCamera(region)}/> : null}
 
         {!loading && localDataLoaded ? (
           <>
@@ -326,6 +333,14 @@ const Map = ({ getFriendList }) => {
             loadingEnabled={true}
             loadingBackgroundColor={"#131520"}
             loadingIndicatorColor={"#484F78"}
+            onMapLoaded={() => markers.length != 0 ? mapViewRef.current.animateCamera({
+              center: {
+                 latitude: markers[0].latitude,
+                 longitude: markers[0].longitude,
+             },
+             pitch: 0,
+             zoom: 15
+          }, 1000) : null}
           > 
             {view == "heatmap" ? 
             <>

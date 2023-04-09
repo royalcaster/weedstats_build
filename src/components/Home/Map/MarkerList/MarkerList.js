@@ -1,6 +1,6 @@
 //React
 import React, {useContext, useEffect, useRef, useState} from "react";
-import { Animated, View, StyleSheet, Dimensions, Easing, Text, ScrollView } from "react-native";
+import { Animated, View, StyleSheet, Dimensions, Easing, Text, ScrollView, RefreshControl } from "react-native";
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
@@ -12,21 +12,21 @@ import { LanguageContext } from "../../../../data/LanguageContext";
 import { FriendListContext } from "../../../../data/FriendListContext";
 import MarkerListItem from "./MarkerListItem/MarkerListItem";
 import { uuidv4 } from "@firebase/util";
-import Empty from "../../../common/Empty";
 
-const MarkerList = ({onExit, setRegion, markers}) => {
+const MarkerList = ({onExit, setRegion, markers, onRefresh}) => {
 
+    //Context
     const user = useContext(UserContext)
     const language = useContext(LanguageContext);
     const friendList = useContext(FriendListContext)
 
+    //State
+    const [refreshing, setRefreshing] = useState(false);
+    
+    //Constants
     const screen_height = Dimensions.get("screen").height;
-    const [modalVisible, setModalVisible] = useState(false);
-    const [activeRequested, setActiveRequested] = useState(null);
-    const [alreadySent, setAlreadySent] = useState(false);
-    const [results, setResults] = useState(null);
-    const [loading, setLoading] = useState(false);
 
+    //Refs
     const slideAnim = useRef(new Animated.Value(screen_height)).current;
     const textInputRef = useRef(null);
 
@@ -56,8 +56,12 @@ const MarkerList = ({onExit, setRegion, markers}) => {
 
     const handlePress = (marker) => {
         setRegion({
-            latitude: marker.latitude,
-            longitude: marker.longitude
+            center: {
+               latitude: marker.latitude,
+               longitude: marker.longitude,
+           },
+           pitch: 0,
+           zoom: 15
         }, 1000);
         hide();
     }
@@ -77,7 +81,7 @@ const MarkerList = ({onExit, setRegion, markers}) => {
                 </View>
             </View>
             
-            <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}}>
+            <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>}>
             {
                 markers.length != 0 ? markers.map((marker) => {
                     return <MarkerListItem key={uuidv4()} marker={marker} onPress={() => handlePress(marker)}/>
