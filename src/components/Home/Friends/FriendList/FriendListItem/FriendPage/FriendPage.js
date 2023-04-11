@@ -582,7 +582,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
                 <Text style={styles.label}>{language.account_member_since}</Text>
                 <View style={{ height: 10 }}></View>
 
-                <MemberSince timestamp={user.member_since} backgroundColor={"#1E2132"}/>
+                <MemberSince timestamp={user.member_since} backgroundColor={"#131520"}/>
                 
               </View>
 

@@ -23,15 +23,13 @@ import Button from "./Button";
 //Konstanten
 import Levels from '../../data/Levels.json'
 import { mapStyle } from "../../data/CustomMapStyle";
-import TutorialStatusbar from "./TutorialStatusbar";
 import { LanguageContext } from "../../data/LanguageContext";
 
-const Tutorial = ({ onDone, extraHeight, toggleNavbar, type }) => {
+const Tutorial = ({ onDone, extraHeight, toggleNavbar, type}) => {
 
     const language = useContext(LanguageContext);
 
     const [testCounter, setTestCounter] = useState(206);
-    const [testCounter2, setTestCounter2] = useState(275);
 
     const touchRef = useRef(new Animated.Value(0)).current
 
@@ -45,15 +43,16 @@ const Tutorial = ({ onDone, extraHeight, toggleNavbar, type }) => {
       edible: false
     });
 
+    
     useEffect(() => {
-      toggleNavbar(0);
+     /*  toggleNavbar(0); */
       toggleTouchAnimation();
       show();
     },[]);
 
     useBackHandler(() => {
       if (type != "first") {
-        toggleNavbar(1);
+        /* toggleNavbar(1); */
         onDone();
       }
       return true
@@ -368,7 +367,7 @@ const hide = () => {
         <View style={{height: responsiveHeight(10)}}></View>
 
         {consented ?
-        <Button title={language.tutorial_get_started} fontColor={"#1E2132"} color={"white"} color2={"#1E2132"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => {toggleNavbar(1); hide()}}/>
+        <Button title={language.tutorial_get_started} fontColor={"#1E2132"} color={"white"} color2={"#1E2132"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => { onDone()}}/>
         :
         <Button title={language.tutorial_get_started} fontColor={"#1E2132"} color={"rgba(160,160,160,1)"} color2={"#1E2132"} hovercolor={"rgba(160,160,160,1)"} onPress={() => Alert.alert(language.tutorial_consent_alert)}/>
         }
@@ -379,7 +378,7 @@ const hide = () => {
   const readyScreen = () => {
     return <View style={{width: "100%", alignSelf: "center"}}>
 
-        <Button title={"Weitermachen"} fontColor={"#1E2132"} color={"white"} color2={"#1E2132"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => {toggleNavbar(1); hide()}}/>
+        <Button title={"Weitermachen"} fontColor={"#1E2132"} color={"white"} color2={"#1E2132"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => {onDone()}}/>
         
       </View>
   }

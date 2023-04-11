@@ -3,11 +3,11 @@ import React, { useRef, useContext } from "react";
 import { View, StyleSheet, Text, Animated, Easing, Dimensions } from "react-native";
 
 //Custom Components
-import BackButton from "../../../../../common/BackButton";
-import LevelImage from "../../../../../common/LevelImage";
+import BackButton from "../../../common/BackButton";
+import LevelImage from "../../../common/LevelImage";
 
 //Service
-import { LanguageContext } from "../../../../../../data/LanguageContext";
+import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
 import { useBackHandler } from "@react-native-community/hooks";
 
@@ -51,7 +51,7 @@ const Levels = ({ onexit, show }) => {
 
       
       <View style={{height: "90%", top: 0, position: "absolute", width: "100%"}}>
-      <View style={{ height: responsiveHeight(2) }}></View>
+      <View style={{ height: responsiveHeight(5) }}></View>
       <View style={{flexDirection: "row", alignContent: "center", alignItems: "center"}}>
         <View style={{marginLeft: 20}}>
             <BackButton onPress={() => hide()}/>

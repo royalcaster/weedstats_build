@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: "center",
     textAlign: "center",
+    flex: 1,
     backgroundColor: "#484F78",
-    flex: 1
   },
   touchable: {
     flex: 1,

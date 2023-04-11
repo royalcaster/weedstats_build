@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    zIndex: 10
+    zIndex: 10,
+    borderRadius: 0
   },
 });

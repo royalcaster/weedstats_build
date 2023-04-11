@@ -4,12 +4,12 @@ import { StyleSheet, Image, View, Text, Pressable, Animated, Easing, Dimensions 
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
-import BackButton from '../../../../../common/BackButton';
-import Button from '../../../../../common/Button';
+import BackButton from '../../../common/BackButton';
+import Button from '../../../common/Button';
 
 //Third Party
 import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions';
-import { LanguageContext } from '../../../../../../data/LanguageContext';
+import { LanguageContext } from '../../../../data/LanguageContext';
 import uuid from 'react-native-uuid'
 
 const Donation = ( { onexit } ) => {
@@ -55,7 +55,7 @@ const Donation = ( { onexit } ) => {
     return (
         <Animated.View style={[{transform: [{translateX: fadeAnim}], opacity: opacityAnim, height: "100%"},styles.container]}>
 
-            <View style={{ height: responsiveHeight(1) }}></View>
+            <View style={{ height: responsiveHeight(5) }}></View>
 
             <View style={{flexDirection: "row", maxHeight: 60, alignItems: "center"}}>
                 <View style={{marginLeft: 20, justifyContent: "center"}}>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         flex: 1,
         position: "absolute",
-        zIndex: 21,
+        zIndex: 5,
         borderTopRightRadius: 25,
         borderTopLeftRadius: 25
     },

@@ -16,10 +16,17 @@ import Tutorial from '../../common/Tutorial';
 import CustomLoader from "../../common/CustomLoader";
 import Empty from "../../common/Empty";
 import CustomModal from "../../common/CustomModal";
+import Button from "../../common/Button";
+import Donation from './Donation/Donation'
+import Levels from './Levels/Levels'
+import AppInfo from './AppInfo/AppInfo'
 
 //Third Party
 import moment from "moment";
-import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Feather from 'react-native-vector-icons/Feather'
 
 //Service
 import sayings from '../../../data/Sayings.json'
@@ -31,7 +38,7 @@ import CounterModal from "../../common/CounterModal";
 import { FriendListContext } from "../../../data/FriendListContext";
 import { getCounterNotificationTitle } from "../../../data/Service";
 
-const Main = ({ onSetUser, sendPushNotification }) => {
+const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
   //Context
   const user = useContext(UserContext);
@@ -59,6 +66,9 @@ const Main = ({ onSetUser, sendPushNotification }) => {
   const [showCounterModal, setShowCounterModal] = useState(false);
   const [sayingNr, setSayingNr] = useState(0);
   const [writeComplete, setWriteComplete] = useState(false);
+  const [showLevels, setShowLevels] = useState(false);
+  const [showDonation, setShowDonation] = useState(false);
+  const [showAppInfo, setShowAppInfo] = useState(false);
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
@@ -329,6 +339,12 @@ const Main = ({ onSetUser, sendPushNotification }) => {
 
         <CustomModal show={showCounterModal} child={CounterModalContent}/>
 
+        {showLevels   ? <Levels onexit={() => setShowLevels(false)} show={showLevels}/> : null}
+        {showDonation ? <Donation onexit={() => setShowDonation(false)}/> : null}
+        {showTutorial ? <Tutorial onDone={() => setShowTutorial(false)} toggleNavbar={toggleNavbar} type={"regular"}/> : null}
+        {showAppInfo ? <AppInfo show={showAppInfo} onExit={() => setShowAppInfo(false)}/> : null}
+
+
         {showTutorial ? 
         <View style={{zIndex: 3000, position: "absolute", height: Dimensions.get("screen").height, width: "100%"}}>
           <Tutorial renderItem={renderItem} slides={slides} onDone={onDone} extraHeight={50}/>
@@ -428,7 +444,69 @@ const Main = ({ onSetUser, sendPushNotification }) => {
                     />
                   );
                 })}
+
+                <View style={{height: responsiveHeight(2.5)}}></View>
                 
+                <View style={{flex: 4, justifyContent: "center"}}>
+
+                <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+                    <View style={{flex: 1}}>
+                      <Button
+                        fontColor={"white"}
+                        onPress={() =>{ setShowLevels(true)}}
+                        borderradius={100}
+                        color={"#131520"}
+                        title={" " + language.account_levels}
+                        icon={<FontAwesome name="trophy" style={styles.money_icon} />}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                      />
+                    </View>
+                    <View style={{width: responsiveWidth(2)}}></View>
+                    <View style={{flex: 1}}>
+                      <Button
+                        onPress={() => setShowDonation(true)}
+                        title={language.account_support}
+                        icon={<MaterialIcons name="euro" style={styles.money_icon} />}
+                        borderradius={100}
+                        color={"#131520"}
+                        fontColor={"white"}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                        borderColor={"#F2338C"}
+                      />
+                    </View>
+                </View>
+
+                <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+                    <View style={{flex: 1}}>
+                      <Button
+                        onPress={() => setShowTutorial(true)}
+                        title={language.account_tutorial}
+                        icon={<Feather name="help-circle" style={styles.money_icon} />}
+                        borderradius={100}
+                        color={"#131520"}
+                        fontColor={"white"}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                      />
+                    </View>
+                    <View style={{width: responsiveWidth(2)}}></View>
+                    <View style={{flex: 1}}>
+                      <Button
+                        onPress={() => setShowAppInfo(true)}
+                        title={"App-Info"}
+                        icon={<Feather name="info" style={styles.money_icon} />}
+                        borderradius={100}
+                        color={"#131520"}
+                        fontColor={"white"}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                      />
+                    </View>
+                </View>
+                </View>
+
                 <View style={{height: responsiveHeight(15)}}></View>
               </ScrollView>}
             </>
@@ -465,5 +543,10 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(1.5),
     fontFamily: "PoppinsLight",
     position: "relative",
+  },
+  money_icon: {
+    fontSize: 25,
+    color: "white",
+    textAlignVertical: "center",
   },
 });

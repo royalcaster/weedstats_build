@@ -52,8 +52,6 @@ const Friends = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, ref
 
         <FriendList toggleNavbar={toggleNavbar} friendList={friendList} getFriendList={getFriendList} refreshUser={refreshUser} />
 
-        <AccountButton handleLogOut={handleLogOut} toggleNavbar={toggleNavbar} deleteAccount={deleteAccount} refreshUser={refreshUser}/>
-
       </Animated.View>
 
     </>)

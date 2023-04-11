@@ -1,16 +1,24 @@
+//React
 import { useBackHandler } from "@react-native-community/hooks";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { View, StyleSheet, Animated, Dimensions, Easing, Text, TextInput, ScrollView } from 'react-native'
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import * as ImagePicker from 'expo-image-picker';
+
+//Custom Components
+import BackButton from "../../../../../common/BackButton";
 import Button from "../../../../../common/Button";
+import CustomLoader from "../../../../../common/CustomLoader"
+import ProfileImage from "../../../../../common/ProfileImage";
+
+//Service
+import { createUsernameArray } from "../../../../../../data/Service";
+import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
+import { storage } from "../../../../../../data/FirebaseConfig";
+
+//Data
 import { LanguageContext } from "../../../../../../data/LanguageContext";
 import { UserContext } from "../../../../../../data/UserContext";
-import ProfileImage from "../../../../../common/ProfileImage";
-import * as ImagePicker from 'expo-image-picker';
-import { firestore, storage } from "../../../../../../data/FirebaseConfig";
-import CustomLoader from "../../../../../common/CustomLoader";
-import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
-import { createUsernameArray } from "../../../../../../data/Service";
 
 const ProfileEditor = ({ onExit, refreshUser}) => {
 
@@ -39,7 +47,7 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
             toValue: 0,
             duration: 300,
             useNativeDriver: true,
-            easing: Easing.bezier(0.07, 1, 0.33, 0.89)
+            easing: Easing.bezier(0,.79,0,.99),
         }).start();
     },[]);
 
@@ -118,7 +126,14 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
         <Animated.View style={[styles.container, {transform:  [{translateX: slideAnim}]}]}>
         <ScrollView>
 
-        <Text style={[styles.label, {fontSize: responsiveFontSize(3)}]}>{language.edit_your_profile}</Text>
+        <View style={{height: responsiveHeight(5)}}></View>
+
+          <View style={{flexDirection: "row", alignContent: "center", alignItems: "center"}}>
+          <View style={{marginLeft: 20}}>
+              <BackButton onPress={() => hide()}/>
+          </View>
+          <Text style={styles.heading}>{language.edit_your_profile}</Text>
+        </View>
 
         <Text style={styles.label}>{language.profile_image}</Text>
         {loading ? <CustomLoader x={50}/> :
@@ -208,5 +223,13 @@ const styles = StyleSheet.create({
         color: "#eb4034",
         fontFamily: "PoppinsMedium",
         textAlign: "center"
-      }
+      },
+      heading: {
+        color: "white",
+        fontSize: 20,
+        fontFamily: "PoppinsMedium",
+        marginLeft: 20,
+        textAlign: "left",
+        marginTop: 3
+  },
 });

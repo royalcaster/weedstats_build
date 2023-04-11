@@ -4,13 +4,9 @@ import { View, StyleSheet, Text, Animated, Easing, Dimensions, TouchableNativeFe
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Custom Components
-import Feedback from './Feedback/Feedback'
-import Donation from "./Donation/Donation";
-import Levels from "./Levels/Levels";
 import ProfileImage from "../../../../common/ProfileImage";
 import Button from "../../../../common/Button";
 import BackButton from "../../../../common/BackButton";
-import AppInfo from "./AppInfo/AppInfo";
 import CustomModal from "../../../../common/CustomModal";
 
 //Tools
@@ -36,12 +32,6 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
   const language = useContext(LanguageContext);
   
   const screen_height = Dimensions.get("screen").height;
-  const [showLevels, setShowLevels] = useState(false);
-  const [showDonation, setShowDonation] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
-  const [showAppInfo, setShowAppInfo] = useState(false);
-  const [showProfileEditor, setShowProfileEditor] = useState(false);
 
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const pan = useRef(new Animated.Value(0)).current;
@@ -168,13 +158,7 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
         styles.container,
       ]}
       {...panResponder.panHandlers}
-    >
-      {showLevels   ? <Levels onexit={() => setShowLevels(false)} show={showLevels}/>             : null}
-      {showFeedback ? <Feedback userid={user.id} onexit={() => setShowFeedback(false)}/>          : null}
-      {showDonation ? <Donation onexit={() => setShowDonation(false)}/>                           : null}
-      {showTutorial ? <Tutorial onDone={() => setShowTutorial(false)} toggleNavbar={toggleNavbar} type={"regular"}/> : null}
-      {showAppInfo ? <AppInfo show={showAppInfo} onExit={() => setShowAppInfo(false)}/> : null}
-      {showProfileEditor ? <ProfileEditor onExit={() => {toggleNavbar(1); setShowProfileEditor(false)}} refreshUser={refreshUser}/> : null} 
+    > 
 
       {/** delete friend modal */}
       <CustomModal show={showLogOut} child={logOutModalContent}/>
@@ -244,79 +228,8 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
           </TouchableNativeFeedback>
         </View>
         
-        <View style={{flex: 1, justifyContent: "center"}}>
+        <View style={{flex: 1, justifyContent: "center", width: "80%", alignSelf: "center"}}>
           <MemberSince backgroundColor={"#1E2132"} timestamp={user.member_since}/>
-        </View>
-
-        <View style={{flex: 4, justifyContent: "center"}}>
-
-        <View style={{flexDirection: "row", width: "80%", alignSelf: "center"}}>
-            <View style={{flex: 1}}>
-              <Button
-                fontColor={"white"}
-                onPress={() =>{ setShowLevels(true)}}
-                borderradius={100}
-                color={"#484F78"}
-                title={language.account_levels}
-                icon={<FontAwesome name="trophy" style={styles.money_icon} />}
-                hovercolor={"rgba(255,255,255,0.15)"}
-                small={true}
-              />
-            </View>
-            <View style={{width: responsiveWidth(2)}}></View>
-            <View style={{flex: 1}}>
-              <Button
-                onPress={() => setShowDonation(true)}
-                title={language.account_support}
-                icon={<MaterialIcons name="euro" style={styles.money_icon} />}
-                borderradius={100}
-                color={"#484F78"}
-                fontColor={"white"}
-                hovercolor={"rgba(255,255,255,0.15)"}
-                small={true}
-                borderColor={"#F2338C"}
-              />
-            </View>
-        </View>
-
-        <View style={{flexDirection: "row", width: "80%", alignSelf: "center"}}>
-            <View style={{flex: 1}}>
-              <Button
-                onPress={() => setShowTutorial(true)}
-                title={language.account_tutorial}
-                icon={<Feather name="help-circle" style={styles.money_icon} />}
-                borderradius={100}
-                color={"#484F78"}
-                fontColor={"white"}
-                hovercolor={"rgba(255,255,255,0.15)"}
-                small={true}
-              />
-            </View>
-            <View style={{width: responsiveWidth(2)}}></View>
-            <View style={{flex: 1}}>
-              <Button
-                onPress={() => setShowAppInfo(true)}
-                title={"App-Info"}
-                icon={<Feather name="info" style={styles.money_icon} />}
-                borderradius={100}
-                color={"#484F78"}
-                fontColor={"white"}
-                hovercolor={"rgba(255,255,255,0.15)"}
-                small={true}
-              />
-            </View>
-        </View>
-
-        <Button
-          onPress={() => setShowLogOut(true)}
-          title={language.account_sign_out}
-          icon={<MaterialIcons name="logout" style={styles.money_icon} />}
-          borderradius={100}
-          color={"#eb4034"}
-          fontColor={"white"}
-          hovercolor={"rgba(255,255,255,0.25)"}
-          color2={"#80231C"}
-        />
         </View>
       </View>
     </Animated.View>

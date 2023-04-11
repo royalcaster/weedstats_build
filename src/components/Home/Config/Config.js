@@ -19,6 +19,9 @@ import Button from "../../common/Button";
 import ConfigItem from "./ConfigItem/ConfigItem";
 import CustomLoader from "../../common/CustomLoader";
 import ConfigToggle from "./ConfigToggle/ConfigToggle";
+import ProfileImage from "../../common/ProfileImage";
+import ProfileEditor from "../Friends/AccountButton/Account/ProfileEditor/ProfileEditor";
+import MemberSince from "../../common/MemberSince";
 
 //Thirt Party
 import Toggle from "react-native-toggle-element";
@@ -28,25 +31,32 @@ import {
   responsiveWidth
 } from "react-native-responsive-dimensions";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 //Service
 import { LanguageContext } from "../../../data/LanguageContext";
 import { useBackHandler } from "@react-native-community/hooks";
 import { ConfigContext } from "../../../data/ConfigContext";
 import CustomModal from "../../common/CustomModal";
+import { UserContext } from "../../../data/UserContext";
 
 const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) => {
 
+  //Context
+  const user = useContext(UserContext);
   const language = useContext(LanguageContext);
   const config = useContext(ConfigContext);
 
+  //State
   const [localConfig, setLocalConfig] = useState(config);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(true);
   const [lightmode, setLightMode] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
+  const [showProfileEditor, setShowProfileEditor] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+
+  //Refs
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     LogBox.ignoreAllLogs();
@@ -215,6 +225,8 @@ style={{
   return (
     <>
       <Animated.View style={[{ opacity: fadeAnim }, styles.container]}>
+
+      {showProfileEditor ? <ProfileEditor onExit={() => {setShowProfileEditor(false)}} refreshUser={refreshUser}/> : null}
         
         <CustomModal show={lightmode} child={lightmodeModalContent}/>
 
@@ -232,6 +244,77 @@ style={{
             <View style={{height: responsiveHeight(7)}}></View>
 
             <Text style={styles.bold_heading}>{language.config_settings}</Text>
+
+            <Text style={styles.heading}>Account</Text>
+
+            <View style={{height: responsiveHeight(1)}}></View>
+
+            <View
+          style={{
+            alignItems: "center",
+            flex: 1,
+            flexDirection: "row",
+            width: "80%",
+            alignSelf: "center",
+            height: 100,
+            backgroundColor: "#484F78",
+            borderRadius: 15,
+            overflow: "hidden"
+          }}
+        ><TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} style={{overflow: "hidden"}} onPress={() => {setShowProfileEditor(true)}}>
+        <View style={{width: "100%", flexDirection: "row", height: "100%"}}>
+            <View
+              style={{ flex: 1, justifyContent: "center", alignItems: "center"}}
+            >            
+                    <View style={styles.touchable_profileimage}>
+                    </View>
+              <ProfileImage url={user.photoUrl} x={70} type={1} circle={false}/>
+              
+            </View>
+
+            <View style={{ flex: 2, justifyContent: "center"}}>
+              <Text style={styles.username}>{user.username}</Text>
+              <Text style={styles.email}>{user.email}</Text>
+            </View>
+          </View>
+          </TouchableNativeFeedback>
+        </View>
+        
+        <View style={{height: responsiveHeight(1)}}></View>
+
+        <View style={{flex: 1, justifyContent: "center", width: "80%", alignSelf: "center"}}>
+          <MemberSince backgroundColor={"#131520"} timestamp={user.member_since}/>
+        </View>
+
+        <View style={{height: responsiveHeight(1)}}></View>
+
+            <Button
+                onPress={() => setShowLogOut(true)}
+                title={language.account_sign_out}
+                icon={<MaterialIcons name="logout" style={styles.money_icon} />}
+                borderradius={100}
+                color={"#eb4034"}
+                fontColor={"white"}
+                hovercolor={"rgba(255,255,255,0.5)"}
+                color2={"#80231C"}
+              />
+
+            <View style={{ width: "100%" }}>
+              <TouchableNativeFeedback
+                background={TouchableNativeFeedback.Ripple(
+                  "rgba(255,255,255,0.25)",
+                  false
+                )}
+                onPress={() => setShowDelete(true)}
+              >
+                <View style={styles.touchable_delete}>
+                  <Text style={styles.delete_text}>{language.account_delete_account}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+
+            <View style={{height: responsiveHeight(1)}}></View>
+
             <Text style={styles.heading}>{language.config_counter}</Text>
 
             <View style={{ flexDirection: "row", width: "90%", alignSelf: "center"}}>
@@ -386,22 +469,6 @@ style={{
               onPress={(val) => {setLightMode(true); vibrate(25);}}
             />
 
-            <View style={{height: responsiveHeight(2.5)}}></View>
-
-            <View style={{ width: "100%" }}>
-              <TouchableNativeFeedback
-                background={TouchableNativeFeedback.Ripple(
-                  "rgba(255,255,255,0.05)",
-                  false
-                )}
-                onPress={() => setShowDelete(true)}
-              >
-                <View style={styles.touchable_delete}>
-                  <Text style={styles.delete_text}>{language.account_delete_account}</Text>
-                </View>
-              </TouchableNativeFeedback>
-            </View>
-
           <View style={{height: responsiveHeight(20)}}></View>
           </ScrollView>
           </View>   
@@ -425,7 +492,7 @@ style={{
                   storeSettings();
                 }}
                 borderradius={100}
-                color={"#484F78"}
+                color={"#0080FF"}
                 title={language.config_save}
                 hovercolor={"rgba(255,255,255,0.3)"}
               />
@@ -494,5 +561,33 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlignVertical: "center",
     height: "100%",
+  },
+  username: {
+    color: "white",
+    fontSize: responsiveFontSize(2.2),
+    fontFamily: "PoppinsMedium",
+  },
+  email: {
+    color: "rgba(255,255,255,0.75)",
+    fontSize: responsiveFontSize(1.4),
+    fontFamily: "PoppinsLight",
+  },
+  touchable: {
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  touchable_profileimage: {
+    zIndex: 1,
+    position: "absolute",
+    height: 70,
+    width: 70,
+    borderRadius: 100
+  },
+  money_icon: {
+    fontSize: 25,
+    color: "white",
+    textAlignVertical: "center",
   },
 });
