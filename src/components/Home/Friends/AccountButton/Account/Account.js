@@ -160,7 +160,7 @@ const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refr
       {...panResponder.panHandlers}
     > 
 
-      {/** delete friend modal */}
+      {/** log out modal */}
       <CustomModal show={showLogOut} child={logOutModalContent}/>
 
 

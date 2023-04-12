@@ -6,6 +6,9 @@ import { StyleSheet, View, Image, Text, TouchableNativeFeedback } from "react-na
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import { LanguageContext } from "../../../../data/LanguageContext";
 
+//Custom Component
+import TypeImage from '../../../common/TypeImage'
+
 const ConfigItem = ({ type, config, onToggle }) => {
 
   const [active, setActive] = useState(config);
@@ -13,7 +16,7 @@ const ConfigItem = ({ type, config, onToggle }) => {
   const language = useContext(LanguageContext)
 
   return (
-    <View style={styles.outer_container}>
+    <View style={[styles.container, {backgroundColor: config ? "#484F78" : "#131520"}]}>
       <TouchableNativeFeedback 
       onPress={() => {
         onToggle(type);
@@ -23,67 +26,11 @@ const ConfigItem = ({ type, config, onToggle }) => {
         "rgba(255,255,255,0.1)",
         true
       )}>
-        
-      <View style={active ? styles.container_active : styles.container}>
-      <View style={styles.touchable}>
-        {type === "joint" ? (
-          <>
-            <Image
-              style={active ? styles.joint_img_active : styles.joint_img}
-              source={require("../../../../data/img/joint.png")}
-            ></Image>{/* 
-            <Text style={active ? styles.label_active : styles.label}>
-              {language.joint}
-            </Text> */}
-          </>
-        ) : null}
-        {type === "bong" ? (
-          <>
-            <Image
-              style={active ? styles.bong_img_active : styles.bong_img}
-              source={require("../../../../data/img/bong.png")}
-            ></Image>{/* 
-            <Text style={active ? styles.label_active : styles.label}>
-            {language.bong}
-            </Text> */}
-          </>
-        ) : null}
-        {type === "vape" ? (
-          <>
-            <Image
-              style={active ? styles.vape_img_active : styles.vape_img}
-              source={require("../../../../data/img/vape.png")}
-            ></Image>{/* 
-            <Text style={active ? styles.label_active : styles.label}>
-            {language.vape}
-            </Text> */}
-          </>
-        ) : null}
-        {type === "pipe" ? (
-          <>
-            <Image
-              style={active ? styles.pipe_img_active : styles.pipe_img}
-              source={require("../../../../data/img/pipe.png")}
-            ></Image>{/* 
-            <Text style={active ? styles.label_active : styles.label}>
-            {language.pipe}
-            </Text> */}
-          </>
-        ) : null}
-        {type === "cookie" ? (
-          <>
-            <Image
-              style={active ? styles.cookie_img_active : styles.cookie_img}
-              source={require("../../../../data/img/cookie.png")}
-            ></Image>
-            {/* <Text style={active ? styles.label_active : styles.label}>
-            {language.cookie}
-            </Text> */}
-          </>
-        ) : null}
+        <View style={styles.touchable}>
+          <TypeImage x={50} type={type}/>
         </View>
-      </View>
-      </TouchableNativeFeedback></View>
+      </TouchableNativeFeedback>
+    </View>
   );
 };
 
@@ -91,10 +38,8 @@ export default ConfigItem;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     margin: 2.5,
-    marginBottom: 30,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: "center",
     textAlign: "center",
     backgroundColor: "#131520",
@@ -111,8 +56,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#484F78",
   },
   touchable: {
-    flex: 1,
-    justifyContent: "center"
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center"
   },
   bong_img: {
     height: responsiveHeight(6),

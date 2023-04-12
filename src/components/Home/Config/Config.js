@@ -54,6 +54,7 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) =>
   const [lightmode, setLightMode] = useState(false);
   const [showProfileEditor, setShowProfileEditor] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showLogOut, setShowLogOut] = useState(false);
 
   //Refs
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -142,7 +143,7 @@ const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) =>
       </Text>
     </View>
     <View style={{ flex: 2 }}>
-      <Text style={[styles.text, { fontSize: responsiveFontSize(1.8) }]}>
+      <Text style={[styles.text, { fontSize: responsiveFontSize(1.8)}]}>
         {language.config_modal_text}
       </Text>
     </View>
@@ -222,6 +223,63 @@ style={{
 </View>
 </View>;
 
+const logOutModalContent = <View
+ style={{
+   alignItems: "center",
+   justifyContent: "center",
+   backgroundColor: "rgba(0,0,0,0.5)",
+   flex: 1
+ }}
+>
+ <View
+   style={{
+     width: "90%",
+     height: 300,
+     backgroundColor: "#1E2132",
+     alignSelf: "center",
+     borderRadius: 25,
+   }}
+ >
+   <View style={{ flex: 1 }}>
+     <Text
+       style={[
+         styles.heading,
+         {
+           marginLeft: 0,
+           textAlign: "center",
+           height: "100%",
+           textAlignVertical: "center",
+           fontSize: responsiveFontSize(3.5),
+           fontFamily: "PoppinsMedium"
+         },
+       ]}
+     >
+       {language.signout_title}
+     </Text>
+   </View>
+   <View style={{ flex: 1, flexDirection: "row" }}>
+     <View
+       style={{
+         flex: 1,
+         justifyContent: "center",
+         alignItems: "center",
+       }}
+     >
+       <Button title={language.account_delete_account_cancel} onPress={() => setShowLogOut(false)} color={"#484F78"} fontColor={"white"}/>
+     </View>
+     <View
+       style={{
+         flex: 1,
+         justifyContent: "center",
+         alignItems: "center",
+       }}
+     >
+       <Button title={language.account_sign_out} onPress={() => handleLogOut()} color={"#eb4034"} fontColor={"white"}/>
+     </View>
+   </View>
+ </View>
+</View>;
+
   return (
     <>
       <Animated.View style={[{ opacity: fadeAnim }, styles.container]}>
@@ -231,6 +289,8 @@ style={{
         <CustomModal show={lightmode} child={lightmodeModalContent}/>
 
         <CustomModal show={showDelete} child={deleteAccountModalContent} />
+
+        <CustomModal show={showLogOut} child={logOutModalContent}/>
 
         {loading ? (
           <View
@@ -243,26 +303,57 @@ style={{
           <ScrollView style={{ width: "100%"}}>
             <View style={{height: responsiveHeight(7)}}></View>
 
-            <Text style={styles.bold_heading}>{language.config_settings}</Text>
+            <View style={{flexDirection: "row"}}>
+              <View style={{flex: 1}}>
+                	<Text style={styles.bold_heading}>{language.config_settings}</Text>
+              </View>
+              <View style={{width: "30%"}}> 
+                {saved ? (
+                  <Button
+                    fontColor={"rgba(255,255,255,0.5)"}
+                    onPress={() => {}}
+                    borderradius={100}
+                    color={"#131520"}
+                    title={language.config_saved}
+                    hovercolor={"rgba(255,255,255,0.3)"}
+                  />
+                ) : (
+                  <Button
+                    fontColor={"white"}
+                    onPress={() => {
+                      vibrate(100);
+                      storeSettings();
+                    }}
+                    borderradius={100}
+                    color={"#0080FF"}
+                    title={language.config_save}
+                    hovercolor={"rgba(255,255,255,0.3)"}
+                  /> 
+                )}
+              </View>
+            </View>
+
+            
+           
 
             <Text style={styles.heading}>Account</Text>
 
             <View style={{height: responsiveHeight(1)}}></View>
 
             <View
-          style={{
-            alignItems: "center",
-            flex: 1,
-            flexDirection: "row",
-            width: "80%",
-            alignSelf: "center",
-            height: 100,
-            backgroundColor: "#484F78",
-            borderRadius: 15,
-            overflow: "hidden"
-          }}
-        ><TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} style={{overflow: "hidden"}} onPress={() => {setShowProfileEditor(true)}}>
-        <View style={{width: "100%", flexDirection: "row", height: "100%"}}>
+              style={{
+                alignItems: "center",
+                flex: 1,
+                flexDirection: "row",
+                width: "80%",
+                alignSelf: "center",
+                height: 100,
+                backgroundColor: "#484F78",
+                borderRadius: 15,
+                overflow: "hidden"
+              }}
+            ><TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} style={{overflow: "hidden"}} onPress={() => {setShowProfileEditor(true)}}>
+            <View style={{width: "100%", flexDirection: "row", height: "100%"}}>
             <View
               style={{ flex: 1, justifyContent: "center", alignItems: "center"}}
             >            
@@ -316,57 +407,85 @@ style={{
             <View style={{height: responsiveHeight(1)}}></View>
 
             <Text style={styles.heading}>{language.config_counter}</Text>
+            <View style={{height: responsiveHeight(1)}}></View>
 
-            <View style={{ flexDirection: "row", width: "90%", alignSelf: "center"}}>
-              <ConfigItem
-                type="joint"
-                config={localConfig.showJoint}
-                onToggle={() => {
-                  setLocalConfig({ ...localConfig, showJoint: !localConfig.showJoint });
-                  vibrate(25);
-                  setSaved(false);
-                }}
-              ></ConfigItem>
-              <ConfigItem
-                type="bong"
-                config={localConfig.showBong}
-                onToggle={() => {
-                  setLocalConfig({ ...localConfig, showBong: !localConfig.showBong });
-                  vibrate(25);
-                  setSaved(false);
-                }}
-              ></ConfigItem>
-              <ConfigItem
-                type="vape"
-                config={localConfig.showVape}
-                onToggle={() => {
-                  setLocalConfig({ ...localConfig, showVape: !localConfig.showVape });
-                  vibrate(25);
-                  setSaved(false);
-                }}
-              ></ConfigItem>
-              <ConfigItem
-                type="pipe"
-                config={localConfig.showPipe}
-                onToggle={() => {
-                  setLocalConfig({ ...localConfig, showPipe: !localConfig.showPipe });
-                  vibrate(25);
-                  setSaved(false);
-                }}
-              ></ConfigItem>
-              <ConfigItem
-                type="cookie"
-                config={localConfig.showCookie}
-                onToggle={() => {
-                  setLocalConfig({ ...localConfig, showCookie: !localConfig.showCookie });
-                  vibrate(25);
-                  setSaved(false);
-                }}
-              ></ConfigItem>
-            </View>
+            <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                <ConfigItem
+                  type="joint"
+                  config={localConfig.showJoint}
+                  onToggle={() => {
+                    setLocalConfig({ ...localConfig, showJoint: !localConfig.showJoint });
+                    vibrate(25);
+                    setSaved(false);
+                  }}
+                />
+              </View>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                <ConfigItem
+                  type="bong"
+                  config={localConfig.showBong}
+                  onToggle={() => {
+                    setLocalConfig({ ...localConfig, showBong: !localConfig.showBong });
+                    vibrate(25);
+                    setSaved(false);
+                  }}
+                />
+              </View>
+            </View> 
+
+            <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                <ConfigItem
+                  type="vape"
+                  config={localConfig.showVape}
+                  onToggle={() => {
+                    setLocalConfig({ ...localConfig, showVape: !localConfig.showVape });
+                    vibrate(25);
+                    setSaved(false);
+                  }}
+                />
+              </View>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                <ConfigItem
+                  type="pipe"
+                  config={localConfig.showPipe}
+                  onToggle={() => {
+                    setLocalConfig({ ...localConfig, showPipe: !localConfig.showPipe });
+                    vibrate(25);
+                    setSaved(false);
+                  }}
+                />
+              </View>
+            </View> 
+
+            <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                <ConfigItem
+                  type="cookie"
+                  config={localConfig.showCookie}
+                  onToggle={() => {
+                    setLocalConfig({ ...localConfig, showCookie: !localConfig.showCookie });
+                    vibrate(25);
+                    setSaved(false);
+                  }}
+                />
+              </View>
+
+              <View style={{alignSelf: "center", flex: 1}}>
+                
+              </View>
+            </View> 
+
+            <View style={{height: responsiveHeight(3)}}></View>
 
             <Text style={styles.heading}>{language.config_personal_data}</Text>
-            <View style={{ height: 5 }}></View>
+            
 
             <ConfigToggle
               value={localConfig.shareMainCounter}
@@ -469,35 +588,13 @@ style={{
               onPress={(val) => {setLightMode(true); vibrate(25);}}
             />
 
-          <View style={{height: responsiveHeight(20)}}></View>
+          <View style={{height: responsiveHeight(12)}}></View>
           </ScrollView>
           </View>   
         )}
 
           <View style={styles.save_button_container}>
-            {saved ? (
-              <Button
-                fontColor={"rgba(255,255,255,0.5)"}
-                onPress={() => {}}
-                borderradius={100}
-                color={"#131520"}
-                title={language.config_saved}
-                hovercolor={"rgba(255,255,255,0.3)"}
-              />
-            ) : (
-              <Button
-                fontColor={"white"}
-                onPress={() => {
-                  vibrate(100);
-                  storeSettings();
-                }}
-                borderradius={100}
-                color={"#0080FF"}
-                title={language.config_save}
-                hovercolor={"rgba(255,255,255,0.3)"}
-              />
-              
-            )}
+            
             </View>
       </Animated.View>
     </>

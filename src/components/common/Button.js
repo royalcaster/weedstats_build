@@ -27,7 +27,7 @@ const Button = ({ icon, title, color, hovercolor, borderradius, onPress, fontCol
       >
         <View style={styles.touchable}>
           <Text> {icon}</Text>
-          <Text style={[{ color: fontColor }, styles.title]}> {title}</Text>
+          <Text style={[{ color: fontColor }, styles.title]}>{title}</Text>
         </View>
       </TouchableNativeFeedback>
     </View>

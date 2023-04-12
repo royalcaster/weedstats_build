@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, StyleSheet, Easing, TouchableNativeFeedback, View, Text} from "react-native";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
 import Toggle from "react-native-toggle-element";
+import TypeImage from "../../../common/TypeImage";
 
 const ConfigToggle = ({ label, value, onPress, disabled, scrolling }) => {
 
