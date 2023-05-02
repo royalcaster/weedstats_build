@@ -1,6 +1,6 @@
 //React
 import React from "react";
-import {View, Text, Animated, StyleSheet, Image} from 'react-native'
+import {View, Text, StyleSheet, Image } from 'react-native'
 
 //Third-Party
 import moment from "moment";
@@ -15,7 +15,7 @@ const StateBar = ({ type, value, activeLastDay }) => {
         return (
             <View style={styles.container}>
 
-                <View style={styles.div}>
+               <View style={styles.div}>
                     <View style={styles.image_container}>
                         {value > 3 ? <Image style={{height: 20, width: 20}} source={require('../../../../../data/img/logo.png')}/>
                          : <Image style={{height: 20, width: 20}} source={require('../../../../../data/img/logo_bw.png')}/>}
@@ -26,6 +26,7 @@ const StateBar = ({ type, value, activeLastDay }) => {
                     </View>
                 </View>
     
+              
                 <View style={styles.div}>
                     <View style={styles.image_container}>
                         {value > 2 ? <Image style={{height: 20, width: 20}} source={require('../../../../../data/img/logo.png')}/>

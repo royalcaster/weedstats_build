@@ -12,7 +12,6 @@ import {
   Vibration,
   TouchableNativeFeedback
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Custom Components
 import Button from "../../common/Button";
@@ -23,8 +22,7 @@ import ProfileImage from "../../common/ProfileImage";
 import ProfileEditor from "../Friends/AccountButton/Account/ProfileEditor/ProfileEditor";
 import MemberSince from "../../common/MemberSince";
 
-//Thirt Party
-import Toggle from "react-native-toggle-element";
+//Third Party
 import {
   responsiveHeight,
   responsiveFontSize,
@@ -32,6 +30,7 @@ import {
 } from "react-native-responsive-dimensions";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Feather from 'react-native-vector-icons/Feather'
 
 //Service
 import { LanguageContext } from "../../../data/LanguageContext";
@@ -345,12 +344,12 @@ const logOutModalContent = <View
                 alignItems: "center",
                 flex: 1,
                 flexDirection: "row",
-                width: "80%",
+                width: "90%",
                 alignSelf: "center",
                 height: 100,
                 backgroundColor: "#484F78",
                 borderRadius: 15,
-                overflow: "hidden"
+                overflow: "hidden",
               }}
             ><TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} style={{overflow: "hidden"}} onPress={() => {setShowProfileEditor(true)}}>
             <View style={{width: "100%", flexDirection: "row", height: "100%"}}>
@@ -373,24 +372,42 @@ const logOutModalContent = <View
         
         <View style={{height: responsiveHeight(1)}}></View>
 
-        <View style={{flex: 1, justifyContent: "center", width: "80%", alignSelf: "center"}}>
+        <View style={{flex: 1, justifyContent: "center", width: "90%", alignSelf: "center"}}>
           <MemberSince backgroundColor={"#131520"} timestamp={user.member_since}/>
         </View>
 
         <View style={{height: responsiveHeight(1)}}></View>
-
+        <View style={{flexDirection: "row", width: "90%", alignSelf: "center", justifyContent: "space-around"}}>
+          <View style={{flex: 1}}>
             <Button
                 onPress={() => setShowLogOut(true)}
-                title={language.account_sign_out}
+                title={" " + language.account_sign_out}
                 icon={<MaterialIcons name="logout" style={styles.money_icon} />}
                 borderradius={100}
                 color={"#eb4034"}
                 fontColor={"white"}
                 hovercolor={"rgba(255,255,255,0.5)"}
-                color2={"#80231C"}
+                small={true}
               />
+          </View>
+          <View style={{width: responsiveWidth(2)}}></View>
+          <View style={{flex: 1}}>
+            <Button
+                onPress={() => setShowDelete(true)}
+                title={" " + language.account_delete_account}
+                icon={<Feather name="trash-2" style={styles.money_icon} />}
+                borderradius={100}
+                color={"#eb4034"}
+                fontColor={"white"}
+                hovercolor={"rgba(255,255,255,0.5)"}
+                small={true}
+              />
+          </View>
+        </View>
 
-            <View style={{ width: "100%" }}>
+            
+
+            {/* <View style={{ width: "100%" }}>
               <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple(
                   "rgba(255,255,255,0.25)",
@@ -402,7 +419,7 @@ const logOutModalContent = <View
                   <Text style={styles.delete_text}>{language.account_delete_account}</Text>
                 </View>
               </TouchableNativeFeedback>
-            </View>
+            </View> */}
 
             <View style={{height: responsiveHeight(1)}}></View>
 

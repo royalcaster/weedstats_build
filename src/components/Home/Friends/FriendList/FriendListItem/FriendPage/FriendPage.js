@@ -1,10 +1,8 @@
 //React
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Animated, Easing, View, StyleSheet, Dimensions, Text, Image, TouchableNativeFeedback, Modal, BackHandler, PanResponder, ScrollView } from "react-native";
+import { Animated, Easing, View, StyleSheet, Dimensions, Text, Image, TouchableNativeFeedback, Modal, PanResponder, ScrollView } from "react-native";
 
 //Custom Components
-import ProfileImage from "../../../../../common/ProfileImage";
-import Best from "./Best/Best";
 import BackButton from "../../../../../common/BackButton";
 import CustomLoader from "../../../../../common/CustomLoader";
 import ProfileImagePanel from '../../../../../common/ProfileImagePanel'
@@ -33,14 +31,14 @@ import { useBackHandler } from "@react-native-community/hooks";
 import { LinearGradient } from "expo-linear-gradient";
 import { downloadUser } from '../../../../../../data/Service'
 import { ConfigContext } from '../../../../../../data/ConfigContext'
-import toGermanDate, { convertMemberSince } from "../../../../../../data/DateConversion";
+import toGermanDate from "../../../../../../data/DateConversion";
 import { mapStyle } from "../../../../../../data/CustomMapStyle";
 import { uuidv4 } from "@firebase/util";
 import TypeImage from "../../../../../common/TypeImage";
 import Empty from "../../../../../common/Empty";
 import MemberSince from "../../../../../common/MemberSince";
 
-const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFriend }) => {
+const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
 
   //Context
   const language = useContext(LanguageContext);
@@ -283,7 +281,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
     <IconButton icon={switch_icon} onPress={toggleMapType}/>
     </View>
     <View style={{height: responsiveHeight(2.5)}}></View>
-    <Button title={"Schließen"} color={"#eb4034"} borderradius={100} onPress={() => setShowMap(false)} fontColor={"white"}/>
+    <Button title={language.account_delete_account_cancel} color={"#eb4034"} borderradius={100} onPress={() => setShowMap(false)} fontColor={"white"}/>
  </View>
 
  <MapView
@@ -568,7 +566,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
                 </View>
                 <View style={{height: responsiveHeight(2.5)}}></View>
                 {loading ? null : <> 
-                {friendConfig.shareGPS && user.last_entry_latitude != null ? <Button title={"Auf Karte zeigen"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => setShowMap(true)}/> : null}</>}
+                {friendConfig.shareGPS && user.last_entry_latitude != null ? <Button title={language.show_on_map} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => setShowMap(true)}/> : null}</>}
               </View>
 
 
@@ -599,7 +597,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, toggleNavbar, onRemoveFri
                   onPress={() => setModalVisible(true)}
                 >
                   <View style={styles.touchable_delete}>
-                    <Text style={styles.delete_text}>Als Freund entfernen</Text>
+                    <Text style={styles.delete_text}>{language.friendpage_remove_friend}</Text>
                   </View>
                 </TouchableNativeFeedback>
               </View>

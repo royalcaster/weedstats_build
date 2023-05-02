@@ -465,6 +465,31 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                     <View style={{width: responsiveWidth(2)}}></View>
                     <View style={{flex: 1}}>
                       <Button
+                        onPress={() => setShowAppInfo(true)}
+                        title={" App-Info"}
+                        icon={<Feather name="info" style={styles.money_icon} />}
+                        borderradius={100}
+                        color={"#131520"}
+                        fontColor={"white"}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                      />
+                    </View>
+                </View>
+
+                <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
+                    <View style={{flex: 1}}>
+                      {/* <Button
+                        onPress={() => setShowTutorial(true)}
+                        title={" " + language.account_tutorial}
+                        icon={<Feather name="help-circle" style={styles.money_icon} />}
+                        borderradius={100}
+                        color={"#131520"}
+                        fontColor={"white"}
+                        hovercolor={"rgba(255,255,255,0.15)"}
+                        small={true}
+                      /> */}
+                      <Button
                         onPress={() => setShowDonation(true)}
                         title={language.account_support}
                         icon={<MaterialIcons name="euro" style={styles.money_icon} />}
@@ -476,33 +501,19 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                         borderColor={"#F2338C"}
                       />
                     </View>
-                </View>
-
-                <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
-                    <View style={{flex: 1}}>
-                      <Button
-                        onPress={() => setShowTutorial(true)}
-                        title={language.account_tutorial}
-                        icon={<Feather name="help-circle" style={styles.money_icon} />}
-                        borderradius={100}
-                        color={"#131520"}
-                        fontColor={"white"}
-                        hovercolor={"rgba(255,255,255,0.15)"}
-                        small={true}
-                      />
-                    </View>
                     <View style={{width: responsiveWidth(2)}}></View>
                     <View style={{flex: 1}}>
-                      <Button
-                        onPress={() => setShowAppInfo(true)}
-                        title={"App-Info"}
-                        icon={<Feather name="info" style={styles.money_icon} />}
+                    {/* <Button
+                        onPress={() => setShowDonation(true)}
+                        title={language.account_support}
+                        icon={<MaterialIcons name="euro" style={styles.money_icon} />}
                         borderradius={100}
                         color={"#131520"}
                         fontColor={"white"}
                         hovercolor={"rgba(255,255,255,0.15)"}
                         small={true}
-                      />
+                        borderColor={"#F2338C"}
+                      /> */}
                     </View>
                 </View>
                 </View>

@@ -8,12 +8,10 @@ import History from "./History/History";
 import Levels from "../../../../data/Levels.json";
 import DailyAveragePanel from "./DailyAveragePanel/DailyAveragePanel";
 import StatsCard from './StatsCard/StatsCard'
+import Donation from "../../Main/Donation/Donation";
 
 //Icons
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
-
-//Tools
-import toGermanDate from "../../../../data/DateConversion";
 
 //Third Party
 import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
@@ -37,6 +35,7 @@ const StatsDashboard = ({ localData }) => {
   const [selectedTime, setSelectedTime] = useState(0);
   const [streakData, setStreakData] = useState(calcStreak(localData));
   const [showHistory, setShowHistory] = useState(false);
+  const [showDonation, setShowDonation] = useState(false);
 
   //Ref
   const icon_slide = useRef(new Animated.Value(-50)).current;
@@ -119,6 +118,7 @@ const StatsDashboard = ({ localData }) => {
     <>
 
     {showHistory ? <History show={showHistory} onExit={() => setShowHistory(false)} history={localData}/> : null}
+    {showDonation ? <Donation onexit={() => setShowDonation(false)}/> : null}
 
     <ScrollView style={styles.container}>
       <Animated.View style={{ opacity: 1, alignItems: "center"}}>
@@ -128,7 +128,7 @@ const StatsDashboard = ({ localData }) => {
         <View style={{flexDirection: "row",right: 10, top: -5, position: "absolute"}}>
         <TouchableNativeFeedback
               background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.1)", true)}
-              onPress={() => setShowHistory(true)}
+              onPress={() => setShowDonation(true)}
             >
               <View
                 style={[

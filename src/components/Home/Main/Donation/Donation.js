@@ -1,6 +1,6 @@
 //React
 import React, { useRef, useEffect, useContext } from 'react';
-import { StyleSheet, Image, View, Text, Pressable, Animated, Easing, Dimensions } from 'react-native';
+import { StyleSheet, Image, View, Text, Animated, Easing, Dimensions } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components

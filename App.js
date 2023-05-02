@@ -17,7 +17,6 @@ import { createUsernameArray, downloadUser } from "./src/data/Service";
 //Expo
 import { useFonts } from "expo-font";
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen'
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
@@ -38,7 +37,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loadingColor, setLoadingColor] = useState("#0080FF");
   const [wrongPassword, setWrongPassword] = useState(false);
   const [emailInUse, setEmailInUse] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
@@ -306,7 +304,6 @@ export default function App() {
         password: password
       }));
       const docSnap = await getDoc(doc(firestore, "users", result.uid));
-      loadSettings();
       if (docSnap.exists()) {
         setUser({
           username: docSnap.data().username,

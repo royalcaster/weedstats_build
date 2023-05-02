@@ -1,51 +1,24 @@
 //React
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, Image, Animated } from "react-native";
-
-//Third-Party
-import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Text, View, Animated } from "react-native";
 
 //Service
 import { LanguageContext } from "../../../../../data/LanguageContext";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
+import TypeImage from "../../../../common/TypeImage";
 
 const DailyAveragePanel = ({selectedType, value}) => {
 
+    //Context
     const language = useContext(LanguageContext);
 
     return (<View  style={{borderRadius: 10, padding: 20, width: "100%"}}>
-    {selectedType === "main" ? (
-      <Animated.View
-        style={{width: "50%", alignSelf: "center"}}>
-        <Image style={{height: 40, width: 15, position: "absolute"}} source={require("../../../../../data/img/joint.png")}/>
-        <Image style={{height: 40, width: 25, position: "absolute", left: "12%"}} source={require("../../../../../data/img/bong.png")}/>
-        <Image style={{height: 40, width: 25, position: "absolute", left: "30%"}} source={require("../../../../../data/img/vape.png")}/>
-        <Image style={{height: 50, width: 25, position: "absolute", left: "53%", marginTop: -5}} source={require("../../../../../data/img/pipe.png")}/>
-        <Image style={{height: 40, width: 38, position: "absolute", left: "74%"}} source={require("../../../../../data/img/cookie.png")}/>
-       </Animated.View>
-    ) : null}
-    {selectedType === "joint" ? (
-      <Animated.Image
-        style={[styles.joint_img]}
-        source={require("../../../../../data/img/joint.png")}
-      />
-    ) : null}
-    {selectedType === "bong" ? (
-      <Animated.Image style={[styles.bong_img]} source={require("../../../../../data/img/bong.png")} />
-    ) : null}
-    {selectedType === "vape" ? (
-      <Animated.Image style={[styles.vape_img]} source={require("../../../../../data/img/vape.png")} />
-    ) : null}
-    {selectedType === "pipe" ? (
-      <Animated.Image style={[styles.pipe_img]} source={require("../../../../../data/img/pipe.png")} />
-    ) : null}
-    {selectedType === "cookie" ? (
-      <Animated.Image
-        style={[styles.cookie_img]}
-        source={require("../../../../../data/img/cookie.png")}
-      />
-    ) : null}
-    <View style={{height: 40}}></View>
+
+    <View style={{alignSelf: "center"}}>
+      {selectedType == "main" ? <TypeImage x={60}/> : 
+      <TypeImage type={selectedType} x={60}/>}
+    </View>
+
     <View style={{alignSelf: "center"}}>
     <Animated.Text
       style={styles.value}

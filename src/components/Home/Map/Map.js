@@ -1,14 +1,13 @@
 //React
-import React, { useEffect, useState, useRef, useContext, createRef } from "react";
-import { StyleSheet, LogBox, Image, View, Text, ScrollView, Dimensions, TouchableOpacity, TouchableNativeFeedback, Vibration } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState, useContext, createRef } from "react";
+import { StyleSheet, LogBox, Image, View, Text, Dimensions, TouchableOpacity, TouchableNativeFeedback, Vibration } from "react-native";
 
 //Custom Components
-import IconButton from "../../common/IconButton";
 import ProfileImage from "../../common/ProfileImage";
 import CustomMarker from "../../common/CustomMarker";
 import Empty from '../../common/Empty';
 import MarkerList from "./MarkerList/MarkerList";
+import Donation from "../Main/Donation/Donation";
 
 //Konstanten
 import { mapStyle } from "../../../data/CustomMapStyle";
@@ -22,42 +21,40 @@ import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons' 
 
-//Firebase
-import { doc, getDoc } from "@firebase/firestore";
-import { firestore } from "../../../data/FirebaseConfig";
-
 //Service
 import { UserContext } from "../../../data/UserContext";
 import { LanguageContext } from "../../../data/LanguageContext";
 import { FriendListContext } from "../../../data/FriendListContext";
 import { getLocalData } from "../../../data/Service";
-import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import TypeImage from "../../common/TypeImage";
-import { downloadUser } from "../../../data/Service";
 
 const Map = ({ getFriendList }) => {
   LogBox.ignoreAllLogs();
 
+  //Context
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);
   const friendList = useContext(FriendListContext);
 
-  const windowHeight = Dimensions.get("window").height;
+  //State
   const [view, setView] = useState("friends");
   const [localData, setLocalData] = useState([]);
   const [localDataLoaded, setLocalDataLoaded] = useState(false);
-  const carouselRef = React.useRef(null);
-  const [mapType, setMapType] = useState("standard");
+  const [mapType, setMapType] = useState("hybrid");
   const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [markers, setMarkers] = useState([]);
-  const camref = useRef(null);
   const [showMakerList, setShowMarkerList] = useState(false);
+  const [showDonation, setShowDonation] = useState(false);
 
+  //Constants
   const switch_icon = <AntDesign name={"picture"} style={{fontSize: 20, color: "white"}}/>
   const friends_icon = <MaterialIcons name="groups" style={{fontSize: 20, color: "white"}}/>
   const map_icon = <MaterialCommunityIcons name="map-marker-radius-outline" style={{fontSize: 20, color: "white"}}/>
+  const windowHeight = Dimensions.get("window").height;
 
+  //Ref
   const mapViewRef = createRef();
 
   async function init() {
@@ -312,6 +309,7 @@ const Map = ({ getFriendList }) => {
         </LinearGradient>
 
         {showMakerList ? <MarkerList onRefresh={() => refreshMarkers()} markers={markers} onExit={() => setShowMarkerList(false)} setRegion={(region) => mapViewRef.current.animateCamera(region)}/> : null}
+        {showDonation ? <Donation onexit={() => setShowDonation(false)}/> : null}
 
         {!loading && localDataLoaded ? (
           <>
@@ -401,11 +399,22 @@ const Map = ({ getFriendList }) => {
           </View> : null}
 
           <View style={styles.iconbutton_container}>
-              <IconButton backgroundColor={"#484F78"} icon={view == "heatmap" ? friends_icon : map_icon} onPress={() => {view == "heatmap" ? setView("friends") : setView("heatmap"); Vibration.vibrate(50)}}/>
-              <Text style={styles.iconbutton_label}>{view == "heatmap" ? "Freunde" : "Heatmap"}</Text>
-              <View style={{height: 10}}></View>
-              <IconButton backgroundColor={"#484F78"}  icon={switch_icon} onPress={toggleMapType}/>
-              <Text style={styles.iconbutton_label}>{mapType == "standard" ? "Satellite" : "Standard"}</Text>
+            <View style={{flex: 1}}>
+              <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={() => {view == "heatmap" ? setView("friends") : setShowDonation(true); Vibration.vibrate(50)}}>
+                <View style={styles.touchable}>
+                  {view == "heatmap" ? friends_icon : map_icon}
+                  <Text style={styles.iconbutton_label}>{view == "heatmap" ? "Freunde" : "Heatmap"}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+            <View style={{flex: 1}}>
+              <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={toggleMapType}>
+                <View style={styles.touchable}>
+                  {switch_icon}
+                  <Text style={styles.iconbutton_label}>{mapType == "standard" ? "Satellite" : "Standard"}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
           </View>
           </>
         ) : null}
@@ -467,6 +476,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
+    justifyContent: "center"
   },
   button: {
     fontFamily: "PoppinsLight",
@@ -489,11 +499,11 @@ const styles = StyleSheet.create({
     right: 0,
     position: "absolute",
     backgroundColor: "#1E2132",
-    padding: 10,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     height: responsiveHeight(30),
-    justifyContent: "center"
+    justifyContent: "center",
+    width: responsiveWidth(15)
   },
   iconbutton_container_left: {
     flexDirection: "column",

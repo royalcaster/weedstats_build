@@ -1,7 +1,6 @@
 //React
 import React, { useState, useRef, useContext } from "react";
-import { View, StyleSheet, Text, Animated, Easing, Dimensions, TouchableNativeFeedback, Modal, PanResponder } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, StyleSheet, Text, Animated, Easing, Dimensions, TouchableNativeFeedback, PanResponder } from "react-native";
 
 //Custom Components
 import ProfileImage from "../../../../common/ProfileImage";
@@ -9,24 +8,15 @@ import Button from "../../../../common/Button";
 import BackButton from "../../../../common/BackButton";
 import CustomModal from "../../../../common/CustomModal";
 
-//Tools
-import { convertMemberSince } from "../../../../../data/DateConversion";
-
 //Third Party
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Antdesign from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 
 //Service
 import { UserContext } from "../../../../../data/UserContext";
 import { LanguageContext } from "../../../../../data/LanguageContext";
-import Tutorial from "../../../../common/Tutorial";
-import ProfileEditor from "./ProfileEditor/ProfileEditor";
 import MemberSince from "../../../../common/MemberSince";
 
-const Account = ({ handleLogOut, onexit, show, toggleNavbar, deleteAccount, refreshUser }) => {
+const Account = ({ handleLogOut, onexit, show, toggleNavbar }) => {
 
   const user = useContext(UserContext);
   const language = useContext(LanguageContext);

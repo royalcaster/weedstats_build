@@ -1,6 +1,6 @@
 //React
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Animated, StyleSheet, View, Text, Image, Dimensions, StatusBar, ScrollView, Easing, TouchableNativeFeedback, Alert } from "react-native";
+import { Animated, StyleSheet, View, Text, Image, Dimensions, ScrollView, Easing, TouchableNativeFeedback, Alert } from "react-native";
 
 //Third Party
 import PieChart from "react-native-chart-kit/dist/PieChart";
@@ -11,12 +11,10 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { useBackHandler } from '@react-native-community/hooks'
-import uuid from 'react-native-uuid'
 
 //Custom Components
 import CounterItem from "../Home/Main/CounterItem/CounterItem";
 import ConfigItem from "../Home/Config/ConfigItem/ConfigItem";
-import FriendListItem from "../Home/Friends/FriendList/FriendListItem/FriendListItem";
 import BackButton from "./BackButton";
 import Button from "./Button";
 
@@ -25,16 +23,14 @@ import Levels from '../../data/Levels.json'
 import { mapStyle } from "../../data/CustomMapStyle";
 import { LanguageContext } from "../../data/LanguageContext";
 
-const Tutorial = ({ onDone, extraHeight, toggleNavbar, type}) => {
+const Tutorial = ({ onDone, type}) => {
 
+    //Context
     const language = useContext(LanguageContext);
 
+    //State
     const [testCounter, setTestCounter] = useState(206);
-
-    const touchRef = useRef(new Animated.Value(0)).current
-
     const [consented, setConsented] = useState(false);
-
     const [config, setConfig ] = useState({
       joint: true,
       bong: false,
@@ -43,25 +39,20 @@ const Tutorial = ({ onDone, extraHeight, toggleNavbar, type}) => {
       edible: false
     });
 
-    
+    //ref
+    const touchRef = useRef(new Animated.Value(0)).current
+
     useEffect(() => {
-     /*  toggleNavbar(0); */
       toggleTouchAnimation();
       show();
     },[]);
 
     useBackHandler(() => {
       if (type != "first") {
-        /* toggleNavbar(1); */
         onDone();
       }
       return true
   })
-
-  
-
-const screen_height = Dimensions.get("screen").height;
-const screen_width = Dimensions.get("screen").width;
 
 const slide = useRef(new Animated.Value(0)).current;
 

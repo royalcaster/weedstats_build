@@ -1,6 +1,6 @@
 //React
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Animated } from "react-native";
 import StateBar from "../StateBar/StateBar";
 
 //Service
@@ -8,6 +8,7 @@ import { LanguageContext } from "../../../../../data/LanguageContext";
 
 const StreakPanel = ({ streakData, currentStreak, currentStreakStart, longestStreak, longestStreakStart, longestStreakEnd }) => {
     
+  //Context
   const language = useContext(LanguageContext);
   
   return (

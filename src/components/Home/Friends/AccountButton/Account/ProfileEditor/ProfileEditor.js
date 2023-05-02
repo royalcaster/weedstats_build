@@ -22,20 +22,19 @@ import { UserContext } from "../../../../../../data/UserContext";
 
 const ProfileEditor = ({ onExit, refreshUser}) => {
 
-    const slideAnim = useRef(new Animated.Value(Dimensions.get("window").width)).current;
-    const user = useContext(UserContext);
-
+    //Context
     const language = useContext(LanguageContext);
 
+    //State
     const [showWarning, setShowWarning] = useState(false);
-
     const [image, setImage] = useState(user.photoUrl);
-    const [uploadImage, setUploadImage] = useState(null);
-    
     const [userName, setUserName] = useState(user.username);
-
     const [loading, setLoading] = useState(false);
 
+    //Ref
+    const slideAnim = useRef(new Animated.Value(Dimensions.get("window").width)).current;
+    const user = useContext(UserContext);
+    
     useBackHandler(() => {
         hide();
         return true;

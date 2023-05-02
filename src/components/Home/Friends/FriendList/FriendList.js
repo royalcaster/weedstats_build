@@ -1,12 +1,11 @@
 //React
-import React, {useEffect, useRef, useState, memo, useContext} from "react";
-import { Animated, View, StyleSheet, ScrollView, Text, RefreshControl } from "react-native";
+import React, { useState, useContext} from "react";
+import { Animated, View, StyleSheet, ScrollView, RefreshControl } from "react-native";
 
 //Custom Components
 import Empty from "../../../common/Empty";
 import FriendListItem from "./FriendListItem/FriendListItem";
 import CustomLoader from "../../../common/CustomLoader";
-import Button from "../../../common/Button";
 import FriendPage from "./FriendListItem/FriendPage/FriendPage";
 
 //Third Party
@@ -14,7 +13,6 @@ import uuid from 'react-native-uuid'
 
 //Service
 import { UserContext } from "../../../../data/UserContext";
-import { FriendListContext } from "../../../../data/FriendListContext";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { LanguageContext } from "../../../../data/LanguageContext";
 

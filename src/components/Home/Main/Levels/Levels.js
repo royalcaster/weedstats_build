@@ -13,9 +13,13 @@ import { useBackHandler } from "@react-native-community/hooks";
 
 const Levels = ({ onexit, show }) => {
 
+  //Context
   const language = useContext(LanguageContext);
 
+  //Constants
   const screen_width = Dimensions.get("window").width;
+
+  //Ref
   const fadeAnim = useRef(new Animated.Value(screen_width)).current;
 
   const slide = () => {

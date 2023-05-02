@@ -1,5 +1,5 @@
 //Firebase
-import { setDoc, doc, getDoc } from "@firebase/firestore";
+import { doc, getDoc } from "@firebase/firestore";
 import { firestore } from "./FirebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
@@ -76,7 +76,6 @@ export const getLocalData = async (user, callback) => {
 
 export const downloadUser = async ( id, config ) =>
 {
-  console.log(id);
   const docSnap = await getDoc(doc(firestore, "users", id));
 
   if (docSnap.exists()) {

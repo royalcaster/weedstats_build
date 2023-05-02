@@ -1,6 +1,6 @@
 //React
 import React, { useContext, useState } from "react";
-import { StyleSheet, View, Image, Text, TouchableNativeFeedback } from "react-native";
+import { StyleSheet, View, TouchableNativeFeedback } from "react-native";
 
 //Third Party
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
@@ -12,8 +12,6 @@ import TypeImage from '../../../common/TypeImage'
 const ConfigItem = ({ type, config, onToggle }) => {
 
   const [active, setActive] = useState(config);
-
-  const language = useContext(LanguageContext)
 
   return (
     <View style={[styles.container, {backgroundColor: config ? "#484F78" : "#131520"}]}>

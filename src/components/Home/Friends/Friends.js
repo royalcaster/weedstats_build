@@ -1,10 +1,9 @@
 //react
-import React, { useRef, useEffect, useContext, useState } from "react";
-import { StyleSheet, Animated, View, Text, Image, TouchableNativeFeedback, Easing } from "react-native";
+import React, { useRef, useEffect, useContext } from "react";
+import { StyleSheet, Animated, View, Text } from "react-native";
 
 //Third Party
 import { responsiveFontSize, responsiveWidth, responsiveHeight } from "react-native-responsive-dimensions";
-import Feather from 'react-native-vector-icons/Feather'
 
 //Service
 import { LanguageContext } from "../../../data/LanguageContext";
@@ -12,14 +11,12 @@ import { UserContext } from "../../../data/UserContext";
 
 //Custom Components
 import FriendList from "./FriendList/FriendList";
-import AccountButton from "./AccountButton/AccountButton";
 import SearchPanelButton from "./SearchPanelButton/SearchPanelButton";
 import FriendRequestButton from "./FriendRequestButton/FriendRequestButton";
 
-const Friends = ({ handleLogOut, toggleNavbar, deleteAccount, getFriendList, refreshUser, friendList }) => {
+const Friends = ({ toggleNavbar, getFriendList, refreshUser, friendList }) => {
 
     //Context
-    const user = useContext(UserContext);
     const language = useContext(LanguageContext);
 
     //Animations-Refs

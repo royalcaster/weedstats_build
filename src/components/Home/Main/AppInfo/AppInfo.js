@@ -15,10 +15,14 @@ import { useBackHandler } from "@react-native-community/hooks";
 
 const AppInfo = ({ onExit, show }) => {
 
+  //Context
   const language = useContext(LanguageContext);
 
-  const screen_width = Dimensions.get("window").width;
+  //State
   const fadeAnim = useRef(new Animated.Value(screen_width)).current;
+
+  //Constants
+  const screen_width = Dimensions.get("window").width;
 
   const slide = () => {
     Animated.timing(fadeAnim, {
@@ -63,7 +67,7 @@ const AppInfo = ({ onExit, show }) => {
               <View style={{flex: 1, justifyContent: "center"}}>
                 <Image style={{height: responsiveHeight(12), width: responsiveHeight(12), alignSelf: "center"}} source={require('../../../../data/img/logo.png')}/>
                 <Text style={[styles.text, { fontSize: responsiveFontSize(2) }]}>
-                  Version 2.0
+                  Version 0.0.1 (Early Access)
                 </Text>
 
                 <View style={{ height: responsiveHeight(5)}}></View>
@@ -74,7 +78,7 @@ const AppInfo = ({ onExit, show }) => {
                 <Text style={[styles.text, { fontSize: responsiveFontSize(2), color: "#0080FF" }]}>
                   royalcaster{"\n"}
                   Ined{"\n"}
-                  yung lillo
+                  {/* yung lillo */}
                 </Text>
 
                 <View style={{ height: responsiveHeight(5)}}></View>
