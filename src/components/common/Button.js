@@ -7,13 +7,11 @@ import { responsiveFontSize, responsiveHeight } from "react-native-responsive-di
 
 const Button = ({ icon, title, color, hovercolor, borderradius, onPress, fontColor, color2, small, disabled, borderColor }) => {
 
-  const [rippleOverflow, setRippleOverflow] = useState(true);
-
   return (
     <>
     <View
       style={[
-        { backgroundColor: color, borderRadius: 10, width: small ? "100%" : "80%", borderColor: borderColor ? borderColor : "rgba(0,0,0,0)", borderWidth: 2},
+        { backgroundColor: color,  width: small ? "100%" : "80%", borderradius: 10},
         styles.container,
       ]}
     >
@@ -21,11 +19,11 @@ const Button = ({ icon, title, color, hovercolor, borderradius, onPress, fontCol
         onPress={() => {
           onPress();
         }}
-        background={TouchableNativeFeedback.Ripple(hovercolor, rippleOverflow)}
-        style={{ height: "100%", width: "100%",zIndex: 10000}}
+        background={TouchableNativeFeedback.Ripple(hovercolor, false)}
+        style={{ height: "100%", width: "100%", zIndex: 10000}}
         disabled={disabled}
       >
-        <View style={styles.touchable}>
+        <View style={[styles.touchable,{borderColor: borderColor ? borderColor : "rgba(0,0,0,0)", borderWidth: 2}]}>
           <Text> {icon}</Text>
           <Text style={[{ color: fontColor }, styles.title]}>{title}</Text>
         </View>
@@ -47,6 +45,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     zIndex: 10,
+    borderRadius: 10,
+    overflow: "hidden"
   },
   container2: {
     height: 10,
@@ -71,6 +71,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     zIndex: 10,
-    borderRadius: 0
   },
 });

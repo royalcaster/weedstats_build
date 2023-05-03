@@ -479,7 +479,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
                 <View style={{flexDirection: "row", width: "90%", alignSelf: "center"}}>
                     <View style={{flex: 1}}>
-                      {/* <Button
+                      <Button
                         onPress={() => setShowTutorial(true)}
                         title={" " + language.account_tutorial}
                         icon={<Feather name="help-circle" style={styles.money_icon} />}
@@ -488,22 +488,11 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                         fontColor={"white"}
                         hovercolor={"rgba(255,255,255,0.15)"}
                         small={true}
-                      /> */}
-                      <Button
-                        onPress={() => setShowDonation(true)}
-                        title={language.account_support}
-                        icon={<MaterialIcons name="euro" style={styles.money_icon} />}
-                        borderradius={100}
-                        color={"#131520"}
-                        fontColor={"white"}
-                        hovercolor={"rgba(255,255,255,0.15)"}
-                        small={true}
-                        borderColor={"#F2338C"}
                       />
                     </View>
                     <View style={{width: responsiveWidth(2)}}></View>
                     <View style={{flex: 1}}>
-                    {/* <Button
+                    <Button
                         onPress={() => setShowDonation(true)}
                         title={language.account_support}
                         icon={<MaterialIcons name="euro" style={styles.money_icon} />}
@@ -512,8 +501,8 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                         fontColor={"white"}
                         hovercolor={"rgba(255,255,255,0.15)"}
                         small={true}
-                        borderColor={"#F2338C"}
-                      /> */}
+                        color2={"#F2338C"}
+                      />
                     </View>
                 </View>
                 </View>

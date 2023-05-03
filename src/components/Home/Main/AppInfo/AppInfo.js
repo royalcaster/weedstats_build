@@ -18,11 +18,11 @@ const AppInfo = ({ onExit, show }) => {
   //Context
   const language = useContext(LanguageContext);
 
-  //State
-  const fadeAnim = useRef(new Animated.Value(screen_width)).current;
-
   //Constants
   const screen_width = Dimensions.get("window").width;
+
+  //State
+  const fadeAnim = useRef(new Animated.Value(screen_width)).current;
 
   const slide = () => {
     Animated.timing(fadeAnim, {

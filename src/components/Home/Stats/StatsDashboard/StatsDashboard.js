@@ -170,7 +170,7 @@ const StatsDashboard = ({ localData }) => {
           />
 
           {selectedType === "main" ? (
-            <PieChart              data={[
+            <PieChart data={[
                 {
                   name: language.joint,
                   count: filterByMostRecent(

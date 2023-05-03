@@ -36,6 +36,7 @@ import { firestore } from "../../../../../data/FirebaseConfig";
 //Service
 import { UserContext } from "../../../../../data/UserContext";
 import { LanguageContext } from "../../../../../data/LanguageContext";
+import { responsiveHeight } from "react-native-responsive-dimensions";
 
 const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
 
@@ -355,7 +356,7 @@ const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
             {results ? (
               <ScrollView refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={() => loadRequests()} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>
-              } style={{ width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} contentContainerStyle={results.length != 0 ? null : {justifyContent: "center", flex: 1}}>
+              } style={{ width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} contentContainerStyle={results.length != 0 ? null : {height: "50%"}}>
                 {results.length != 0 ? (
                   results.map((result) => {
                     return (
@@ -369,11 +370,11 @@ const FriendRequests = ({ onExit, refreshUser, getFriendList }) => {
                   })
                 ) : 
                 <View>
-                <Empty title={language.requests_no_requests}/>
+                  <Empty title={language.requests_no_requests}/>
                 </View>}
               </ScrollView>
             ) : 
-            <View style={{flex: 1}}><Empty title={"Du hast noch keine Anfragen."} tip={"Das wird schon noch!"}/></View>}
+            null}
           </>
         )}
 

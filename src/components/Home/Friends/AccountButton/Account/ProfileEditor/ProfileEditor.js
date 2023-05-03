@@ -24,6 +24,7 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
 
     //Context
     const language = useContext(LanguageContext);
+    const user = useContext(UserContext);
 
     //State
     const [showWarning, setShowWarning] = useState(false);
@@ -33,7 +34,6 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
 
     //Ref
     const slideAnim = useRef(new Animated.Value(Dimensions.get("window").width)).current;
-    const user = useContext(UserContext);
     
     useBackHandler(() => {
         hide();

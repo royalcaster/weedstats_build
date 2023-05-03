@@ -138,7 +138,6 @@ const Map = ({ getFriendList }) => {
 
   const toggleMapType = () => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
-    Vibration.vibrate(50);
   }
 
   const chopTimeStamp = (timestamp) => {

@@ -5,6 +5,7 @@ import { useBackHandler } from '@react-native-community/hooks'
 
 //Custom Components
 import BackButton from "../../../common/BackButton";
+import Empty from "../../../common/Empty";
 
 //Service
 import { UserContext } from "../../../../data/UserContext";
@@ -85,7 +86,7 @@ const MarkerList = ({onExit, setRegion, markers, onRefresh}) => {
             {
                 markers.length != 0 ? markers.map((marker) => {
                     return <MarkerListItem key={uuidv4()} marker={marker} onPress={() => handlePress(marker)}/>
-                }) : null
+                }) : <Empty title={language.map_no_friends} tip={language.map_no_friends_tip}/>
             }
             </ScrollView>
         </Animated.View>

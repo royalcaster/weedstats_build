@@ -569,6 +569,16 @@ const deleteAccount = async () => {
   setLoading(true);
   handleLogOut();
 
+  try {
+    // Firestore-Doc löschen
+    const docRef = doc(firestore, "users", user.id);
+    await deleteDoc(docRef);
+    setLoading(false);
+  }
+  catch(e) {
+    console.log("Fehler beim löschen des Firebase Docs: " + error);
+  }
+
   const current_user = auth.currentUser;
   deleteUser(current_user).then(() => {
     AsyncStorage.removeItem("user_id");
@@ -576,11 +586,6 @@ const deleteAccount = async () => {
     // An error ocurred
     console.log("Fehler beim löschen des Kontos: " + error);
   });
-
-  // Firestore-Doc löschen
-  const docRef = doc(firestore, "users", user.id);
-  await deleteDoc(docRef);
-  setLoading(false);
 };
 
   return (
@@ -588,10 +593,6 @@ const deleteAccount = async () => {
       <View style={{backgroundColor: "#1E2132", height: "100%"}}>
         <ConfigContext.Provider value={config}>
         <LanguageContext.Provider value={language}>
-
-        { showSplash ? 
-        <Splash onExit={() => {setShowSplash(false);}}/>
-        : 
           <>
           {loading ? <View style={{justifyContent: "center", height: "100%"}}><CustomLoader color={"#c4c4c4"} x={100} special={true}/></View>
           : 
@@ -627,8 +628,6 @@ const deleteAccount = async () => {
             </>
           }
           </>
-        }
-        
 
         </LanguageContext.Provider>
         </ConfigContext.Provider>

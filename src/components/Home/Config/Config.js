@@ -39,7 +39,7 @@ import { ConfigContext } from "../../../data/ConfigContext";
 import CustomModal from "../../common/CustomModal";
 import { UserContext } from "../../../data/UserContext";
 
-const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser }) => {
+const Config = ({ toggleLanguage, loadSettings, deleteAccount, refreshUser, handleLogOut }) => {
 
   //Context
   const user = useContext(UserContext);

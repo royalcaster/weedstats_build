@@ -1,14 +1,10 @@
 //React
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, Image, Animated, Easing, TouchableNativeFeedback, Vibration } from "react-native";
+import React, { useContext, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, Image, Animated, Easing } from "react-native";
 
 //Custom Components
 import Statusbar from "./StatusBar/Statusbar";
-import LevelImage from "../../../common/LevelImage";
 import Slider from './Slider/Slider'
-
-//Third Party
-import { LinearGradient } from "expo-linear-gradient";
 
 //Service
 import { LanguageContext } from "../../../../data/LanguageContext";
@@ -97,14 +93,18 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
 
   const getGradientColors = (counter) => {
     if (counter) {
-    let indicator = Math.floor(counter / 70);
-    return indicator > language.levels.length - 1
-      ? language.levels[language.levels.length - 1].colors
-      : language.levels[indicator].colors;
+      if (counter == 0) {
+        return ["rgba(255,255,255,0.75), rgba(255,255,255,0.5)"]
+      }
+      else {
+        let indicator = Math.floor(counter / 70);
+        return indicator > language.levels.length - 1
+          ? language.levels[language.levels.length - 1].colors
+          : language.levels[indicator].colors;
+      }
     }
     else {
-      
-      return language.levels[0].colors;
+      return ["#484F78", "#484F78", "#1E2132"]
     }
   };
 
@@ -168,7 +168,7 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
           </View>
         </View>  
         <View style={{flex: 1, flexDirection: "column"}}>
-          <LevelBar index={Math.floor(counter / 70)}/>
+          <LevelBar index={Math.floor(counter / 70)} counter={counter}/>
         </View>
       </View> 
 

@@ -103,6 +103,7 @@ const hide = () => {
         <Image style={{height: 100, width: 100, alignSelf: "center", borderRadius: 15}} source={require('../../../assets/icon.png')}/>
         <View style={{height: 20}}></View>
         <Text style={[styles.logo_heading,{position: "relative"}]}>WeedStats</Text>
+        <Text style={[styles.logo_heading,{position: "relative", color: "#F2338C", fontSize: responsiveFontSize(2)}]}> The tutorial is not finished yet, please ignore! </Text>
       </View>
       <View style={{flex: 1, justifyContent: "center"}}>
       <Animated.View style={{

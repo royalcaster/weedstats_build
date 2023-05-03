@@ -1,9 +1,9 @@
 //React
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, View, Text, Animated, Easing } from "react-native";
+import { StyleSheet, View, Text, Animated, Easing, Image } from "react-native";
 
 //Third Party
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const Empty = ({ title, tip, icon }) => {
 
@@ -27,9 +27,9 @@ const Empty = ({ title, tip, icon }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={{ alignItems: "center", width: "90%", alignSelf: "center", transform: [{translateY: fadeAnim}], opacity: opacityAnim}}>
-        {icon}
+        <Image source={require("../../data/img/empty.png")} style={{height: responsiveHeight(10), width: responsiveHeight(10)}}/>
         <Text style={styles.heading}>{title}</Text>
-        <Text style={styles.heading2}>
+        <Text style={[styles.heading, {color: "rgba(255,255,255,0.5)"}]}>
           {tip}
         </Text>
       </Animated.View>
@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsMedium",
     textAlign: "center",
     color: "white",
-    fontSize: responsiveFontSize(2),
+    fontSize: responsiveFontSize(1.75),
     width: "70%"
   },
   heading2: {
     fontFamily: "PoppinsLight",
     textAlign: "center",
     color: "white",
-    fontSize: responsiveFontSize(1.5)
+    fontSize: responsiveFontSize(1.75)
   },
   smile: {
     fontSize: responsiveFontSize(14),

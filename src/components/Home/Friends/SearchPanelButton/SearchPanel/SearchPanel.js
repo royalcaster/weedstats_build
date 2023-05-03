@@ -147,16 +147,17 @@ const SearchPanel = ({onExit}) => {
         <View style={{flex: 1, flexDirection: "row"}}>
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                 
-                <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+                <Button title={language.cancel} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
             </View>
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Button title={"Senden"} onPress={() => makeFriendRequest(activeRequested.id)} color={"#00DB4D"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+                <Button title={language.send} onPress={() => makeFriendRequest(activeRequested.id)} color={"#00DB4D"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
             </View>
         </View></> 
         
-        : <View style={{flex: 1, justifyContent: "center"}}><Antdesign style={styles.info_icon} name="exclamationcircleo"/>
+        : <View style={{flex: 1, justifyContent: "center"}}>
             <View style={{height: 30}}></View>
-            <Text style={[styles.heading,{textAlign: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text>
+            {language.short == "de" ? <Text style={[styles.heading,{textAlign: "center", maxWidth: "80%", alignSelf: "center"}]}>Du hast bereits eine Freundschaftsanfrage an <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text> gesendet.</Text> 
+            : <Text style={[styles.heading,{textAlign: "center", maxWidth: "80%", alignSelf: "center"}]}>You already sent a request to <Text style={{color: "#0080FF"}}>{activeRequested ? activeRequested.username : null}</Text></Text>}
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}> 
                 <Button title={"Ok"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
             </View>
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     heading: {
         color: "white",
         fontFamily: "PoppinsMedium",
-        fontSize: 20,
+        fontSize: responsiveFontSize(2.5),
         textAlign: "center"
     },
     touchable: {

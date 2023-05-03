@@ -81,13 +81,11 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         ) : null}
         {view == "stats" ? <Stats/> : null}
         {view == "map" ? <Map getFriendList={getFriendList}/> : null}
-        {view == "config" ? <Config deleteAccount={deleteAccount} toggleLanguage={toggleLanguage} loadSettings={loadSettings} refreshUser={refreshUser}/> : null}
+        {view == "config" ? <Config deleteAccount={deleteAccount} handleLogOut={handleLogOut} toggleLanguage={toggleLanguage} loadSettings={loadSettings} refreshUser={refreshUser}/> : null}
         {view == "groups" ? (
           <Friends
             friendList={friendList}
-            handleLogOut={handleLogOut}
             toggleNavbar={toggleNavbar}
-            deleteAccount={deleteAccount}
             getFriendList={getFriendList}
             refreshUser={refreshUser}/>
         ) : null}
@@ -99,7 +97,6 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
             <MenuButton
               disabled={view == "stats"}
               onPress={() => {
-                Vibration.vibrate(25);
                 setView("stats");
               }}
               selected={view == "stats"}
@@ -117,7 +114,6 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
             <MenuButton
               disabled={view == "map"}
               onPress={() => {
-                Vibration.vibrate(25);
                 setView("map");
               }}
               selected={view == "map"}
@@ -141,14 +137,12 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
                   : require("../../data/img/logo_bw.png")
               }
               onPress={() => {
-                Vibration.vibrate(25);
                 setView("main");
               }}
             />
             <MenuButton
             disabled={view == "config"}
               onPress={() => {
-                Vibration.vibrate(25);
                 setView("config");
               }}
               selected={view == "config"}

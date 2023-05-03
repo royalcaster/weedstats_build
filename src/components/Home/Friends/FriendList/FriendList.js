@@ -57,7 +57,7 @@ const FriendList = ({ friendList, toggleNavbar, getFriendList, refreshUser }) =>
 
                         </> : <View style={{justifyContent: "center", flex: 1}}>
                                 <View style={{height: responsiveHeight(5)}}></View>
-                                <Empty title={language.empty_no_friends_yet}/>
+                                <Empty title={language.empty_no_friends_yet} tip={language.empty_tap_the_plus}/>
                             </View>}
 
                         <View style={{height: responsiveHeight(5)}}></View>

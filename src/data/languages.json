@@ -16,6 +16,8 @@
         "activate_unlock": "Ja, Entsperren aktivieren",
         "see_now": "Ja, jetzt ansehen",
         "later": "Später",
+        "send": "Senden",
+        "cancel": "Abbrechen",
 
         "login": "Anmelden",
 
@@ -131,7 +133,7 @@
         "account_support_go_premium": "Werde Premium",
 
         "account_sign_out": "Abmelden",
-        "account_delete_account": "Dieses Konto löschen",
+        "account_delete_account": "Konto löschen",
         "account_delete_account_submit": "Löschen",
         "account_delete_account_cancel": "Abbrechen",
 
@@ -184,6 +186,7 @@
         "success": "Erfolg",
 
         "empty_no_friends_yet": "Du hast noch keine Freunde",
+        "empty_tap_the_plus": "Tippe auf das + oben rechts",
 
         "login_user_not_found": "Email-Adresse nicht gefunden",
         "login_wrong_password": "Falsches Kennwort",
@@ -342,6 +345,8 @@
         "activate_unlock": "Yes, activate unlock",
         "see_now": "Yes, see Tutorial now",
         "later": "Later",
+        "send": "Send",
+        "cancel": "Cancel",
 
         "login": "Sign in",
 
@@ -457,7 +462,7 @@
         "account_support_go_premium": "Go premium",
 
         "account_sign_out": "Sign Out",
-        "account_delete_account": "Delete this account",
+        "account_delete_account": "Delete account",
         "account_delete_account_submit": "Delete",
         "account_delete_account_cancel": "Cancel",
 
@@ -511,6 +516,7 @@
         "success": "Success", 
 
         "empty_no_friends_yet": "You don't have any friends yet",
+        "empty_tap_the_plus": "Tap the + in the top right corner",
 
         "login_user_not_found": "This email adress was not found",
         "login_wrong_password": "Wrong password",

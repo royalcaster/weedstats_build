@@ -46,7 +46,6 @@ const History = ({ show, onExit, history}) => {
   });
 
   const slide = () => {
-    Vibration.vibrate(25);
     Animated.timing(pan, {
       toValue: 0,
       duration: 400,

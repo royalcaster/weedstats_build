@@ -2,17 +2,18 @@
   "expo": {
     "name": "WeedStats",
     "slug": "WeedStats",
-    "originalFullName": "@royalcaster/WeedStats",
-    "currentFullName": "@royalcaster/WeedStats",
+    /* "originalFullName": "@royalcaster/WeedStats",
+    "currentFullName": "@royalcaster/WeedStats", */
     "scheme": "com.royalcaster.WeedStats_build_test",
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    /* "splash": {
+    "backgroundColor": "#1E2132",
+    "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#1E2132"
-    }, */
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -27,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 59,
+      "versionCode": 62,
       "package": "com.royalcaster.WeedStats_build_test",
       "config": {
         "googleMaps": {
