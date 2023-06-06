@@ -37,6 +37,7 @@ import { firestore } from "../../../data/FirebaseConfig";
 import CounterModal from "../../common/CounterModal";
 import { FriendListContext } from "../../../data/FriendListContext";
 import { getCounterNotificationTitle } from "../../../data/Service";
+import NewsPanel from "../../common/NewsPanel";
 
 const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
@@ -69,6 +70,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
   const [showLevels, setShowLevels] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
   const [showAppInfo, setShowAppInfo] = useState(false);
+  const [showNews, setShowNews] = useState(true);
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
@@ -336,6 +338,8 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
   return (
     <>
+
+        {showNews ? <NewsPanel language={language} onExit={() => setShowNews(false)}/> : null}
 
         <CustomModal show={showCounterModal} child={CounterModalContent}/>
 

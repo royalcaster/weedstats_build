@@ -84,7 +84,7 @@ const MarkerList = ({onExit, setRegion, markers, onRefresh}) => {
             
             <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>}>
             {
-                markers.length != 0 ? markers.map((marker) => {
+                markers.length != 0 ? markers.sort((a,b) => a.timestamp < b.timestamp).map((marker) => {
                     return <MarkerListItem key={uuidv4()} marker={marker} onPress={() => handlePress(marker)}/>
                 }) : <Empty title={language.map_no_friends} tip={language.map_no_friends_tip}/>
             }

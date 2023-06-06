@@ -11,6 +11,20 @@ const LevelBar = ({ index, counter }) => {
     const language = useContext(LanguageContext);
     const [color, setColor] = useState("#484F78")
 
+    const getColor = (level) => {
+        if (counter) {
+            if (level.key > index) {
+                return "#1E2132";
+            }
+            else{
+                return level.colors[0];
+            }
+        }
+        else {
+            return "#1E2132";
+        }
+    }
+
     useEffect(() => {
         show();
     },[]);
@@ -24,24 +38,9 @@ const LevelBar = ({ index, counter }) => {
         }).start()
     }
 
-    const RenderItem = ({ level }) => {
-
-        
-        if (counter) {
-            if (level.key > index) {
-                setColor("#1E2132")
-            }
-            else{
-                setColor(level.colors[0])
-            }
-        }
-        else {
-            setColor("#484F78");
-        }
-        
-
+    const RenderItem = ({ level }) => {  
         return <>
-        <View key={level} style={{color, flex: 1, margin: 1.5, marginHorizontal: 10, borderRadius:2.5}}>
+        <View key={level} style={{backgroundColor: getColor(level), flex: 1, margin: 1.5, marginHorizontal: 10, borderRadius: 2.5}}>
 
         </View>
         </>

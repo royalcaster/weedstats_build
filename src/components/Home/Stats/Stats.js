@@ -63,10 +63,10 @@ const Stats = () => {
     <Animated.View style={[{ opacity: 1 }, styles.container]}>
 
       {
-        !localDataLoaded ? <CustomLoader x={50} color={"#0080FF"}/> : 
+        !localDataLoaded ? <CustomLoader x={50} color={"#484F78"}/> : 
         <>
           {
-            localData.length == 0 ? <View style={{height: "20%"}}><CustomLoader x={50} color={"#0080FF"}/><Empty title={"Noch keine Aktivitäten"} tip={"Mache Einträge, um Statistiken zu sehen"}/></View>
+            localData.length == 0 ? <View style={{height: "20%"}}><CustomLoader x={50} color={"#484F78"}/><Empty title={"Noch keine Aktivitäten"} tip={"Mache Einträge, um Statistiken zu sehen"}/></View>
             : <StatsDashboard localData={localData} />
           }
         </>

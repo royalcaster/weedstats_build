@@ -123,7 +123,8 @@ export default function App() {
   });
 
   // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
-  async function sendPushNotification(expoPushToken, title, body, data) {
+  const sendPushNotification = async (expoPushToken, title, body, data) => {
+    console.log("test");
     const message = {
       to: expoPushToken,
       sound: 'default',
@@ -567,17 +568,6 @@ const handleLogOut = async () => {
 //behandelt das Löschen des Nutzeraccounts
 const deleteAccount = async () => {
   setLoading(true);
-  handleLogOut();
-
-  try {
-    // Firestore-Doc löschen
-    const docRef = doc(firestore, "users", user.id);
-    await deleteDoc(docRef);
-    setLoading(false);
-  }
-  catch(e) {
-    console.log("Fehler beim löschen des Firebase Docs: " + error);
-  }
 
   const current_user = auth.currentUser;
   deleteUser(current_user).then(() => {
@@ -586,6 +576,13 @@ const deleteAccount = async () => {
     // An error ocurred
     console.log("Fehler beim löschen des Kontos: " + error);
   });
+
+  // Firestore-Doc löschen
+  const docRef = doc(firestore, "users", user.id);
+  await deleteDoc(docRef);
+  setLoading(false);
+
+  handleLogOut();
 };
 
   return (

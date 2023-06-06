@@ -21,14 +21,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.royalcaster.WeedStats"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 62,
+      "versionCode": 64,
       "package": "com.royalcaster.WeedStats_build_test",
       "config": {
         "googleMaps": {

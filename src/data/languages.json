@@ -127,8 +127,8 @@
         "account_support": "Premium",
         "account_support_weedstats": "WeedStats Premium",
         "account_support_catch": "Bock auf mehr?",
-        "account_support_text": "Werde Premium-Mitglied, um folgende Funktionen freizuschalten:",
-        "account_support_features": ["Zugang zur Heatmap" ,"Nutzername und Profilbild ändern", "Einsicht in deinen gesamten Verlauf", "Strähnen- und Pausendaten", "neue Funktionen als erster ausprobieren"],
+        "account_support_text": "Werde bald ein Premium-Mitglied, um folgende Funktionen freizuschalten:",
+        "account_support_features": ["Zugang zur Heatmap" ,"Einsicht in deinen gesamten Verlauf", "Strähnen- und Pausendaten", "neue Funktionen als erster ausprobieren"],
         "account_support_one_time_fee": "Einmalige Gebühr",
         "account_support_go_premium": "Werde Premium",
 
@@ -456,8 +456,8 @@
         "account_support": "Premium",
         "account_support_weedstats": "WeedStats Premium",
         "account_support_catch": "Up for more?",
-        "account_support_text": "Become a premium member to unlock the following features:",
-        "account_support_features": ["Access to heatmap" ,"Change username and profile image", "Insight on your entire history", "Sreak and pause data", "Be first to test new features"],
+        "account_support_text": "Become a premium member soon to unlock the following features:",
+        "account_support_features": ["Access to heatmap", "Insight on your entire history", "Sreak and pause data", "Be first to test new features"],
         "account_support_one_time_fee": "One time fee",
         "account_support_go_premium": "Go premium",
 

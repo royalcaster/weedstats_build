@@ -133,6 +133,7 @@ const Map = ({ getFriendList }) => {
           username: friend.username
         }])
       }
+      console.log(friend.last_entry_timestamp);
     });
   }
 

@@ -23,6 +23,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "royalcaster03@gmail.com",
+        "ascAppId": "6449926365",
+        "appleTeamId": "JGLY379Y9V"
+      }
+    }
   }
 }
