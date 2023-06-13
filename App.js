@@ -577,8 +577,6 @@ const deleteAccount = async () => {
     const fileRef = ref(storage, "profile-pictures/" + user.id + ".png");
     // Delete the file
     deleteObject(fileRef).then(() => {
-      setLoading(false);
-      hide();
     }).catch((error) => {
       console.log("Error beim Löschen des alten Profilbilds:" + error);
     });

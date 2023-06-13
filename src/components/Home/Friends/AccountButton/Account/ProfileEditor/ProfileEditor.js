@@ -85,8 +85,7 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
         const fileRef = ref(storage, "profile-pictures/" + user.id + ".png");
         // Delete the file
         deleteObject(fileRef).then(() => {
-          setLoading(false);
-          hide();
+          
         }).catch((error) => {
           console.log("Error beim Löschen des alten Profilbilds:" + error);
         });
@@ -104,6 +103,9 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
         else {
             setShowWarning(true);
         }
+
+        setLoading(false);
+        hide();
     }
 
     //1:1 aus einem Expo Beispiel geklaut, als ob ich plan von http hab lol
