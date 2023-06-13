@@ -25,17 +25,20 @@
       "bundleIdentifier": "com.royalcaster.WeedStats"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1E2132"
       },
-      "versionCode": 64,
+      "versionCode": 67,
       "package": "com.royalcaster.WeedStats_build_test",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyB5qQ0ApePizK0VrhpKrNlTLmn4aLgEU6o"
         }
-      }
+      },
+      "permissions": ["NOTIFICATIONS"],
+      "useNextNotificationsApi": true,
     },
     "web": {
       "favicon": "./assets/favicon.png"

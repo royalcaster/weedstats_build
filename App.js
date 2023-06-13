@@ -13,6 +13,8 @@ import { app, firestore } from './src/data/FirebaseConfig'
 import { doc, getDoc, updateDoc, deleteDoc, setDoc } from "@firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
 import { createUsernameArray, downloadUser } from "./src/data/Service";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from '@firebase/storage'
+import { storage } from "./src/data/FirebaseConfig";
 
 //Expo
 import { useFonts } from "expo-font";
@@ -163,7 +165,7 @@ export default function App() {
         alert('Failed to get push token for push notification!');
         return;
       }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
+      token = (await Notifications.getDevicePushTokenAsync()).data;
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -270,7 +272,7 @@ export default function App() {
       last_entry_longitude: settings.last_entry_longitude ? settings.last_entry_longitude : user.last_entry_longitude,
       last_entry_type: settings.last_entry_type ? settings.last_entry_type : user.last_entry_type,
       main_counter: settings.main_counter ? settings.main_counter : user.main_counter,
-      username_array: settings.username ? createUsernameArray(settings.username) : user.username_array,
+      username_array: settings.username ? createUsernameArray(settings.username.toUpperCase()) : user.username_array,
     });
 
     if (settings.config) {
@@ -372,6 +374,7 @@ export default function App() {
   //Behandelt Konto-Erstellung
   const handleCreate = (username, email, password) => {
     setLoading(true);
+
     createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const result = userCredential.user;
@@ -398,7 +401,7 @@ export default function App() {
         last_entry_longitude: null,
         last_entry_type: null,
         main_counter: 0,
-        username_array: createUsernameArray(username),
+        username_array: createUsernameArray(username.toUpperCase()),
         config: {
           first: true,
           language: "en",
@@ -568,6 +571,18 @@ const handleLogOut = async () => {
 //behandelt das Löschen des Nutzeraccounts
 const deleteAccount = async () => {
   setLoading(true);
+
+  if (user.photoUrl != "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png") {
+    //Delete Old Profile Picture
+    const fileRef = ref(storage, "profile-pictures/" + user.id + ".png");
+    // Delete the file
+    deleteObject(fileRef).then(() => {
+      setLoading(false);
+      hide();
+    }).catch((error) => {
+      console.log("Error beim Löschen des alten Profilbilds:" + error);
+    });
+  }
 
   const current_user = auth.currentUser;
   deleteUser(current_user).then(() => {

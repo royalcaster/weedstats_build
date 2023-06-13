@@ -70,7 +70,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
   const [showLevels, setShowLevels] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
   const [showAppInfo, setShowAppInfo] = useState(false);
-  const [showNews, setShowNews] = useState(true);
+  const [showNews, setShowNews] = useState(false);
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;

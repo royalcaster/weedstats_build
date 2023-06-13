@@ -43,6 +43,14 @@ const Login = ({ handleLogin, handleCreate, wrongPassword, emailInUse, userNotFo
 
     }, []);
 
+    const checkForSpace = () => {
+      let email_without_space;
+      if (email.slice(-1) == " ") {
+          email_without_space = email.substring(0, email.length-1);
+          setEmail(email_without_space)
+      }
+    }
+
   return (
     <Animated.View style={[{ opacity: fadeAnim }, styles.login_container]}>
 
@@ -75,7 +83,7 @@ const Login = ({ handleLogin, handleCreate, wrongPassword, emailInUse, userNotFo
 
       <View style={{ zIndex: 2, flex: 5, justifyContent: "center"}}>
         <Text style={styles.label}>E-Mail Adress</Text>
-        <TextInput  textContentType="emailAddress" style={[styles.textinput, styles.email_input]} value={email} onChangeText={(text) => setEmail(text)}/>
+        <TextInput  onBlur={() => checkForSpace()} textContentType="emailAddress" style={[styles.textinput, styles.email_input]} value={email} onChangeText={(text) => setEmail(text)}/>
         {userNotFound ? <Text style={{color: "#FC2044", textAlign: "center"}}>{language.login_user_not_found}</Text> : null }
         <Text style={styles.label}>Password</Text>
         <TextInput onChangeText={(text) => setPassword(text)} secureTextEntry={securePassword} textContentType="password" style={[styles.textinput, styles.password_input]} value={password} />

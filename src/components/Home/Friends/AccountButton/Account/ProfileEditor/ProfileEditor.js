@@ -13,7 +13,7 @@ import ProfileImage from "../../../../../common/ProfileImage";
 
 //Service
 import { createUsernameArray } from "../../../../../../data/Service";
-import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from '@firebase/storage'
 import { storage } from "../../../../../../data/FirebaseConfig";
 
 //Data
@@ -79,16 +79,27 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
       };
 
     const saveChanges = async () => {
+
+      if (user.photoUrl != "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png") {
+        //Delete Old Profile Picture
+        const fileRef = ref(storage, "profile-pictures/" + user.id + ".png");
+        // Delete the file
+        deleteObject(fileRef).then(() => {
+          setLoading(false);
+          hide();
+        }).catch((error) => {
+          console.log("Error beim Löschen des alten Profilbilds:" + error);
+        });
+      }
+        
         if (image != null && userName.length > 0) {
             setLoading(true);
             let downloadUri = await uploadImageAsync(image);
             await refreshUser({
                 username: userName,
                 photoUrl: downloadUri,
-                username_array: createUsernameArray(userName)
+                username_array: createUsernameArray(userName.toUpperCase())
             });
-            setLoading(false);
-            hide();
         }
         else {
             setShowWarning(true);

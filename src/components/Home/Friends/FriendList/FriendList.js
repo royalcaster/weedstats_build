@@ -47,7 +47,7 @@ const FriendList = ({ friendList, toggleNavbar, getFriendList, refreshUser }) =>
                 <>
                     <ScrollView
                         refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={() => getFriendList()} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>
+                            <RefreshControl refreshing={refreshing} onRefresh={() => getFriendList()} colors={["white"]} progressBackgroundColor={"#484F78"}/>
                         }>
                         {friendList.length != 0 ?
                         <>

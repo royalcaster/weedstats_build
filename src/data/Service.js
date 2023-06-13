@@ -116,16 +116,25 @@ export const downloadUser = async ( id, config ) =>
 // -------------------
 export const calcDailyAverage = (array, localData) => {
   //Wenn man einen neuen Account erstellt ist diese Differenz der Tage 0 und durch 0 teilen = "Infinity", deswegen einfach Anzahl der Einträge zurückgeben
-  if (localData[localData.length - 1].timestamp - localData[0].timestamp == 0) {
-    return localData.length;
+  if (array.length == 0) {
+    return 0
   }
   else {
-    return (
-      array.length /
-      ((localData[localData.length - 1].timestamp - localData[0].timestamp) /
-        (60 * 60 * 24 * 1000))
-      );
+
+    if (array[array.length - 1].timestamp - array[0].timestamp == 0) {
+      return array.length;
+    }
+    else {
+      return (
+        array.length /
+        ((localData[localData.length - 1].timestamp - localData[0].timestamp) /
+          (60 * 60 * 24 * 1000))
+        );
+    }
+
   }
+
+  
   
 };
 

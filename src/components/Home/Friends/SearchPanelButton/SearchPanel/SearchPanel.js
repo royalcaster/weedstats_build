@@ -74,7 +74,7 @@ const SearchPanel = ({onExit}) => {
         if (length != 0) {
             try {
                 const docRef = collection(firestore,"users");
-                const q = query(docRef, where("username_array", "array-contains", text));
+                const q = query(docRef, where("username_array", "array-contains", text.toUpperCase()));
                 const docSnap = await getDocs(q);
     
                 docSnap.forEach((doc) => {

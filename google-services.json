@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "158741630717",
+    "firebase_url": "https://weedstats-1a033-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "weedstats-1a033",
+    "storage_bucket": "weedstats-1a033.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158741630717:android:405e67a3c5b85b92c6f894",
+        "android_client_info": {
+          "package_name": "com.royalcaster.WeedStats_build_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxVewlt1lfc-pgGKvlNMz_pokMYS4OzV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158741630717-ppvdilc9ar32h7rj359c574duono226t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

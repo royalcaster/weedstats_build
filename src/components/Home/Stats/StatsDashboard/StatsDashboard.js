@@ -166,6 +166,7 @@ const StatsDashboard = ({ localData }) => {
 
           <DailyAveragePanel 
             selectedType={selectedType} 
+            /* value={Math.round(calcDailyAverage(filterByType(localData, selectedType), localData) * 100) / 100} */
             value={Math.round(calcDailyAverage(filterByType(localData, selectedType), localData) * 100) / 100}
           />
 

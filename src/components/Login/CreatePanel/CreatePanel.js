@@ -96,6 +96,15 @@ const CreatePanel = ({ handleCreate, onExit, emailInUse }) => {
         }
       }
 
+    const checkForSpace = () => {
+        let email_without_space;
+        if (email.slice(-1) == " ") {
+            email_without_space = email.substring(0, email.length-1);
+            setEmail(email_without_space)
+            validateEmail(email_without_space);
+        }
+    }
+
     return (
         <Animated.View style={[styles.container, {transform:  [{translateX: slideAnim}]}]}>
         <ScrollView>
@@ -110,7 +119,7 @@ const CreatePanel = ({ handleCreate, onExit, emailInUse }) => {
             Email-Adress
             <Text style={[styles.valid_label, {color: emailIsValid ? "#00DB4D" : "#FC2044"}]}>   Valid</Text>
         </Text>
-        <TextInput onChangeText={(text) => {setEmail(text); validateEmail(text)}} style={[styles.textinput, styles.password_input]} value={email}/>
+        <TextInput onBlur={() => checkForSpace()} onChangeText={(text) => {setEmail(text); validateEmail(text)}} style={[styles.textinput, styles.password_input]} value={email}/>
         {emailInUse ? <Text style={{color: "#FC2044", textAlign: "center"}}>Email-Adress already in use</Text> : null}
 
         {/* <Text style={styles.label}>Telefonnummer</Text>
