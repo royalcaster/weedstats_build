@@ -503,6 +503,10 @@ export default function App() {
     PoppinsLight: require("./assets/fonts/Poppins-Light.ttf"),
   })
 
+  if (!loaded) {
+    return null;
+  }
+
   //stellt Sprache um, die im Context geteilt wird
   const toggleLanguage = async ( lang ) => {
     if (lang == "de" && config.language == "en") {

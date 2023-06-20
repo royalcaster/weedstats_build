@@ -283,12 +283,12 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
     const docSnap = await getDoc(docRef);
 
     await updateDoc(docRef, {
-      main_counter: user.main_counter + 1,
-      [index + "_counter"]: user[index + "_counter"] + 1,
+      [index + "_counter"]: docSnap.data()[index + "_counter"] + 1,
       last_entry_latitude: new_entry.latitude,
       last_entry_longitude: new_entry.longitude,
       last_entry_timestamp: new_entry.timestamp,
-      last_entry_type: new_entry.type
+      last_entry_type: new_entry.type,
+      main_counter: docSnap.data().joint_counter + docSnap.data().bong_counter + docSnap.data().vape_counter + docSnap.data().pipe_counter + docSnap.data().cookie_counter + 1,
     });
 
     const docSnap_new = await getDoc(docRef);
