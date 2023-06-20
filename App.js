@@ -13,7 +13,7 @@ import { app, firestore } from './src/data/FirebaseConfig'
 import { doc, getDoc, updateDoc, deleteDoc, setDoc } from "@firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
 import { createUsernameArray, downloadUser } from "./src/data/Service";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from '@firebase/storage'
+import { ref, deleteObject } from '@firebase/storage'
 import { storage } from "./src/data/FirebaseConfig";
 
 //Expo
@@ -23,7 +23,6 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
 //Custom Components
-import Splash from './src/components/Splash/Splash'
 import CustomLoader from "./src/components/common/CustomLoader";
 import Login from './src/components/Login/Login'
 import Home from './src/components/Home/Home'
@@ -35,14 +34,12 @@ LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and w
 export default function App() {
 
   //States für Frontend
-  const [showSplash, setShowSplash] = useState(true);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
   const [emailInUse, setEmailInUse] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
-  const [localAuthenticationRequired, setLocalAuthenticationRequired] = useState(true);
  
   //States für Daten
   const [config, setConfig] = useState(null);

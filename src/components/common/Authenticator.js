@@ -70,24 +70,24 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
     }
 
     //Biometrische Authentifizierung
-  const handleBiometricAuth = async () => {
-    const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
-      if (!savedBiometrics)
-      return Alert.alert(
-        'Biometric record not found',
-        'Please verify your identity with your password',
-        'OK',
-        () => fallBackToDefaultAuth()
-      );
+    const handleBiometricAuth = async () => {
+        const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
+        if (!savedBiometrics)
+        return Alert.alert(
+            'Biometric record not found',
+            'Please verify your identity with your password',
+            'OK',
+            () => fallBackToDefaultAuth()
+        );
 
-    const biometricAuth = await LocalAuthentication.authenticateAsync({
-      promptMessage: 'Entsperren für WeedStats',
-      disableDeviceFallback: false,
-      cancelLabel: "Abbrechen"
-    });
+        const biometricAuth = await LocalAuthentication.authenticateAsync({
+        promptMessage: 'Entsperren für WeedStats',
+        disableDeviceFallback: false,
+        cancelLabel: "Abbrechen"
+        });
 
-    return biometricAuth;
-  }
+        return biometricAuth;
+    }
 
     return <Animated.View style={[styles.container,{transform: [{translateY: slide}]}]}>
 
@@ -107,7 +107,7 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
         </> 
         : 
         <>
-        {//sonst wird einfach nur Abegfragt
+        {//sonst wird einfach nur Fingerabdruck abegfragt
         }
         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
             <IonIcons name="finger-print" style={styles.fingerprint}/>
