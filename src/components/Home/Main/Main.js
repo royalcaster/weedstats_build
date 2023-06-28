@@ -73,7 +73,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
   const [showNews, setShowNews] = useState(false);
 
   useEffect(() => {
-    !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#1E2132") : null;
+    !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#484F78") : null;
   },[showCounterModal]);
 
   useEffect(() => {
@@ -510,8 +510,6 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                     </View>
                 </View>
                 </View>
-
-                <View style={{height: responsiveHeight(15)}}></View>
               </ScrollView>}
             </>
           )}

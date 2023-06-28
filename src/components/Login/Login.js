@@ -1,6 +1,7 @@
 //React
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Animated, Dimensions, Image, TextInput, Text, Touchable, TouchableNativeFeedback } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 //Service
 import { LanguageContext } from "../../data/LanguageContext";
@@ -16,6 +17,9 @@ import { responsiveFontSize } from "react-native-responsive-dimensions";
 import CreatePanel from "./CreatePanel/CreatePanel";
 
 const Login = ({ handleLogin, handleCreate, wrongPassword, emailInUse, userNotFound }) => {
+
+  //navigation
+  const navigation = useNavigation();
 
   //Context
   const language = useContext(LanguageContext);
@@ -101,7 +105,7 @@ const Login = ({ handleLogin, handleCreate, wrongPassword, emailInUse, userNotFo
           title={language.login}
           borderradius={100}
           color={"#0080FF"}
-          onPress={() => handleLogin(email, password)}
+          onPress={() => handleLogin(email, password, () => navigation.navigate("home"))}
           hovercolor={"rgba(255,255,255,0.3)"}
           color2={"#004080"}
       />

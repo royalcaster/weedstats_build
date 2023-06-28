@@ -7,7 +7,9 @@ import {
   StyleSheet,
   Vibration,
   View,
+  Image
 } from "react-native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //Custom Components
 import Stats from "./Stats/Stats";
@@ -31,6 +33,10 @@ import { ConfigContext } from "../../data/ConfigContext";
 
 export default function Home({ sendPushNotification, onSetUser, onWriteComplete, friendList, handleLogOut, toggleLanguage, deleteAccount, getFriendList, loadSettings, refreshUser, handleIntroFinish }) {
 
+  //Navigation
+  const Tab = createBottomTabNavigator();
+  const main_screen = <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar}/>
+
   //Context
   const config = useContext(ConfigContext);
 
@@ -39,10 +45,12 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
 
   //Refs
   const navSlide = useRef(new Animated.Value(0)).current;
+
+  
   
   useEffect(() => {
     if (Platform.OS == "android") {
-      NavigationBar.setBackgroundColorAsync("#1E2132");
+      NavigationBar.setBackgroundColorAsync("#484F78");
       StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     }
   }, [view]);
@@ -76,7 +84,7 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
 
     <Animated.View style={[{ opacity: 1}, styles.container]}>
       <View style={styles.content_container}>
-        {view == "main" ? (
+        {/* {view == "main" ? (
           <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar}/>
         ) : null}
         {view == "stats" ? <Stats/> : null}
@@ -88,10 +96,84 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
             toggleNavbar={toggleNavbar}
             getFriendList={getFriendList}
             refreshUser={refreshUser}/>
-        ) : null}
+        ) : null} */}
+
+    <Tab.Navigator
+    initialRouteName="main"
+      screenOptions={
+        {
+          tabBarStyle: {
+          backgroundColor: "#484F78",
+          elevation: 0,   // for Android
+          shadowOffset: {
+              width: 0, height: 0 // for iOS
+          }},
+          headerShown: false,
+          tabBarActiveTintColor: "white",
+          tabBarInactiveTintColor: "#1E2132"
+        }
+      }
+    >
+      <Tab.Screen 
+        options={
+          {tabBarIcon: ({color, size}) => {
+            return <Entypo name="area-graph" style={[styles.settings_icon, {color: color, fontSize: size}]} />},
+          tabBarShowLabel: false}} 
+        name="stats" 
+        children={() => {
+          return <Stats/>
+          }} 
+      />
+      <Tab.Screen 
+        options={
+          {tabBarIcon: ({color, size}) => {
+            return <FontAwesome name="map-marker" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
+          tabBarShowLabel: false}} 
+        name="map" 
+        children={() => {
+          return <Map getFriendList={getFriendList}/>
+          }} 
+      />
+      <Tab.Screen 
+        options={
+          {tabBarIcon: ({color, focused, size}) => {
+           if (focused) {
+            return <Image style={{height: responsiveHeight(5), width: responsiveHeight(5)}} source={require('../../../assets/icon.png')}/>
+           }
+           else {
+            return <Image style={{height: responsiveHeight(5), width: responsiveHeight(5)}} source={require('../../data/img/logo_bw.png')}/>
+           }
+          },
+          tabBarShowLabel: false}} 
+        name="main" 
+        children={() => {
+          return <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar}/>
+          }} 
+      />
+      <Tab.Screen 
+        options={
+          {tabBarIcon: ({color, size}) => {
+            return <FontAwesome name="sliders" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
+          tabBarShowLabel: false}} 
+        name="config" 
+        children={() => {
+          return <Config deleteAccount={deleteAccount} handleLogOut={handleLogOut} toggleLanguage={toggleLanguage} loadSettings={loadSettings} refreshUser={refreshUser}/>
+          }} 
+      />
+      <Tab.Screen 
+        options={
+          {tabBarIcon: ({color, size}) => {
+            return <FontAwesome name="user" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
+          tabBarShowLabel: false}} 
+        name="friends" 
+        children={() => {return <Friends friendList={friendList} toggleNavbar={toggleNavbar} getFriendList={getFriendList} refreshUser={refreshUser}/>
+          }} 
+      />
+    </Tab.Navigator>
+
       </View>
 
-      <Animated.View style={[styles.footer_container,{transform:[{translateY: navSlide}]}]}>
+      {/* <Animated.View style={[styles.footer_container,{transform:[{translateY: navSlide}]}]}>
         <View style={styles.options_container}>
           <View style={{ flexDirection: "row", width: "100%"}}>
             <MenuButton
@@ -180,7 +262,7 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         <View style={styles.gradient_container}>
           <LinearGradient colors={["rgba(0,0,0,0)", "#1E2132","#1E2132"]} style={{height: "100%", width: "100%"}}/>
         </View>
-      </Animated.View>
+      </Animated.View> */}
     </Animated.View>
     }</>
   );

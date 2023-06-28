@@ -1,6 +1,7 @@
 //React
 import React, { useEffect, useRef, useContext } from "react";
 import { View, Animated, Text, StyleSheet, Alert, Dimensions, Easing } from 'react-native'
+import { useNavigation } from "@react-navigation/native";
 
 //Expo
 import * as LocalAuthentication from 'expo-local-authentication'
@@ -16,6 +17,9 @@ import { LanguageContext } from "../../data/LanguageContext";
 import IonIcons from 'react-native-vector-icons/Ionicons'
 
 const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
+
+    //navigation
+    const navigation = useNavigation()
 
     useEffect(() => {
         first ? null : checkLocalAuth();
@@ -58,12 +62,12 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
         if (isBiometricSupported) {
         promise = await handleBiometricAuth();
         if (promise.success) {
-            onSubmit();
+            navigation.navigate("login")
             hide();
         }
         else {
             Alert.alert("Fehler beim Entsperren");
-            onCancel();
+            checkLocalAuth();
             hide();
         }
         }
