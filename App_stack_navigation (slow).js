@@ -3,9 +3,11 @@ import 'react-native-gesture-handler';
 
 //React
 import React, { useState, useEffect, useRef } from "react";
-import { View, StatusBar, LogBox, Platform } from 'react-native'
+import { View, StatusBar, LogBox, Platform, Text } from 'react-native'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer, DefaultTheme, useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useScreens } from 'react-native-screens'
 
 //Service
 import { UserContext } from "./src/data/UserContext";
@@ -36,6 +38,9 @@ import Authenticator from "./src/components/common/Authenticator";
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core and will be removed in a future release.']);
 
 export default function App() {
+
+  //navigation
+  const Stack = createStackNavigator();
 
   //States für Frontend
   const [loading, setLoading] = useState(true);
@@ -297,7 +302,7 @@ export default function App() {
   }
 
   //behandelt Login-Event NEU 
-  const handleLogin = (email, password) => {
+  const handleLogin = (email, password, callback) => {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
@@ -308,6 +313,7 @@ export default function App() {
         password: password
       }));
       const docSnap = await getDoc(doc(firestore, "users", result.uid));
+      console.log(docSnap.data().username);
       if (docSnap.exists()) {
         setUser({
           username: docSnap.data().username,
@@ -605,28 +611,29 @@ const deleteAccount = async () => {
 
   return (
     <>
-    <NavigationContainer theme={{
+    <NavigationContainer 
+    theme={{
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
       border: 'transparent',
     }}}>
       <View style={{backgroundColor: "#1E2132", height: "100%"}}>
+        {!loading ? 
+        <>
         <ConfigContext.Provider value={config}>
         <LanguageContext.Provider value={language}>
-          <>
-          {loading ? <View style={{justifyContent: "center", height: "100%"}}><CustomLoader color={"#c4c4c4"} x={100} special={true}/></View>
-          : 
-            <>
-              {user ? 
-              <>
-                {(config.localAuthenticationRequired && !unlocked) ? 
-                <Authenticator first={false} onSubmit={() => setUnlocked(true)} onCancel={() => setUnlocked(false)} onExit={() => null} />
-                : 
-                <UserContext.Provider value={user}>
-                <FriendListContext.Provider value={friendList}>
 
-                  <Home
+        <Stack.Navigator  screenOptions={{headerShown: false}}>
+        {
+          user ? <>
+            {!unlocked && config.localAuthenticationRequired ? <Stack.Screen name="authenticator" children={() => {return <Authenticator first={false} onExit={() => null} />}} />
+            : <>
+                <Stack.Screen name="home" children={() => {
+                  return <>
+                    <UserContext.Provider value={user}>
+                    <FriendListContext.Provider value={friendList}>
+                    <Home
                     friendList={friendList}
                     handleLogOut={handleLogOut}
                     toggleLanguage={toggleLanguage}
@@ -640,18 +647,49 @@ const deleteAccount = async () => {
                     onSetUser={(user) => setUser(user)}
                     sendPushNotification={sendPushNotification}
                   />
-                    
-                </FriendListContext.Provider>
-                </UserContext.Provider>}
-              </>
-              : 
-              <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>}
+                  </FriendListContext.Provider>
+                  </UserContext.Provider></>}
+                  } />
+            </>}
+          </>
+          : 
+          <>
+            <Stack.Screen name="login" children={() => {return <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>}} />
+          </>
+        }
+        
+          {/* {!unlocked && config.localAuthenticationRequired ? 
+          <Stack.Screen name="authenticator" children={() => {return <Authenticator first={false} onExit={() => null} />}} />
+          : 
+
+          <>
+          {
+            user ? <Stack.Screen name="home" children={() => {return <Home
+              friendList={friendList}
+              handleLogOut={handleLogOut}
+              toggleLanguage={toggleLanguage}
+              deleteAccount={deleteAccount}
+              getFriendList={getFriendList}
+              loadSettings={loadSettings}
+              onSetBorderColor={color => setBorderColor(color)}
+              refreshUser={refreshUser}
+              handleIntroFinish={handleIntroFinish}
+              handleAuthenticatorSelect={handleAuthenticatorSelect}
+              onSetUser={(user) => setUser(user)}
+              sendPushNotification={sendPushNotification}
+            />}} />
+            :
+            <>
+              <Stack.Screen name="login" children={() => {return <Login handleLogin={handleLogin} handleCreate={handleCreate} wrongPassword={wrongPassword} emailInUse={emailInUse} userNotFound={userNotFound}/>}} />
             </>
           }
-          </>
+          </>} */}
+       
+        </Stack.Navigator> 
 
         </LanguageContext.Provider>
         </ConfigContext.Provider>
+        </> : null}
       </View>
       </NavigationContainer>
     </>

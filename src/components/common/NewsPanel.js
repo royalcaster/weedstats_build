@@ -3,16 +3,53 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, StyleSheet, Easing, View, ScrollView, Text } from "react-native";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
 
-import news from '../../data/news.json'
+//Data
+import News from "../../data/News";
+
+//Custom Components
 import Button from "./Button";
+
+//Service
+import { doc, updateDoc, getDoc, collection } from "@firebase/firestore";
+import { app, firestore } from "../../data/FirebaseConfig";
+
+//Expo
+import Constants from "expo-constants";
 
 const NewsPanel = ({ language, onExit }) => {
 
-    const [content, setContent] = useState([]);
+    //State
+    const [news, setNews] = useState([]);
+
+    //Constants
+    const app_version = Constants.manifest.version;
 
     useEffect(() => {
-        language == "de" ? setContent(news.de) : setContent(news.en)
+        loadNews();
     },[]);
+
+    const loadNews = async () => {
+        const docSnap = await getDoc(doc(firestore, "news", app_version));
+        fillNews(docSnap.data());
+    }
+
+    const fillNews = (data) => {
+        let news_buffer = []
+        for (let i = 0; i < data.titles.length; i++) {
+            news_buffer.push({
+                title: data.titles[i],
+                text: data.texts[i]
+            })
+        }
+        setNews(news_buffer);
+    }
+
+    const setRead = async () => {
+        await updateDoc(doc(firestore, "news", app_version), {
+            read: true
+        })
+        onExit();
+    }
 
     const renderNote = (note) => {
         return <View style={styles.note_container}>
@@ -31,14 +68,16 @@ const NewsPanel = ({ language, onExit }) => {
             <View style={styles.knob}></View>
             <View style={{height: responsiveHeight(2)}}></View>
             <Text style={styles.heading}>What's new?</Text>
+            <View style={{height: responsiveHeight(0.5)}}></View>
+            <Text style={[styles.heading, {fontFamily: "PoppinsMedium", fontSize: responsiveFontSize(1.5)}]}>{app_version}</Text>
         </View>
 
-        <View style={{flex: 5, width: "90%", alignItems: "center"}}>
+        <View style={{flex: 3, width: "100%", alignSelf: "center"}}>
         <ScrollView>
 
         {
-            content != null ?
-                content.map((note) => {
+            news != null ?
+                news.map((note) => {
                     return renderNote(note)
                 })
             : null
@@ -48,7 +87,7 @@ const NewsPanel = ({ language, onExit }) => {
         </View>
 
         <View style={{flex: 1}}>
-            <Button title={"Alles klar"} color={"#0781E1"} fontColor={"white"} onPress={() => onExit()}/>
+            <Button title={"Alles klar"} color={"#0781E1"} fontColor={"white"} onPress={() => setRead()}/>
         </View>
 
         </View>
@@ -93,7 +132,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "white",
-        fontSize: responsiveFontSize(1.75),
+        fontSize: responsiveFontSize(1.5),
         fontFamily: "PoppinsMedium",
         marginLeft: 30
     }

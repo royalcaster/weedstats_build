@@ -9,6 +9,7 @@ import { Vibration } from "react-native";
 import { StatusBar } from "react-native";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as Location from 'expo-location'
+import Constants from "expo-constants"
 
 //Custom Components
 import CounterItem from "./CounterItem/CounterItem";
@@ -33,11 +34,12 @@ import sayings from '../../../data/Sayings.json'
 import { LanguageContext } from "../../../data/LanguageContext";
 import { ConfigContext } from '../../../data/ConfigContext'
 import { doc, updateDoc, getDoc } from "@firebase/firestore";
-import { firestore } from "../../../data/FirebaseConfig";
+import { app, firestore } from "../../../data/FirebaseConfig";
 import CounterModal from "../../common/CounterModal";
 import { FriendListContext } from "../../../data/FriendListContext";
 import { getCounterNotificationTitle } from "../../../data/Service";
 import NewsPanel from "../../common/NewsPanel";
+import News from "../../../data/News";
 
 const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
@@ -98,9 +100,19 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
       easing: Easing.bezier(0.07, 1, 0.33, 0.89),
     }).start();
 
+    checkForNews();
     calcDaysTill420();
     sortCounterOrder();
   }, []);
+
+  const checkForNews = async () => {
+    const app_version = Constants.manifest.version;
+    const docSnap = await getDoc(doc(firestore, "news", app_version));
+
+    if (docSnap.data().read == false) {
+      setShowNews(true);
+    }
+  }
 
   const sortCounterOrder = () => {
 

@@ -7,7 +7,9 @@ import {
   StyleSheet,
   Vibration,
   View,
-  Image
+  Image,
+  TouchableNativeFeedback,
+  TouchableOpacity
 } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -73,9 +75,7 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
     ).start();
   }
 
-  const test = () => {
-    console.log("1");
-  }
+  const buttonNativeFeedback = (props) => <TouchableNativeFeedback {...props} />;
 
   return (
     <>
@@ -99,6 +99,7 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         ) : null} */}
 
     <Tab.Navigator
+    sceneContainerStyle={{backgroundColor: "#1E2132"}}
     initialRouteName="main"
       screenOptions={
         {
@@ -118,7 +119,8 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         options={
           {tabBarIcon: ({color, size}) => {
             return <Entypo name="area-graph" style={[styles.settings_icon, {color: color, fontSize: size}]} />},
-          tabBarShowLabel: false}} 
+          tabBarShowLabel: false,
+          tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="stats" 
         children={() => {
           return <Stats/>
@@ -128,7 +130,8 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         options={
           {tabBarIcon: ({color, size}) => {
             return <FontAwesome name="map-marker" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
-          tabBarShowLabel: false}} 
+          tabBarShowLabel: false,
+          tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="map" 
         children={() => {
           return <Map getFriendList={getFriendList}/>
@@ -144,7 +147,8 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
             return <Image style={{height: responsiveHeight(5), width: responsiveHeight(5)}} source={require('../../data/img/logo_bw.png')}/>
            }
           },
-          tabBarShowLabel: false}} 
+          tabBarShowLabel: false,
+          tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="main" 
         children={() => {
           return <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar}/>
@@ -154,7 +158,8 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         options={
           {tabBarIcon: ({color, size}) => {
             return <FontAwesome name="sliders" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
-          tabBarShowLabel: false}} 
+          tabBarShowLabel: false,
+          tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="config" 
         children={() => {
           return <Config deleteAccount={deleteAccount} handleLogOut={handleLogOut} toggleLanguage={toggleLanguage} loadSettings={loadSettings} refreshUser={refreshUser}/>
@@ -164,7 +169,8 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
         options={
           {tabBarIcon: ({color, size}) => {
             return <FontAwesome name="user" style={[styles.settings_icon, {color: color, fontSize: size}]}/>},
-          tabBarShowLabel: false}} 
+          tabBarShowLabel: false,
+          tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="friends" 
         children={() => {return <Friends friendList={friendList} toggleNavbar={toggleNavbar} getFriendList={getFriendList} refreshUser={refreshUser}/>
           }} 
