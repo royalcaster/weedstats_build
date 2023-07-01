@@ -28,6 +28,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-nat
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Feather from 'react-native-vector-icons/Feather'
+import { compare, compareVersions } from 'compare-versions';
 
 //Service
 import sayings from '../../../data/Sayings.json'
@@ -40,8 +41,9 @@ import { FriendListContext } from "../../../data/FriendListContext";
 import { getCounterNotificationTitle } from "../../../data/Service";
 import NewsPanel from "../../common/NewsPanel";
 import News from "../../../data/News";
+import UpdatePanel from "../../common/UpdatePanel";
 
-const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
+const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) => {
 
   //Context
   const user = useContext(UserContext);
@@ -73,6 +75,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
   const [showDonation, setShowDonation] = useState(false);
   const [showAppInfo, setShowAppInfo] = useState(false);
   const [showNews, setShowNews] = useState(false);
+  const [showUpdatePanel, setShowUpdatePanel] = useState(false)
 
   useEffect(() => {
     !showCounterModal ? toggleBorderColor("rgba(0,0,0,0)", "#484F78") : null;
@@ -100,6 +103,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
       easing: Easing.bezier(0.07, 1, 0.33, 0.89),
     }).start();
 
+    checkForUpdate();
     checkForNews();
     calcDaysTill420();
     sortCounterOrder();
@@ -107,10 +111,26 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
 
   const checkForNews = async () => {
     const app_version = Constants.manifest.version;
-    const docSnap = await getDoc(doc(firestore, "news", app_version));
+    const newsSnap = await getDoc(doc(firestore, "news", app_version));
 
-    if (docSnap.data().read == false) {
-      setShowNews(true);
+    if (compareVersions(app_version, user.app_version) == 1) {
+      //Nutzer hat update gemacht
+      //installierte Version ist größer als Datenbank-version -> datenbank version erhöhen und news_read auf false setzen
+      refreshUser({
+        app_version: app_version,
+        news_read: false
+      });
+      setShowNews(true)
+    }
+  }
+
+  const checkForUpdate = async () => {
+    const docSnap = await getDoc(doc(firestore, "info", "info"))
+    
+    if (docSnap.exists()) {
+      if (compareVersions(docSnap.data().latest_version, Constants.manifest.version) == 1) {
+        setShowUpdatePanel(true)
+      }
     }
   }
 
@@ -351,13 +371,14 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
   return (
     <>
 
-        {showNews ? <NewsPanel language={language} onExit={() => setShowNews(false)}/> : null}
+        {showNews ? <NewsPanel language={language} onExit={() => setShowNews(false)} refreshUser={refreshUser} /> : null}
+        {showUpdatePanel ? <UpdatePanel language={language} onExit={() => setShowUpdatePanel(false)}/> : null}
 
         <CustomModal show={showCounterModal} child={CounterModalContent}/>
 
         {showLevels   ? <Levels onexit={() => setShowLevels(false)} show={showLevels}/> : null}
         {showDonation ? <Donation onexit={() => setShowDonation(false)}/> : null}
-        {showTutorial ? <Tutorial onDone={() => setShowTutorial(false)} toggleNavbar={toggleNavbar} type={"regular"}/> : null}
+        {showTutorial ? <Tutorial onDone={() => setShowTutorial(false)} toggleNavbar={toggleNavbar} type={"first"}/> : null}
         {showAppInfo ? <AppInfo show={showAppInfo} onExit={() => setShowAppInfo(false)}/> : null}
 
 
@@ -521,6 +542,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar }) => {
                       />
                     </View>
                 </View>
+                <View style={{height: responsiveHeight(2)}}></View>
                 </View>
               </ScrollView>}
             </>

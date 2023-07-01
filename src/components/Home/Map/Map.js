@@ -114,7 +114,14 @@ const Map = ({ getFriendList }) => {
 
   const fillMarkers = () => {
     setLoading(true);
-    setMarkers([]);
+    setMarkers([{
+      latitude: user.last_entry_latitude,
+      longitude: user.last_entry_longitude,
+      timestamp: user.last_entry_timestamp,
+      type: user.last_entry_type,
+      photoUrl: user.photoUrl,
+      username: user.username
+    }]);
     friendList.forEach((friend) => {
       if (
           friend.config.shareLastEntry && 
@@ -371,7 +378,7 @@ const Map = ({ getFriendList }) => {
                     <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)}>
                       <View style={styles.touchable}>
                       <CustomMarker
-                        region={region}
+                        username={marker.username}
                         photoUrl={marker.photoUrl}
                         type={marker.type}
                         coordinate={{
@@ -427,7 +434,7 @@ const Map = ({ getFriendList }) => {
                 <View>
                   {markers.length != 0 ? markers.map((marker) => {
                     return <>
-                              <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={marker.photoUrl} type={1}/></View>
+                              <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={marker.photoUrl} type={1} circle={user.username == marker.username} circleColor={user.username == marker.username ? "#F2338C" : "#131520"}/></View>
                            </>
                   }) : null}
                 </View>

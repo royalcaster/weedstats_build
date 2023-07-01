@@ -276,11 +276,11 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
  const mapModalContent = !loading ?  <>
  <View style={{height: "100%", width: "100%", position: "absolute", top: 0, zIndex: 1000000}}>
 
- <View style={{bottom: responsiveHeight(10), position: "absolute", width: "100%", flexDirection: "column"}}>
-    <View style={{zIndex: 10000, alignSelf: "center"}}>
+ <View style={{bottom: 50, position: "absolute", width: "100%", flexDirection: "column", zIndex: 1}}>
+    <View style={{zIndex: 1, alignSelf: "center"}}>
     <IconButton icon={switch_icon} onPress={toggleMapType}/>
     </View>
-    <View style={{height: responsiveHeight(2.5)}}></View>
+    <View style={{height: responsiveHeight(1)}}></View>
     <Button title={language.account_delete_account_cancel} color={"#eb4034"} borderradius={100} onPress={() => setShowMap(false)} fontColor={"white"}/>
  </View>
 
@@ -349,7 +349,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
            alignItems: "center",
          }}
        >
-         <Button title={"Abbrechen"} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+         <Button title={language.account_delete_account_cancel} onPress={() => setModalVisible(false)} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
        </View>
        <View
          style={{
@@ -358,7 +358,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
            alignItems: "center",
          }}
        >
-         <Button title={"Entfernen"} onPress={() => removeFriend(user.id)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
+         <Button title={language.friendpage_remove} onPress={() => removeFriend(user.id)} color={"#eb4034"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"}/>
        </View>
      </View>
    </>
@@ -438,7 +438,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                     {friendConfig.shareMainCounter ? <Text style={styles.small_counter}>{user.main_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                   </View>
                   <View>
-                    <Text style={[styles.small_label]}>GESAMT</Text>
+                    <Text style={[styles.small_label]}>{language.stats_all.toUpperCase()}</Text>
                   </View>
                 </View>
 

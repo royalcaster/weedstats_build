@@ -84,7 +84,7 @@ const Donation = ( { onexit } ) => {
                 {/* <Text style={[styles.bold, {fontSize: responsiveFontSize(5)}]}>{language.language_short == "de" ? "4,20 €" : "€4.20"}<Text style={[styles.text,{fontSize: responsiveFontSize(1.5)}]}>   ({language.account_support_one_time_fee})</Text></Text> */}
             </View>
 
-            {/* <Button title={language.account_support_go_premium} color={"#F2338C"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.5)"}/> */}
+            <Button title={language.account_support_go_premium + " (COMING SOON)"} color={"#F2338C"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.5)"} disabled={true}/>
 
         </Animated.View>
     )

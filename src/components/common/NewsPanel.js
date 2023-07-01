@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, StyleSheet, Easing, View, ScrollView, Text } from "react-native";
 import { responsiveFontSize, responsiveHeight } from "react-native-responsive-dimensions";
+import { LogBox } from "react-native";
 
 //Data
 import News from "../../data/News";
@@ -16,7 +17,9 @@ import { app, firestore } from "../../data/FirebaseConfig";
 //Expo
 import Constants from "expo-constants";
 
-const NewsPanel = ({ language, onExit }) => {
+LogBox.ignoreLogs(['Warning: Each child in a list should have a unique "key" prop.']);
+
+const NewsPanel = ({ language, onExit, refreshUser }) => {
 
     //State
     const [news, setNews] = useState([]);
@@ -45,8 +48,8 @@ const NewsPanel = ({ language, onExit }) => {
     }
 
     const setRead = async () => {
-        await updateDoc(doc(firestore, "news", app_version), {
-            read: true
+        refreshUser({
+            news_read: true
         })
         onExit();
     }
@@ -87,7 +90,7 @@ const NewsPanel = ({ language, onExit }) => {
         </View>
 
         <View style={{flex: 1}}>
-            <Button title={"Alles klar"} color={"#0781E1"} fontColor={"white"} onPress={() => setRead()}/>
+            <Button title={"Ok"} color={"#0781E1"} fontColor={"white"} onPress={() => setRead()}/>
         </View>
 
         </View>
@@ -128,12 +131,12 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: responsiveFontSize(2),
         fontFamily: "PoppinsBlack",
-        marginLeft: 30
+        marginHorizontal: 20
     },
     text: {
         color: "white",
         fontSize: responsiveFontSize(1.5),
         fontFamily: "PoppinsMedium",
-        marginLeft: 30
+        marginHorizontal: 20
     }
 });

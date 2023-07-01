@@ -137,32 +137,32 @@
         "account_delete_account_submit": "Löschen",
         "account_delete_account_cancel": "Abbrechen",
 
-        "tutorial_swipe_text": "HOCHWISCHEN",
+        "tutorial_swipe_text": "RUNTERSCROLLEN",
         "tutorial_are_you_ready": "BIST DU BEREIT?",
 
         "tutorial_welcome_title": "Willkommen",
         "tutorial_welcome_text": "WeedStats bietet verschiedenste Möglichkeiten zum Erfassen, Auswerten und Teilen deines Gras-Konsums. \n\nDiese kurze Tour wird dir die wesentlichen Funktionen der App beibringen.",
     
         "tutorial_counter_title": "Counter",
-        "tutorial_counter_text": "Jedes mal, wenn du etwas rauchst, solltest du den jeweiligen Counter um eins erhöhen. Halte dazu den Button für kurze Zeit gedrückt.",
+        "tutorial_counter_text": "Jedes mal, wenn du etwas rauchst, solltest du den jeweiligen Counter um eins erhöhen. Schiebe dazu den Regler bis ganz nach rechts.",
         
         "tutorial_stats_title": "Statistiken",
         "tutorial_stats_text": "Hier findest du statistische Auswertungen zu deinem Konsum und deinen Rauch-Verlauf.",
         
         "tutorial_map_title": "WeedMap",
-        "tutorial_map_text": "Die Karte kann dir entweder eine Heatmap mit den Orten zeigen, an denen du am häufigsten geraucht hast, oder auch die letzten Aktivitäten deiner Freunde.",
+        "tutorial_map_text": "Die Karte zeigt dir die neuesten Aktivitäten von dir und deinen Freunden.",
 
         "tutorial_config_title": "Einstellungen",
-        "tutorial_config_text": "Hier kannst du Einstellungen für deine Privatsphäre und die Anzeige treffen.",
+        "tutorial_config_text": "Hier kannst du Einstellungen für deinen Account, die Anzeige und deine Privatsphäre treffen.",
 
         "tutorial_friends_title": "Freunde",
-        "tutorial_friends_text": "Füge Freunde hinzu, um deine Statistiken mit ihnen zu teilen und das volle Potential von WeedStats auszuschöpfen!\n\nAußerdem kannst du hier auf deinen Account zugreifen.",
+        "tutorial_friends_text": "Füge Freunde hinzu, um deine Aktivitäten mit ihnen zu teilen und das volle Potential von WeedStats auszuschöpfen!",
 
         "tutorial_pls_read_title": "Bitte lies das",
-        "tutorial_pls_read_text": "Hier Hinweis auf Intention der App, keine Anregung zu Konsum, kein Konsum bei minderjährigen! Auch Verlinkung zu medizinischen Risiken, Hilfs-Hotlines, die App soll spaß machen, aber Verantwortungsvoller Konsum steht an oberster Priorität! \n\n ...",
+        "tutorial_pls_read_text": "Als Entwickler von WeedStats möchten wir eure Aufmerksamkeit auf einen äußerst wichtigen Aspekt lenken: den verantwortungsbewussten Konsum. Wir möchten sicherstellen, dass ihr eure Erfahrungen mit Marihuana auf eine sichere und gesunde Weise macht.\n\nErstens möchten wir betonen, dass Marihuana nicht für jeden geeignet ist. Jeder Mensch reagiert unterschiedlich auf die Wirkstoffe und es ist wichtig, sich seiner eigenen körperlichen und geistigen Verfassung bewusst zu sein, bevor man Marihuana konsumiert. Wenn ihr Vorerkrankungen habt, bestimmte Medikamente einnehmt oder schwanger seid, raten wir dringend davon ab, Marihuana zu konsumieren. Konsultiert in solchen Fällen immer einen medizinischen Fachmann, um eure individuelle Situation zu besprechen.\n\nDes Weiteren möchten wir besonders unsere minderjährigen Nutzer ansprechen: Wir lehnen den Konsum von Marihuana für Personen unter dem gesetzlichen Mindestalter entschieden ab. Die gesetzlichen Bestimmungen variieren je nach Land und Region, aber als Entwickler der App übernehmen wir eine klare Verantwortung, um den Jugendschutz zu gewährleisten. Minderjährige sollten sich auf ihre schulischen, persönlichen und sozialen Entwicklung konzentrieren, ohne die potenziellen Risiken und Konsequenzen des Marihuanakonsums zu tragen.\n\nWir verstehen, dass Marihuana in einigen Ländern legalisiert oder für medizinische Zwecke zugelassen ist. Dennoch ist es unerlässlich, sich über die gesetzlichen Rahmenbedingungen in eurem Land zu informieren und diese strikt einzuhalten. Ignoriert niemals die geltenden Gesetze und Vorschriften bezüglich des Marihuanakonsums.\n\nWir ermutigen euch, euch weiterzubilden, um fundierte Entscheidungen zu treffen und mit Bedacht zu handeln. Bitte konsumiert Marihuana verantwortungsbewusst und denkt immer an die Auswirkungen auf euren Körper, eure geistige Gesundheit und euer allgemeines Wohlbefinden.",
         
         "tutorial_tipp_title": "Unser Tipp",
-        "tutorial_tipp_text": "Je gewissenhafter du deinen Konsum in der App einträgst, desto genauer werden deine Statistiken mit der Zeit. Wenn du schummelst, brauchst du die App nicht!\n\nWir wünschen dir viel Spaß mit WeedStats!",
+        "tutorial_tipp_text": "Je gewissenhafter du deinen Konsum in der App einträgst, desto genauer werden deine Statistiken mit der Zeit. Wenn du schummelst, brauchst du die App nicht. Wenn du mehrere vergangene Aktivitäten mit einem Mal einträgst, werden deine Zahlen verfälscht. \n\nWir wünschen dir viel Spaß mit WeedStats!",
 
         "tutorial_consent": "Ich bin einverstanden",
         "tutorial_consent_alert": "Bitte lies unsere Datenschutzbestimmungen.",
@@ -172,6 +172,7 @@
         "friendpage_best": "BESTLEISTUNG",
         "friendpage_last_activity": "Letzte Aktivität",
         "friendpage_remove_friend": "Freund entfernen",
+        "friendpage_remove": "Entfernen",
 
         "searchpanel_title": "Suchen",
         "searchpanel_empty": "Keine Suchergebnisse",
@@ -467,32 +468,32 @@
         "account_delete_account_cancel": "Cancel",
 
 
-        "tutorial_swipe_text": "SWIPE UP",
+        "tutorial_swipe_text": "SCROLL DOWN",
         "tutorial_are_you_ready": "ARE YOU READY?",
 
-        "tutorial_welcome_title": "Welcome",
-        "tutorial_welcome_text": "WeedStats offers various ways to record, evaluate and share your weed consumption. \n\nThis short tour will teach you the essential functions of the app.",
+        "tutorial_welcome_title": "Willkommen",
+        "tutorial_welcome_text": "WeedStats offers a variety of ways to track, analyze, and share your weed consumption. \n\n This short tour will teach you the main features of the app.",
     
         "tutorial_counter_title": "Counter",
-        "tutorial_counter_text": "Every time you smoke something, you should increase the respective counter by one. To do this, hold down the button for a short time.",
+        "tutorial_counter_text": "Each time you smoke something, you should increase the respective counter by one. To do this, move the slider all the way to the right.",
         
-        "tutorial_stats_title": "Statistics",
-        "tutorial_stats_text": "Here you will find statistical evaluations of your consumption and your smoking history.",
+        "tutorial_stats_title": "Statistiken",
+        "tutorial_stats_text": "Here you can find statistical evaluations of your consumption and your smoking history.",
         
         "tutorial_map_title": "WeedMap",
-        "tutorial_map_text": "The map can either show you a heatmap of the places where you've smoked the most, or your friends' recent activities.",
+        "tutorial_map_text": "The map shows you the latest activities of you and your friends.",
 
         "tutorial_config_title": "Settings",
-        "tutorial_config_text": "Here you can make settings for your privacy and the display.",
+        "tutorial_config_text": "Here you can make settings for your account, the display and your privacy.",
 
-        "tutorial_friends_title": "Friends",
-        "tutorial_friends_text": "Add friends to share your stats with them and unlock the full potential of WeedStats!\n\nYou can also access your account here.",
+        "tutorial_friends_title": "Freunde",
+        "tutorial_friends_text": "Add friends to share your activities with them and unlock the full potential of WeedStats!",
 
         "tutorial_pls_read_title": "Please read this",
-        "tutorial_pls_read_text": "Here reference to the intention of the app, no suggestion to use, no use by minors! Also links to medical risks, help hotlines, the app should be fun, but responsible consumption is the top priority! \n\n...",
+        "tutorial_pls_read_text": "As the developers of WeedStats, we would like to draw your attention to an extremely important aspect: responsible consumption. We want to make sure that you have your experience with marijuana in a safe and healthy way.\n\nFirst of all, we would like to emphasize that marijuana is not for everyone. Everyone reacts differently to the active ingredients, and it is important to be aware of your own physical and mental condition before consuming marijuana. If you have pre-existing conditions, are taking certain medications, or are pregnant, we strongly advise against using marijuana. Always consult a medical professional in such cases to discuss your individual situation.\n\nFurthermore, we would like to especially address our underage users: We strongly oppose the use of marijuana by anyone under the legal age. Legal requirements vary by country and region, but as developers of the app, we take a clear responsibility to ensure the protection of minors. Minors should focus on their educational, personal, and social development without the potential risks and consequences of marijuana use.\n\nWe understand that marijuana is legalized or approved for medical purposes in some countries. However, it is essential to be aware of the legal framework in your country and strictly adhere to it. Never ignore the current laws and regulations regarding marijuana use.\n\nWe encourage you to educate yourself in order to make informed decisions and act wisely. Please consume marijuana responsibly and always consider the effects on your body, mental health, and overall well-being.",
         
-        "tutorial_tipp_title": "Our tipp",
-        "tutorial_tipp_text": "The more honest you enter your consumption in the app, the more accurate your statistics will become over time. If you cheat, you don't need the app!\n\nHave fun with WeedStats!",
+        "tutorial_tipp_title": "Our tip",
+        "tutorial_tipp_text": "The more conscientiously you enter your consumption in the app, the more accurate your statistics will become over time. If you cheat, you don't need the app. If you enter multiple past activities at once, your numbers will be skewed.\n\nWe wish you a lot of fun with WeedStats!",
 
         "tutorial_consent": "I agree",
         "tutorial_consent_alert": "Please read our privacy policy.",
@@ -502,6 +503,7 @@
         "friendpage_best": "BEST",
         "friendpage_last_activity": "Last activity",
         "friendpage_remove_friend": "Remove friend",
+        "friendpage_remove": "Remove",
 
         "searchpanel_title": "Search",
         "searchpanel_empty": "No results",

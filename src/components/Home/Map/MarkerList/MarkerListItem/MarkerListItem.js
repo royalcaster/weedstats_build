@@ -1,16 +1,24 @@
 //React
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import { Animated, Dimensions, StyleSheet, Easing, Text, TouchableNativeFeedback, View } from "react-native";
+
+//Third Party
 import { responsiveFontSize } from "react-native-responsive-dimensions";
+
+//Service
 import toGermanDate from "../../../../../data/DateConversion";
+import { UserContext } from "../../../../../data/UserContext";
+
+//Custom Components
 import ProfileImage from "../../../../common/ProfileImage";
 import TypeImage from "../../../../common/TypeImage";
 
 const MarkerListItem = ({ marker, onPress }) => {
 
-    const screen_height = Dimensions.get("screen").height;
-    const screen_width = Dimensions.get("screen").width;
+    //Context
+    const user = useContext(UserContext)
 
+    //Ref
     const slide = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -25,19 +33,8 @@ const MarkerListItem = ({ marker, onPress }) => {
         }).start()
     }
 
-    const hide = () => {
-        Animated.timing(slide,{
-            toValue: screen_height,
-            duration: 300,
-            useNativeDriver: true,
-            easing: Easing.bezier(0.2, 1, 0.21, 0.97),
-        }).start(({finished}) => {
-            finished ? onExit() : null;
-        })
-    }
-
     return (
-            <Animated.View style={[styles.container,{opacity: slide}]}>
+            <Animated.View style={[styles.container,{opacity: slide, borderColor: marker.username == user.username ? "#F2338C" : "#131520", borderWidth: marker.username == user.username ? 2 : 0}]}>
                 <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", false)} onPress={() => onPress()}>
                     <View style={styles.touchable}>
                         {

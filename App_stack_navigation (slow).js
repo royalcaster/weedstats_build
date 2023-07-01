@@ -27,6 +27,7 @@ import { useFonts } from "expo-font";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 //Custom Components
 import CustomLoader from "./src/components/common/CustomLoader";
@@ -334,6 +335,8 @@ export default function App() {
           last_entry_type: docSnap.data().last_entry_type,
           main_counter: docSnap.data().main_counter,
           username_array: docSnap.data().username_array,
+          app_versiom: docSnap.data().app_version,
+          news_read: docSnap.data().news_read
         });
         setConfig({
           first: docSnap.data().config.first,
@@ -409,6 +412,8 @@ export default function App() {
         last_entry_type: null,
         main_counter: 0,
         username_array: createUsernameArray(username.toUpperCase()),
+        app_version: Constants.manifest.version,
+        news_read: false,
         config: {
           first: true,
           language: "en",
@@ -446,7 +451,9 @@ export default function App() {
           last_entry_longitude: docSnap.data().last_entry_longitude,
           last_entry_type: docSnap.data().last_entry_type,
           main_counter: docSnap.data().main_counter,
-          username_array: docSnap.data().username_array
+          username_array: docSnap.data().username_array,
+          app_version: docSnap.data().app_version,
+          news_read: docSnap.data().news_read
         });
         setConfig({
           first: docSnap.data().config.first,

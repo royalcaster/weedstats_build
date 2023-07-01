@@ -151,7 +151,7 @@ export default function Home({ sendPushNotification, onSetUser, onWriteComplete,
           tabBarButton: props => <TouchableOpacity {...props} />}} 
         name="main" 
         children={() => {
-          return <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar}/>
+          return <Main onWriteComplete={onWriteComplete} onSetUser={onSetUser} sendPushNotification={sendPushNotification} toggleNavbar={toggleNavbar} refreshUser={refreshUser}/>
           }} 
       />
       <Tab.Screen 

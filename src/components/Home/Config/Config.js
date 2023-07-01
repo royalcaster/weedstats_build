@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: "center",
-    fontFamily: "PoppinsLight",
+    fontFamily: "PoppinsMedium",
     fontSize: 18,
     color: "white",
     maxWidth: 250,

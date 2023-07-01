@@ -93,10 +93,8 @@ const hide = () => {
 
   const RenderItem = ( item ) => {
     return (
-      <View style={{width: "100%", justifyContent: "center",flexDirection: "column", height: Dimensions.get("screen").height, bottom: 0, backgroundColor: item.backgroundColor, zIndex: 10, borderRadius: 25, overflow: "hidden"}}>
-        <View >
+      <View style={{width: "100%", justifyContent: "center", flexDirection: "column", height: Dimensions.get("window").height, bottom: 0, zIndex: 10, borderRadius: 25, overflow: "hidden", backgrounColor: item.backgroundColor}}>
         {item.testComponent ? item.testComponent : null}
-        </View>
       </View>
     );
   }
@@ -138,30 +136,12 @@ const hide = () => {
   }
       
   const counterScreen = () => {
-    return <View>
-      <View style={{height: responsiveHeight(20)}}></View>
+    return <>
       <Text style={styles.title2}>{language.tutorial_counter_title}</Text>
       <Text style={styles.text2}>{language.tutorial_counter_text}</Text>
       <View style={{height: responsiveHeight(5)}}></View>
-
-      <Video
-        ref={counterVideo}
-        style={styles.video}
-        source={require('../../data/vid/counter.mp4')}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        onPlaybackStatusUpdate={status => setCounterStatus(() => status)}
-        usePoster={true}
-        posterSource={require('../../data/img/tutorial_loading.png')}
-      />
-
-    <View style={{height: 10}}></View>
-    <View style={{justifyContent: "center", alignItems: "center"}}>
-      <IconButton icon={counterStatus.isPlaying ? pause_icon : play_icon} backgroundColor={counterStatus.isPlaying ? "#131520" : "#0781E1"} onPress={() => counterStatus.isPlaying ? counterVideo.current.pauseAsync() : counterVideo.current.playAsync()}/>
-    </View>
-      
-      <View style={{height: responsiveHeight(20)}}></View>
-    </View>
+      <Image source={require('../../data/img/tutorial/counter.png')} style={styles.screenshot} />
+    </>
   }
 
   const statsScreen = () => {
@@ -170,94 +150,40 @@ const hide = () => {
       <Text style={styles.text2}>{language.tutorial_stats_text}</Text>
       <View style={{height: responsiveHeight(10)}}></View>
 
-      <Video
-        ref={statsVideo}
-        style={styles.video}
-        source={require('../../data/vid/stats.mp4')}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        onPlaybackStatusUpdate={status => setStatsStatus(() => status)}
-        usePoster={true}
-        posterSource={require('../../data/img/tutorial_loading.png')}
-      />
-
-    <View style={{height: 10}}></View>
-    <View style={{justifyContent: "center", alignItems: "center"}}>
-      <IconButton icon={statsStatus.isPlaying ? pause_icon : play_icon} backgroundColor={statsStatus.isPlaying ? "#131520" : "#0781E1"} onPress={() => statsStatus.isPlaying ? statsVideo.current.pauseAsync() : statsVideo.current.playAsync()}/>
-    </View>
-
-          <View style={{height: responsiveHeight(10)}}></View>
+      <Image source={require('../../data/img/tutorial/stats.png')} style={styles.screenshot} />
     </View>
   }
 
   const mapScreen = () => {
     return <View style={{height: "100%", width: "100%", borderRadius: 10, overflow: "hidden"}}>
-
-      <View style={{height: responsiveHeight(5)}}></View>
-      <View style={styles.knob}></View>
-      <View style={{height: responsiveHeight(10)}}></View>
       <Text style={styles.title2}>{language.tutorial_map_title}</Text>
       <Text style={styles.text2}>{language.tutorial_map_text}</Text>
       <View style={{height: responsiveHeight(10)}}></View>
-
-      <Video
-        ref={mapVideo}
-        style={styles.video}
-        source={require('../../data/vid/map.mp4')}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        shouldPlay={true}
-        status={status => setMapStatus(status)}
-      />
-      
+      <Image source={require('../../data/img/tutorial/map.png')} style={styles.screenshot} />
     </View>
   }
 
   const configScreen = () => {
     return <View>
-      
       <Text style={styles.title2}>{language.tutorial_config_title}</Text>
       <Text style={styles.text2}>{language.tutorial_config_text}</Text>
-
       <View style={{height: responsiveHeight(10)}}></View>
-
-      <Video
-        ref={configVideo}
-        style={styles.video}
-        source={require('../../data/vid/map.mp4')}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        shouldPlay={true}
-        status={status => setConfigStatus(status)}
-      />
-
+      <Image source={require('../../data/img/tutorial/config.png')} style={styles.screenshot} />
     </View>
   }
 
   const friendsScreen = () => {
     return <View>
-
-    <Text style={styles.title2}>{language.tutorial_friends_title}</Text>
-    <Text style={styles.text2}>{language.tutorial_friends_text}</Text>
-    
-    <Video
-        ref={friendsVideo}
-        style={styles.video}
-        source={require('../../data/vid/map.mp4')}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        shouldPlay={true}
-        status={status => setFriendsStatus(status)}
-      />
-
+      <Text style={styles.title2}>{language.tutorial_friends_title}</Text>
+      <Text style={styles.text2}>{language.tutorial_friends_text}</Text>
+      <View style={{height: responsiveHeight(10)}}></View>
+      <Image source={require('../../data/img/tutorial/friends.png')} style={styles.screenshot} />
     </View>
   }
 
   const tippScreen = () => {
     return <View style={{width: "100%", alignSelf: "center"}}>
-
-    <Text style={styles.text}><Text style={{color: "#0781E1"}}>{language.tutorial_tipp_title}</Text>{"\n"}{"\n"}{language.tutorial_tipp_text}</Text>
-
+      <Text style={styles.text}><Text style={{color: "#0781E1"}}>{language.tutorial_tipp_title}</Text>{"\n"}{"\n"}{language.tutorial_tipp_text}</Text>
     </View>
   }
 
@@ -296,7 +222,7 @@ const hide = () => {
   const readyScreen = () => {
     return <View style={{width: "100%", alignSelf: "center"}}>
 
-        <Button title={"Weitermachen"} fontColor={"#1E2132"} color={"white"} color2={"#1E2132"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => {onDone()}}/>
+        <Button title={"Ok"} fontColor={"white"} color={"#0781E1"} color2={"#484F78"} hovercolor={"rgba(0,0,0,0.25)"} onPress={() => {onDone()}}/>
         
       </View>
   }
@@ -539,7 +465,7 @@ const styles = StyleSheet.create({
     text2: {
       color: "white",
       textAlign: "left",
-      fontFamily: "PoppinsLight",
+      fontFamily: "PoppinsMedium",
       fontSize: responsiveFontSize(2),
       marginHorizontal: responsiveWidth(10)
     },
@@ -568,9 +494,10 @@ const styles = StyleSheet.create({
       color: "white",
       fontSize: responsiveFontSize(3)
     },
-    video: {
-      height: Dimensions.get("screen").height * 0.6,
-      width: "80%",
+    screenshot: {
+      height: responsiveHeight(50),
+      resizeMode: "contain",
       alignSelf: "center"
+
     }
 });
