@@ -247,11 +247,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(1.4),
     fontFamily: "PoppinsLight",
   },
-  money_icon: {
-    fontSize: 25,
-    color: "white",
-    textAlignVertical: "center",
-  },
   heading: {
     color: "white",
     textAlign: "center",
@@ -264,15 +259,6 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  icon: {
-    fontSize: 40,
-  },
-  text: {
-    color: "white",
-    fontFamily: "PoppinsMedium",
-    textAlign: "center",
-    alignSelf: "center"
   },
   touchable_profileimage: {
     zIndex: 1,

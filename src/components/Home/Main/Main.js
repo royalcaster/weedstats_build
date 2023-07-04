@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Image, ScrollView, Animated, Easing, Dimensions, Platform } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, Animated, Easing, Dimensions, Platform, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../../../data/UserContext";
 import { Vibration } from "react-native";
@@ -10,6 +10,7 @@ import { StatusBar } from "react-native";
 import * as NavigationBar from 'expo-navigation-bar'
 import * as Location from 'expo-location'
 import Constants from "expo-constants"
+import * as Linking from 'expo-linking'
 
 //Custom Components
 import CounterItem from "./CounterItem/CounterItem";
@@ -129,7 +130,14 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
     
     if (docSnap.exists()) {
       if (compareVersions(docSnap.data().latest_version, Constants.manifest.version) == 1) {
-        setShowUpdatePanel(true)
+        Alert.alert('Update available', 'This version of the app is no longer supported, please update the app from the Google PlayStore to ensure a seamless experience.', [
+          {
+            text: 'Later',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          {text: 'Go to PlayStore', onPress: () => Linking.openURL('https://play.google.com/store/apps/details?id=com.royalcaster.WeedStats_build_test')},
+        ]);
       }
     }
   }
@@ -181,79 +189,8 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
       console.log("Error in Config beim Speichern: ", e);
     }
     setLoading(false);
-    /* setSaved(true); */
   };
 
-  const slides = [
-    {
-      key: 'zero',
-      title: 'Willkommen',
-      text: 'WeedStats bietet verschiedenste Möglichkeiten zum Erfassen, Auswerten und Teilen deines Gras-Konsums. \n\nDiese kurze Tour wird dir die wesentlichen Funktionen der App beibringen.',
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'one',
-      title: 'Counter',
-      text: 'Jedes mal, wenn du etwas rauchst, solltest du den jeweiligen Counter um eins erhöhen. Halte dazu den Button für kurze Zeit gedrückt.\n\n Je nach Einstellung wird der Zeitpunkt und die aktuellen GPS-Daten gespeichert.',
-      image: require('../../../data/img/screenshots/counter.png'),
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'two',
-      title: 'Stats',
-      text: 'Hier findest du sowohl statistische Auswertungen und Diagramme zu deinem Konsum als auch eine Liste deiner letzten Einträge.',
-      image: require('../../../data/img/screenshots/stats.png'),
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'three',
-      title: 'Map',
-      text: 'Die Karte kann dir entweder eine Heatmap mit den Orten zeigen, an denen du am häufigsten geraucht hast, oder auch die letzten Einträge deiner Freunde.',
-      image: require('../../../data/img/screenshots/map.png'),
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'four',
-      title: 'Einstellungen',
-      text: 'Hier kannst du Einstellungen für deine Privatsphäre und die Anzeige treffen.',
-      image: require('../../../data/img/screenshots/config.png'),
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'five',
-      title: 'Freunde',
-      text: 'Füge Freunde hinzu, um deine Statistiken mit ihnen zu teilen und das volle Potential von WeedStats auszuschöpfen!\n\nAußerdem kannst du hier auf deinen Account zugreifen.',
-      image: require('../../../data/img/screenshots/friends.png'),
-      backgroundColor: '#0080FF',
-    },
-    {
-      key: 'six',
-      title: 'Unser Tipp',
-      text: 'Hier eventuell Hinweis auf Intention der App, keine Anregung zu Konsum, kein Konsum bei minderjährigen! \n\nJe gewissenhafter du deinen Konsum in der App einträgst, desto genauer werden deine Statistiken mit der Zeit.\n\nWir wünschen dir viel Spaß mit WeedStats!',
-      backgroundColor: '#0080FF',
-    }
-  ];
-
-  const renderItem = ({ item }) => {
-    return (
-      <View style={{flexDirection: "column", height: "100%"}}>
-        <View style={{height: 50}}></View>
-        <View style={{flex: 1}}>
-          <Text style={{color: "white", fontFamily: "PoppinsBlack", fontSize: 25, textAlign: "center"}}>{item.title}</Text>
-        </View>
-
-        {item.image ? 
-        <View style={{flex: 5}}>
-          <Image source={item.image} style={{height: "100%", width: "55%", borderRadius: 25, alignSelf: "center"}}/>
-        </View> : null}
-
-        <View style={{flex: 4}}>
-          <Text style={{color: "white", fontFamily: "PoppinsLight", fontSize: 15, marginLeft: 30, textAlign: "center", maxWidth: "80%", marginTop: 20}}>{item.text}</Text>
-        </View>
-        
-      </View>
-    );
-  }
 
   const onDone = () => {
     setShowTutorial(false);
@@ -278,7 +215,6 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
   const toggleCounter = async (index, color) => {
     sendCounterPushNotification(index);
     setBorderColor(color);
-    let settings = {};
     let new_entry = {
       number: user.main_counter + 1,
       type: index,
@@ -314,7 +250,16 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
     const docRef = doc(firestore, "users", user.id);
     const docSnap = await getDoc(docRef);
 
-    await updateDoc(docRef, {
+    await refreshUser({
+      [index + "_counter"]: docSnap.data()[index + "_counter"] + 1,
+      last_entry_latitude: new_entry.latitude,
+      last_entry_longitude: new_entry.longitude,
+      last_entry_timestamp: new_entry.timestamp,
+      last_entry_type: new_entry.type,
+      main_counter: docSnap.data().joint_counter + docSnap.data().bong_counter + docSnap.data().vape_counter + docSnap.data().pipe_counter + docSnap.data().cookie_counter + 1,
+    });
+    setWriteComplete(true);
+    /* await updateDoc(docRef, {
       [index + "_counter"]: docSnap.data()[index + "_counter"] + 1,
       last_entry_latitude: new_entry.latitude,
       last_entry_longitude: new_entry.longitude,
@@ -337,7 +282,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
       last_entry_latitude: docSnap_new.data().last_entry_latitude,
       last_entry_longitude: docSnap_new.data().last_entry_longitude,
     });
-    setWriteComplete(true);
+    setWriteComplete(true); */
   };
 
   //erstellt Einträge im lokalen Gerätespeicher
@@ -384,7 +329,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
 
         {showTutorial ? 
         <View style={{zIndex: 3000, position: "absolute", height: Dimensions.get("screen").height, width: "100%"}}>
-          <Tutorial renderItem={renderItem} slides={slides} onDone={onDone} extraHeight={50}/>
+          <Tutorial onDone={onDone} extraHeight={50}/>
         </View> : <> 
           <View style={{flex: 7}}>
           {loading ? (
@@ -561,18 +506,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E2132",
     width: "100%",
     height: "80%"
-  },
-  tut_img: {
-    height: 200,
-    width: 200,
-    marginBottom: -35,
-  },
-  blank_text: {
-    color: "#787878",
-    fontSize: 15,
-    alignSelf: "center",
-    fontFamily: "PoppinsLight",
-    marginTop: 15,
   },
   main_heading: {
     color: "white",

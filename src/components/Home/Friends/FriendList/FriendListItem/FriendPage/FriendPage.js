@@ -625,20 +625,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     overflow: "hidden"
   },
-  image: {
-    width: "100%",
-    position: "absolute",
-    zIndex: 4,
-  },
   username: {
     color: "white",
     fontSize: responsiveFontSize(3),
     fontFamily: "PoppinsBlack"
-  },
-  member_since: {
-    color: "white",
-    fontFamily: "PoppinsLight",
-    fontSize: responsiveFontSize(1.5)
   },
   label: {
     color: "white",
@@ -647,55 +637,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     textAlign: "left"
   },
-  value: {
-    color: "white",
-    fontSize: responsiveFontSize(6),
-    fontFamily: "PoppinsBlack",
-    textAlignVertical: "center",
-    textAlign: "center",
-    height: "100%"
-  },
   date: {
     color: "white",
     fontSize: responsiveFontSize(1.75),
     fontFamily: "PoppinsLight",
     textAlignVertical: "center",
     textAlign: "left",
-  },
-  type_image_joint: {
-    width: responsiveFontSize(2),
-    height: responsiveHeight(6),
-    marginTop: 15,
-    marginBottom: 15,
-    alignSelf: "center",
-  },
-  type_image_bong: {
-    width: responsiveWidth(7),
-    height: responsiveHeight(6),
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
-  },
-  type_image_vape: {
-    width: responsiveWidth(7),
-    height: responsiveHeight(6),
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
-  },
-  type_image_pipe: {
-    width: responsiveWidth(7),
-    height: responsiveHeight(7),
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
-  },
-  type_image_cookie: {
-    width: responsiveWidth(12),
-    height: responsiveHeight(6),
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
   },
   touchable_delete: {
     width: "100%",
@@ -725,20 +672,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     maxWidth: 300,
     alignSelf: "center",
-  },
-  touchable: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  icon: {
-    fontSize: 40,
-  },
-  info_icon: {
-    color: "white",
-    fontSize: 30,
-    textAlign: "center",
-    marginTop: 20,
   },
   activity_container: {
     backgroundColor: "#131520",
@@ -771,25 +704,6 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     fontFamily: "PoppinsLight",
     fontSize: responsiveFontSize(1.4)
-  },
-  empty_text: {
-    textAlign: "center",
-    color: "#eb4034",
-    fontFamily: "PoppinsLight",
-    fontSize: responsiveFontSize(1.5),
-    margin: 20
-  },
-  touchable_profileimage: {
-    zIndex: 1,
-    position: "absolute",
-    height: 70,
-    width: 70,
-    borderRadius: 100
-  },
-  email: {
-    color: "white",
-    fontFamily: "PoppinsMedium",
-    fontSize: responsiveFontSize(1.5)
   },
   profile_image: {
     height: Dimensions.get("window").width,

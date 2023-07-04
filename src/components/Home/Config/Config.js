@@ -405,22 +405,6 @@ const logOutModalContent = <View
           </View>
         </View>
 
-            
-
-            {/* <View style={{ width: "100%" }}>
-              <TouchableNativeFeedback
-                background={TouchableNativeFeedback.Ripple(
-                  "rgba(255,255,255,0.25)",
-                  false
-                )}
-                onPress={() => setShowDelete(true)}
-              >
-                <View style={styles.touchable_delete}>
-                  <Text style={styles.delete_text}>{language.account_delete_account}</Text>
-                </View>
-              </TouchableNativeFeedback>
-            </View> */}
-
             <View style={{height: responsiveHeight(1)}}></View>
 
             <Text style={styles.heading}>{language.config_counter}</Text>
@@ -633,12 +617,6 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsMedium",
     marginLeft: 20,
   },
-  label: {
-    color: "rgba(255,255,255,0.75)",
-    fontSize: responsiveFontSize(1.6),
-    fontFamily: "PoppinsLight",
-    marginLeft: 20,
-  },
   text: {
     alignSelf: "center",
     fontFamily: "PoppinsMedium",
@@ -664,18 +642,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(4),
     marginLeft: responsiveWidth(5)
   },
-  touchable_delete: {
-    width: "100%",
-    alignSelf: "center",
-    height: 60
-  },
-  delete_text: {
-    color: "#eb4034",
-    fontFamily: "PoppinsLight",
-    alignSelf: "center",
-    textAlignVertical: "center",
-    height: "100%",
-  },
   username: {
     color: "white",
     fontSize: responsiveFontSize(2.2),
@@ -685,12 +651,6 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.75)",
     fontSize: responsiveFontSize(1.4),
     fontFamily: "PoppinsLight",
-  },
-  touchable: {
-    height: "100%",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
   },
   touchable_profileimage: {
     zIndex: 1,

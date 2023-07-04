@@ -225,12 +225,6 @@ const styles = StyleSheet.create({
         left: "10%",
         marginTop: 20
       },
-      valid_label: {
-        fontFamily: "PoppinsMedium",
-        fontSize: responsiveFontSize(1.25),
-        alignSelf: "center",
-        marginTop: 10
-      },
       warning: {
         color: "#eb4034",
         fontFamily: "PoppinsMedium",

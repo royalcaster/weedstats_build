@@ -250,11 +250,5 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 40
-    },
-    info_icon: {
-        color: "white",
-        fontSize: 30,
-        textAlign: "center",
-        marginTop: 20
     }
 });

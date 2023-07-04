@@ -28,6 +28,7 @@ import { FriendListContext } from "../../../data/FriendListContext";
 import { getLocalData } from "../../../data/Service";
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import TypeImage from "../../common/TypeImage";
+import IconButton from "../../common/IconButton";
 
 const Map = ({ getFriendList }) => {
   LogBox.ignoreAllLogs();
@@ -41,7 +42,7 @@ const Map = ({ getFriendList }) => {
   const [view, setView] = useState("friends");
   const [localData, setLocalData] = useState([]);
   const [localDataLoaded, setLocalDataLoaded] = useState(false);
-  const [mapType, setMapType] = useState("hybrid");
+  const [mapType, setMapType] = useState("standard");
   const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [markers, setMarkers] = useState([]);
@@ -114,14 +115,16 @@ const Map = ({ getFriendList }) => {
 
   const fillMarkers = () => {
     setLoading(true);
-    setMarkers([{
-      latitude: user.last_entry_latitude,
-      longitude: user.last_entry_longitude,
-      timestamp: user.last_entry_timestamp,
-      type: user.last_entry_type,
-      photoUrl: user.photoUrl,
-      username: user.username
-    }]);
+    if (user.last_entry_type != null) {
+      setMarkers([{
+        latitude: user.last_entry_latitude,
+        longitude: user.last_entry_longitude,
+        timestamp: user.last_entry_timestamp,
+        type: user.last_entry_type,
+        photoUrl: user.photoUrl,
+        username: user.username
+      }]);
+    }
     friendList.forEach((friend) => {
       if (
           friend.config.shareLastEntry && 
@@ -146,6 +149,7 @@ const Map = ({ getFriendList }) => {
 
   const toggleMapType = () => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
+    Vibration.vibrate(50)
   }
 
   const chopTimeStamp = (timestamp) => {
@@ -407,20 +411,10 @@ const Map = ({ getFriendList }) => {
 
           <View style={styles.iconbutton_container}>
             <View style={{flex: 1}}>
-              <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={() => {view == "heatmap" ? setView("friends") : setShowDonation(true); Vibration.vibrate(50)}}>
-                <View style={styles.touchable}>
-                  {view == "heatmap" ? friends_icon : map_icon}
-                  <Text style={styles.iconbutton_label}>{view == "heatmap" ? "Freunde" : "Heatmap"}</Text>
-                </View>
-              </TouchableNativeFeedback>
+              <IconButton backgroundColor={"#F2338C"} icon={view == "heatmap" ? friends_icon : map_icon} onPress={() => {view == "heatmap" ? setView("friends") : setShowDonation(true); Vibration.vibrate(50)}}/>
             </View>
             <View style={{flex: 1}}>
-              <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", true)} onPress={toggleMapType}>
-                <View style={styles.touchable}>
-                  {switch_icon}
-                  <Text style={styles.iconbutton_label}>{mapType == "standard" ? "Satellite" : "Standard"}</Text>
-                </View>
-              </TouchableNativeFeedback>
+              <IconButton backgroundColor={"#1E2132"} icon={switch_icon} onPress={toggleMapType}/>
             </View>
           </View>
           </>
@@ -472,13 +466,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     margin: 10,
   },
-  carousel: {
-    height: 112,
-    width: "100%",
-    position: "absolute",
-    zIndex: 2,
-    bottom: 0
-  },
   touchable: {
     width: "100%",
     height: "100%",
@@ -491,26 +478,14 @@ const styles = StyleSheet.create({
     height: "100%",
     textAlignVertical: "center",
   },
-  iconbutton_label: {
-    color: "white",
-    fontFamily: "PoppinsMedium",
-    alignSelf: "center",
-    textAlign: "center",
-    fontSize: responsiveFontSize(1.5),
-    marginTop: 5
-  },
   iconbutton_container: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignSelf: "center",
-    bottom: responsiveHeight(15),
     right: 0,
+    bottom: responsiveHeight(3),
     position: "absolute",
-    backgroundColor: "#1E2132",
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    height: responsiveHeight(30),
-    justifyContent: "center",
-    width: responsiveWidth(15)
+    justifyContent: "space-between",
+    width: responsiveWidth(35),
   },
   iconbutton_container_left: {
     flexDirection: "column",

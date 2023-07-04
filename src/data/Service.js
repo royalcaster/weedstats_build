@@ -58,6 +58,7 @@ export const getRelevantKeys = async (user) => {
 
 // Holt alle Einträge-Daten aus dem lokalen Speicher
 export const getLocalData = async (user, callback) => {
+  console.log("test");
   let buffer = [];
   try {
     const jsonData = await AsyncStorage.multiGet(await getRelevantKeys(user));

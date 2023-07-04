@@ -77,10 +77,5 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         height: "80%",
-    },
-    empty_label: {
-        color: "white",
-        fontFamily: "PoppinsMedium",
-        textAlign: "center"
     }
 });

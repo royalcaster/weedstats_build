@@ -21,6 +21,9 @@ import IconButton from '../common/IconButton'
 import Levels from '../../data/Levels.json'
 import { LanguageContext } from "../../data/LanguageContext";
 
+//Expo
+import * as Linking from 'expo-linking'
+
 const Tutorial = ({ onDone, type}) => {
 
     //Context
@@ -193,8 +196,16 @@ const hide = () => {
         <Text style={styles.title2}>{language.tutorial_pls_read_title}</Text>
         <Text style={styles.text2}>{language.tutorial_pls_read_text}</Text>
 
+      </View>
+  }
+
+  const warningScreen2 = () => {
+    return <View style={{width: "100%", alignSelf: "center"}}>
+
+        <Text style={styles.text2}>{language.tutorial_pls_read_text2}</Text>
+
         <View style={{height: responsiveHeight(5)}}></View>
-        <Button title={language.tutorial_show_policy} color={"#1E2132"} hovercolor={"rgba(255,255,255,0.25)"} fontColor={"white"} onPress={() => console.log("test")}/>
+        <Button title={language.tutorial_show_policy} color={"#1E2132"} hovercolor={"rgba(255,255,255,0.25)"} fontColor={"white"} onPress={() => Linking.openURL('https://weedstats.de')}/>
 
         <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.25)", false)} onPress={() => {setConsented(!consented)}}>
           <View style={styles.touchable}>
@@ -231,78 +242,69 @@ const hide = () => {
     const slides = [
       {
         key: '-one',
-        title: 'Willkommen',
-        text: 'WeedStats bietet verschiedenste Möglichkeiten zum Erfassen, Auswerten und Teilen deines Gras-Konsums. \n\nDiese kurze Tour wird dir die wesentlichen Funktionen der App beibringen.',
         testComponent: titleScreen(), 
         backgroundColor: "#131520"
       },
       {
         key: 'zero',
-        title: 'Willkommen',
-        text: 'WeedStats bietet verschiedenste Möglichkeiten zum Erfassen, Auswerten und Teilen deines Gras-Konsums. \n\nDiese kurze Tour wird dir die wesentlichen Funktionen der App beibringen.',
         testComponent: welcomeScreen(),
         backgroundColor: "#131520"
       },
       {
         key: 'one',
-        title: 'Counter',
-        text: 'Jedes mal, wenn du etwas rauchst, solltest du den jeweiligen Counter um eins erhöhen. Halte dazu den Button für kurze Zeit gedrückt.',
-        image: require('../../data/img/screenshots/counter.png'),
         testComponent: counterScreen(),
-        icon: <Image source={require("../../data/img/logo_w.png")} style={styles.counter_image}/>,
         backgroundColor: "#1E2132"
       },
       {
         key: 'two',
-        title: 'Stats',
-        text: 'Hier findest du statistische Auswertungen zu deinem Konsum und deinen Rauch-Verlauf.',
-        image: require('../../data/img/screenshots/stats.png'),
         testComponent: statsScreen(),
-        icon: <Entypo name="area-graph" style={styles.icon}/>,
         backgroundColor: "#131520"
       },
       {
         key: 'three',
-        title: 'WeedMap',
-        text: 'Die Karte kann dir entweder eine Heatmap mit den Orten zeigen, an denen du am häufigsten geraucht hast, oder auch die letzten Aktivitäten deiner Freunde.',
-        image: require('../../data/img/screenshots/map.png'),
         testComponent: mapScreen(),
-        icon: <FontAwesome name="map-marker" style={styles.icon}/>,
         backgroundColor: "#1E2132"
       },
       {
         key: 'four',
-        title: 'Einstellungen',
-        text: 'Hier kannst du Einstellungen für deine Privatsphäre und die Anzeige treffen.',
-        image: require('../../data/img/screenshots/config.png'),
         testComponent: configScreen(),
-        icon: <FontAwesome name="sliders" style={styles.icon}/>,
         backgroundColor: "#131520"
       },
       {
         key: 'five',
-        title: 'Freunde',
-        text: 'Füge Freunde hinzu, um deine Statistiken mit ihnen zu teilen und das volle Potential von WeedStats auszuschöpfen!\n\nAußerdem kannst du hier auf deinen Account zugreifen.',
-        image: require('../../data/img/screenshots/friends.png'),
         testComponent: friendsScreen(),
-        icon: <FontAwesome name="user" style={styles.icon}/>,
         backgroundColor: "#1E2132"
       },
       {
         key: 'six',
-        title: 'Unser Tipp',
-        text: 'Je gewissenhafter du deinen Konsum in der App einträgst, desto genauer werden deine Statistiken mit der Zeit. Wenn du schummelst, brauchst du die App nicht!\n\nWir wünschen dir viel Spaß mit WeedStats!',
         testComponent: tippScreen(),
         backgroundColor: "#131520"
       },
-      {
-        key: 'seven',
-        title: 'Unser Tipp',
-        text: 'Je gewissenhafter du deinen Konsum in der App einträgst, desto genauer werden deine Statistiken mit der Zeit. Wenn du schummelst, brauchst du die App nicht!\n\nWir wünschen dir viel Spaß mit WeedStats!',
-        testComponent: type == "first" ? warningScreen() : readyScreen(),
-        backgroundColor: type == "first" ? "#FC2044" : "#1E2132"
-      }
     ];
+
+    const adjustSlides = () => {
+      if (type != "first"){
+        slides.push({
+          key: 'nine',
+          testComponent: readyScreen(),
+          backgroundColor: "#FC2044"
+        })
+      } 
+      else if (type == "first") {
+        slides.push({
+          key: 'seven',
+          testComponent: warningScreen(),
+          backgroundColor: "#FC2044"
+        },
+        {
+          key: 'eight',
+          testComponent: warningScreen2(),
+          backgroundColor: "#FC2044"
+        },)
+      }
+    }
+
+    adjustSlides()
 
     //Neue Version: Langes Schrollpanel mit Statusbar (04. September 2022)
     return (

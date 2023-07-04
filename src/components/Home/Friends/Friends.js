@@ -63,39 +63,6 @@ container: {
     width: "100%",
     zIndex: 10
     },
-    heading: {
-    fontFamily: "PoppinsMedium",
-    color: "white",
-    fontSize: responsiveFontSize(2.3),
-    marginLeft: 30,
-    },
-    icon: {
-    textAlignVertical: "center",
-    color: "white",
-    fontSize: responsiveFontSize(2.3),
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10
-    },
-    text: {
-    textAlignVertical: "center",
-    marginLeft: 10,
-    color: "#c4c4c4",
-    fontFamily: "PoppinsLight",
-    fontSize: 16,
-    },
-    touchable: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    backgroundColor: "#131520"
-    },
-    empty: {
-        color: "rgba(255,255,255,0.5)",
-        alignSelf: "center",
-        fontFamily: "PoppinsLight",
-        fontSize: 12
-    },
     bold_heading: {
         color: "white",
         fontFamily: "PoppinsBlack",

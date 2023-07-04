@@ -171,17 +171,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 4,
   },
-  username: {
-    color: "white",
-    fontSize: responsiveFontSize(3),
-    fontFamily: "PoppinsBlack"
-  },
-  member_since: {
-    color: "rgba(255,255,255,0.5)",
-    fontFamily: "PoppinsLight",
-    fontSize: responsiveFontSize(1.8),
-    marginTop: responsiveHeight(-1)
-  },
   label: {
     color: "rgba(255,255,255,0.75)",
     fontSize: responsiveFontSize(1.3),
@@ -205,48 +194,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     textAlign: "left",
   },
-  type_image_joint: {
-    width: responsiveFontSize(2),
-    height: responsiveHeight(8),
-    marginTop: 15,
-    marginBottom: 15,
-    alignSelf: "center",
-  },
-  type_image_bong: {
-    width: 40,
-    height: 70,
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
-  },
-  type_image_vape: {
-    width: 30,
-    height: 90,
-    marginTop: 5,
-    marginBottom: 10,
-    alignSelf: "center",
-  },
-  touchable_delete: {
-    width: "100%",
-    alignSelf: "center",
-    height: 60,
-    borderRadius: 100,
-  },
-  delete_text: {
-    color: "#eb4034",
-    fontFamily: "PoppinsLight",
-    alignSelf: "center",
-    textAlignVertical: "center",
-    height: "100%",
-  },
-  modal_container: {
-    backgroundColor: "#1E2132",
-    width: "90%",
-    height: 300,
-    alignSelf: "center",
-    borderRadius: 25,
-    flexDirection: "column",
-  },
   heading: {
     color: "white",
     textAlign: "center",
@@ -255,54 +202,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginLeft: 70
   },
-  touchable: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   icon: {
     fontSize: 40,
-  },
-  info_icon: {
-    color: "white",
-    fontSize: 30,
-    textAlign: "center",
-    marginTop: 20,
-  },
-  activity_container: {
-    backgroundColor: "#131520",
-    borderRadius: 10,
-    flexDirection: "row",
-    width: "70%",
-    alignItems: "center",
-    alignContent: "center",
-    alignSelf: "center",
-  },
-  small_counter: {
-    zIndex: 2,
-    color: "white",
-    fontSize: responsiveFontSize(3),
-    fontFamily: "PoppinsBlack",
-    textAlign: "center",
-    marginTop: 5,
-    opacity: 1
-  },
-  small_image: {
-      height: responsiveHeight(10),
-      width: responsiveHeight(3),
-      position: "absolute",
-      zIndex: -1,
-      opacity: 0.2,
-      alignSelf: "center",
-      marginTop: responsiveHeight(-1)
-  },
-  small_label: {
-    textAlign: "center",
-    zIndex: 1,
-    color: "rgba(255,255,255,1)",
-    fontFamily: "PoppinsLight",
-    fontSize: responsiveFontSize(1.4),
-    marginTop: responsiveHeight(-1.5)
   },
   map: {
     height: "100%",

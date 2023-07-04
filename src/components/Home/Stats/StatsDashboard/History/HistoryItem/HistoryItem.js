@@ -48,21 +48,6 @@ const HistoryTable = ({ event, showOnMap }) => {
           {new Date(event.timestamp).toLocaleTimeString("de-DE").substring(0,5)}
         </Text>
       </View>
-      {/* <View style={{ flex: 1.5, borderRadius: 10 }}>
-
-        <IconButton 
-          icon={<AntDesign
-            name="enviromento"
-            style={{
-              color: "white",
-              fontSize: responsiveFontSize(2.3),
-              textAlignVertical: "center",
-              textAlign: "center"
-            }}
-          />}
-          onPress={() => showOnMap(event)}
-        />
-      </View> */}
     </View>
     </TouchableNativeFeedback>
     </View>
@@ -72,41 +57,6 @@ const HistoryTable = ({ event, showOnMap }) => {
 export default HistoryTable;
 
 const styles = StyleSheet.create({
-  HeadStyle: {
-    height: 50,
-    alignContent: "center",
-    backgroundColor: "#2b2b2b",
-  },
-  TableText: {
-    margin: 10,
-    color: "white",
-    fontFamily: "PoppinsLight",
-  },
-  j_img: {
-    height: 50,
-    width: 15,
-    alignSelf: "center",
-  },
-  b_img: {
-    height: 50,
-    width: 30,
-    alignSelf: "center",
-  },
-  v_img: {
-    height: 50,
-    width: 30,
-    alignSelf: "center",
-  },
-  p_img: {
-    height: 50,
-    width: 30,
-    alignSelf: "center",
-  },
-  c_img: {
-    height: 40,
-    width: 40,
-    alignSelf: "center",
-  },
   date: {
     textAlign: "center",
     fontFamily: "PoppinsLight",

@@ -130,20 +130,5 @@ const styles = StyleSheet.create({
         fontFamily: "PoppinsMedium",
         fontSize: 20,
         textAlign: "center"
-    },
-    touchable: {
-        height: "100%",
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    icon: {
-        fontSize: 40
-    },
-    info_icon: {
-        color: "white",
-        fontSize: 30,
-        textAlign: "center",
-        marginTop: 20
     }
 });

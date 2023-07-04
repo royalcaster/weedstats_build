@@ -122,48 +122,6 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(3),
         color: "#F2338C",
     },
-    image: {
-        height: 150,
-        width: 200,
-        alignSelf: "center"
-    },
-    close: {
-        color: "#696969",
-        fontSize:40,
-        position: "relative",
-    },
-    close_text: {
-        marginLeft: 20,
-        borderRadius: 15,
-        position: "absolute",
-        bottom: 20
-    },
-    cancelButton: { 
-        width: "80%",
-        alignSelf: "center",
-        height: 50,
-        borderRadius: 100,
-        justifyContent: "center",
-        flexDirection: "row",
-        position: "absolute",
-        bottom: 20
-    },
-    cancel_icon: {
-        fontSize: 25,
-        color: "white",
-        textAlignVertical: "center",
-    },
-    pressable_back: {
-        width: 80, 
-        padding: 10, 
-        borderRadius: 25, 
-        marginLeft: 10
-    },
-    icon_back: {
-        color: "white", 
-        fontSize: 30, 
-        left: 5
-    },
     heading: {
         color: "white",
         fontSize: 20,

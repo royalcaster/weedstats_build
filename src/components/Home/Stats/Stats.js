@@ -23,11 +23,8 @@ const Stats = () => {
   //Ref
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect( () => {
-    async function test() {
-      localDataLoaded ? null : setLocalData(await getLocalData(user, () => setLocalDataLoaded(true)));
-    }
-    test();
+  useEffect( () => { 
+    loadData();
     setLocalDataLoaded(true);
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -36,6 +33,11 @@ const Stats = () => {
       easing: Easing.bezier(0.07, 1, 0.33, 0.89),
     }).start();
   }, []);
+
+  const loadData = async () => {
+    setLocalDataLoaded(false);
+    setLocalData(await getLocalData(user, () => setLocalDataLoaded(true)));
+  }
 
   // Zum Löschen einzelner Daten aus der History. Erstmal entfernt, da die Konsistenz der Daten nach aktuellem Stand darunter leidet
   const deleteEntry = async (delEntry) => {
@@ -67,7 +69,7 @@ const Stats = () => {
         <>
           {
             localData.length == 0 ? <View style={{height: "20%"}}><CustomLoader x={50} color={"#484F78"}/><Empty title={"Noch keine Aktivitäten"} tip={"Mache Einträge, um Statistiken zu sehen"}/></View>
-            : <StatsDashboard localData={localData} />
+            : <StatsDashboard localData={localData} onRefresh={() => loadData()}/>
           }
         </>
       }

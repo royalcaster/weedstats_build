@@ -116,29 +116,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginTop: 3
   },
-  lvl_img: {
-    height: responsiveHeight(8),
-    width: responsiveHeight(8),
-    marginLeft: 15,
-    marginTop: -10
-  },
-  lvl_name: {
-    fontSize: responsiveFontSize(2.5),
-    fontFamily: "PoppinsBlack",
-    color: "white",
-  },
-  lvl_bounds: {
-    fontFamily: "PoppinsLight",
-    fontSize: responsiveFontSize(1.75),
-    marginTop: -5,
-    color: "white",
-  },
-  label: {
-    color: "rgba(255,255,255,0.75)",
-    fontSize: responsiveFontSize(1.6),
-    fontFamily: "PoppinsLight",
-    marginLeft: 20,
-  },
   text: {
     alignSelf: "center",
     fontFamily: "PoppinsLight",
@@ -146,16 +123,5 @@ const styles = StyleSheet.create({
     color: "white",
     maxWidth: 250,
     textAlign: "center",
-  },
-  save_button_container: {
-    width: "100%",
-    position: "absolute",
-    bottom: 0
-  },
-  toggle_container: {
-    flexDirection: "row",
-    height: 40,
-    width: "95%",
-    alignContent: "center",
   }
 });

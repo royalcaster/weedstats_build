@@ -27,7 +27,8 @@ const Empty = ({ title, tip, icon }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={{ alignItems: "center", width: "90%", alignSelf: "center", transform: [{translateY: fadeAnim}], opacity: opacityAnim}}>
-        <Image source={require("../../data/img/empty.png")} style={{height: responsiveHeight(10), width: responsiveHeight(10)}}/>
+        <Image source={require("../../data/img/empty.png")} style={{height: responsiveHeight(11), width: responsiveHeight(8)}}/>
+        <View style={{height: responsiveHeight(2)}}></View>
         <Text style={styles.heading}>{title}</Text>
         <Text style={[styles.heading, {color: "rgba(255,255,255,0.5)"}]}>
           {tip}

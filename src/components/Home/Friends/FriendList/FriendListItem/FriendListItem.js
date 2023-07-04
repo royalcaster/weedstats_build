@@ -123,16 +123,5 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     paddingVertical: 15
-  },
-  lvl_image: {
-    height: 25,
-    width: 25, 
-    marginTop: -4,
-    marginRight: 2,
-    marginLeft: -5,
-    opacity: 0.85
-  },
-  lates_label: {
-    color: "white"
   }
 });

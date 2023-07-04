@@ -24,8 +24,9 @@ import BreakPanel from "./BreakPanel/BreakPanel";
 import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveFontSize } from "react-native-responsive-dimensions";
 import SelectorBar from "../../../common/SelectorBar";
+import { RefreshControl } from "react-native";
 
-const StatsDashboard = ({ localData }) => {
+const StatsDashboard = ({ localData, onRefresh }) => {
 
   //Context
   const language = useContext(LanguageContext);
@@ -36,6 +37,7 @@ const StatsDashboard = ({ localData }) => {
   const [streakData, setStreakData] = useState(calcStreak(localData));
   const [showHistory, setShowHistory] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   //Ref
   const icon_slide = useRef(new Animated.Value(-50)).current;
@@ -120,7 +122,7 @@ const StatsDashboard = ({ localData }) => {
     {showHistory ? <History show={showHistory} onExit={() => setShowHistory(false)} history={localData}/> : null}
     {showDonation ? <Donation onexit={() => setShowDonation(false)}/> : null}
 
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} refreshControl={<RefreshControl onRefresh={() => onRefresh()} colors={["white"]} progressBackgroundColor={"#484F78"}/>}>
       <Animated.View style={{ opacity: 1, alignItems: "center"}}>
         <View style={{ height: 50 }}></View>
         <View style={{flexDirection: "row", width: "100%", alignItems: "center"}}>
@@ -522,22 +524,6 @@ const styles = StyleSheet.create({
     marginTop: -10,
     textAlign: "left",
   },
-  card_value2: {
-    color: "rgba(255,255,255,0.5)",
-    fontFamily: "PoppinsLight",
-    fontSize: 12,
-    marginTop: -8,
-    textAlign: "left",
-    opacity: 0.75
-  },
-  card_container_wide: {
-    backgroundColor: "#131520",
-    margin: 10,
-    padding: 15,
-    borderRadius: 25,
-    borderTopColor: "#0080FF",
-    borderTopWidth: 2,
-  },
   switch_item: {
     backgroundColor: "#171717",
     margin: 3,
@@ -552,41 +538,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingTop: 8,
     paddingBottom: 8,
-  },
-  switch_item_active: {
-    backgroundColor: "#171717",
-    margin: 3,
-    padding: 3,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingRight: 20,
-    borderRadius: 20,
-    flex: 1,
-    borderColor: "#0080FF",
-    borderWidth: 1,
-    paddingTop: 8,
-    paddingBottom: 8,
-  },
-  text_item: {
-    color: "#808080",
-    fontFamily: "PoppinsLight",
-    textAlignVertical: "center",
-    textAlign: "center",
-    fontSize: 12,
-  },
-  switch_text_active: {
-    fontFamily: "PoppinsLight",
-    color: "#0080FF",
-    textAlignVertical: "center",
-    textAlign: "center",
-    fontSize: 12,
-  },
-  heading2: {
-    color: "white",
-    fontSize: responsiveFontSize(2.3),
-    fontFamily: "PoppinsMedium",
-    marginLeft: 20,
-    alignSelf: "flex-start",
   },
   bold_heading: {
     color: "white",
