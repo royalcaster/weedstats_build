@@ -10,8 +10,6 @@ import { LanguageContext } from "../../data/LanguageContext";
 import Entypo from 'react-native-vector-icons/Entypo'
 
 //Custom Components
-import LoginNumber from "./LoginNumber/LoginNumber";
-import LoginLine from "./LoginLine/LoginLine";
 import Button from '../common/Button'
 import { responsiveFontSize } from "react-native-responsive-dimensions";
 import CreatePanel from "./CreatePanel/CreatePanel";
@@ -129,14 +127,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E2132",
     flex: 1
   },
-  login_heading: {
-    color: "#1E2132",
-    fontSize: responsiveFontSize(2),
-    fontFamily: "PoppinsBlack",
-    textAlign: "center",
-    textAlignVertical: "center",
-    marginTop: 10,
-  },
   login_pressable: {
     borderWidth: 2,
     borderRadius: 100,
@@ -148,30 +138,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     overflow: "hidden",
-  },
-  login_pressable_text: {
-    color: "white",
-    alignSelf: "center",
-    fontFamily: "PoppinsLight",
-    fontSize: 18,
-    color: "#1E2132",
-  },
-  login_logo: {
-    width: 60,
-    height: 60,
-    alignSelf: "center",
-  },
-  info_container: {
-    width: "85%",
-    flex: 4,
-    backgroundColor: "#1E2132",
-    alignSelf: "center",
-    borderRadius: 20,
-  },
-  info_icon: {
-    color: "white",
-    alignSelf: "center",
-    fontSize: 70,
   },
   text: {
     color: "white",
@@ -203,12 +169,6 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsMedium",
     left: "10%",
     marginTop: 20
-  },
-  valid_label: {
-    fontFamily: "PoppinsMedium",
-    fontSize: responsiveFontSize(1.5),
-    alignSelf: "center",
-    marginTop: 10
   },
   touchable: {
     alignItems: "center",

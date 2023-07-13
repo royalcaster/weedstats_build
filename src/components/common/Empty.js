@@ -53,15 +53,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: responsiveFontSize(1.75),
     width: "70%"
-  },
-  heading2: {
-    fontFamily: "PoppinsLight",
-    textAlign: "center",
-    color: "white",
-    fontSize: responsiveFontSize(1.75)
-  },
-  smile: {
-    fontSize: responsiveFontSize(14),
-    color: "#484F78"
   }
 });

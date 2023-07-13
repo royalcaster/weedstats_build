@@ -66,13 +66,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginTop: -5,
         alignSelf: "center"
-    },
-    touchable: {
-        width: 60,
-        height: 60,
-        backgroundColor: "rgba(0,0,0,0.0)",
-        borderRadius: 25,
-        zIndex: 20
     }
 });
 

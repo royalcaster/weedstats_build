@@ -18,7 +18,6 @@ const TutorialDialog = ({ onSubmit, onCancel }) => {
     },[]);
 
     const screen_height = Dimensions.get("screen").height;
-    const screen_width = Dimensions.get("screen").width;
 
     const slide = useRef(new Animated.Value(screen_height)).current;
 
@@ -61,14 +60,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
-    },
-    question: {
-        color: "white",
-        fontFamily: "PoppinsBlack",
-        fontSize: responsiveFontSize(3),
-        alignSelf: "center",
-        textAlign: "center",
-        width: "80%"
     },
     tutorial_image: {
         height: 200,

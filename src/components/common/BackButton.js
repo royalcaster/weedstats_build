@@ -19,9 +19,7 @@ const BackButton = ({onPress}) => {
 
 export default BackButton
 
-const styles = StyleSheet.create({
-    container: {
-    },   
+const styles = StyleSheet.create({  
     icon_back: {
         color: "rgba(255,255,255,0.75)", 
         fontSize: 20, 

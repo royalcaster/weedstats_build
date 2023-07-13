@@ -380,7 +380,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
               </Text>
             </Animated.View>
             <View>
-              <Animated.Text style={[{ transform: [{ translateY: headingAnim }], textAlign: "center"},styles.main_heading,]}>Hallo</Animated.Text>
+              <Animated.Text style={[{ transform: [{ translateY: headingAnim }], textAlign: "center"},styles.main_heading,]}>{language.short == "de" ? "Hallo" : "Hello"}</Animated.Text>
               <Animated.Text style={{fontSize: responsiveFontSize(2), fontFamily: "PoppinsBlack", textAlign: "center", color: "white", transform: [{ translateY: headingAnim }]}}>{user.username}</Animated.Text>
             </View>
             <Animated.View

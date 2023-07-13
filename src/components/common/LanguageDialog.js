@@ -73,18 +73,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    question: {
-        color: "white",
-        fontFamily: "PoppinsBlack",
-        fontSize: responsiveFontSize(3),
-        alignSelf: "center",
-        textAlign: "center",
-        width: "80%"
-    },
-    tutorial_image: {
-        height: 200,
-        width: 200
-    },
     label: {
         color: "white",
         fontFamily: "PoppinsMedium",

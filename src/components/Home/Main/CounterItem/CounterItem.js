@@ -11,19 +11,14 @@ import { LanguageContext } from "../../../../data/LanguageContext";
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import LevelBar from "./LevelBar/LevelBar";
 import TypeImage from "../../../common/TypeImage";
+import LevelImage from "../../../common/LevelImage";
 
 const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
 
   const language = useContext(LanguageContext);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const buttonFill = useRef(new Animated.Value(1)).current;
   const scaleAnim = useRef(new Animated.Value(200)).current;
-
-  const heightInterpolate = buttonFill.interpolate({
-    inputRange: [0,1],
-    outputRange: [0, 300]
-  })
 
   useEffect(() => {
     Animated.timing(scaleAnim, {
@@ -38,22 +33,6 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
       useNativeDriver: true,
     }).start();
   }, []);
-
-  const fill = () => {
-    Animated.timing(buttonFill, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true
-    }).start()
-  }
-
-  const empty = () => {
-    Animated.timing(buttonFill, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-  }
 
   React.useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -79,18 +58,6 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
     }
   };
 
-  const calcLevelName = (counter) => {
-    if (counter) {
-    let indicator = Math.floor(counter / 70);
-    return indicator > language.levels.length - 1
-      ? language.levels[levels.length - 1].name
-      : language.levels[indicator].name;
-    }
-    else {
-      return language.levels[0].name;
-    }
-  };
-
   const getGradientColors = (counter) => {
     if (counter) {
       if (counter == 0) {
@@ -107,28 +74,6 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
       return ["#484F78", "#484F78", "#1E2132"]
     }
   };
-
-  const grow = () => {
-    Animated.timing(
-      scaleAnim,
-      {
-        toValue: 1.05,
-        duration: 200,
-        useNativeDriver: true,
-      }
-    ).start();
-  }
-
-  const shrink = () => {
-    Animated.timing(
-      scaleAnim,
-      {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }
-    ).start();
-  }
 
   const convertToRGB = ( hex, a) => {
     if(hex.length != 6){
@@ -147,9 +92,15 @@ const CounterItem = ({ type, counter, toggleCounter, toggleBorderColor }) => {
 
   return (
     <Animated.View style={[styles.container, { transform: [{ translateY: scaleAnim }], opacity: fadeAnim }]}>
-       
+
+      <View style={{position: "absolute", alignSelf: "center", zIndex: 10000, justifyContent: "center", width: "100%", top: -30}}>
+        <LevelImage index={Math.floor(counter / 70)} style={{width: responsiveHeight(8), height: responsiveHeight(8), alignSelf: "center"}}/>
+      </View>
+
       <Animated.View style={[styles.card_opener, {backgroundColor: convertToRGB(getGradientColors(counter)[0].substring(1,7), 0.4), borderColor: getGradientColors(counter)[0], borderWidth: 0.5, transform: [{translateX: scaleAnim}]}]}>
-        <TypeImage type={type} x={60}/>
+        <View style={{backgroundColor: getGradientColors(counter)[0], height: responsiveHeight(6.5), width: responsiveHeight(6.5), justifyContent: "center", borderRadius: 10}}>
+          <TypeImage type={type} x={responsiveHeight(5)}/>
+        </View>
       </Animated.View>
       
       <View style={[styles.card_content]}>
@@ -180,9 +131,8 @@ export default CounterItem;
 
 const styles = StyleSheet.create({
   container: {
-    overflow: "hidden",
     margin: 5,
-    marginVertical: 10,
+    marginVertical: 15,
     flexDirection: "row"
   },
   counter_number: {
@@ -211,7 +161,6 @@ const styles = StyleSheet.create({
     height: 5,
     width: "25%",
     borderRadius: 10,
-    backgroundColor: "#1E2132",
     zIndex: 1000,
     marginVertical: 15,
     marginBottom: 5

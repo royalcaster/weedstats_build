@@ -34,22 +34,6 @@ const Tutorial = ({ onDone, type}) => {
     //ref
     const touchRef = useRef(new Animated.Value(0)).current
 
-    const counterVideo = useRef(null);
-    const statsVideo = useRef(null);
-    const mapVideo = useRef(null);
-    const configVideo = useRef(null);
-    const friendsVideo = useRef(null);
-
-    const [counterStatus, setCounterStatus] = useState({});
-    const [statsStatus, setStatsStatus] = useState({});
-    const [mapStatus, setMapStatus] = useState({});
-    const [configStatus, setConfigStatus] = useState({});
-    const [friendsStatus, setFriendsStatus] = useState({});
-
-
-    const play_icon = <FontAwesome5 name="play" style={{color: "white"}}/>
-    const pause_icon = <FontAwesome5 name="pause" style={{color: "white"}}/>
-
     useEffect(() => {
       toggleTouchAnimation();
       show();
@@ -109,7 +93,7 @@ const hide = () => {
         <Image style={{height: 100, width: 100, alignSelf: "center", borderRadius: 15}} source={require('../../../assets/icon.png')}/>
         <View style={{height: 20}}></View>
         <Text style={[styles.logo_heading,{position: "relative"}]}>WeedStats</Text>
-        <Text style={[styles.logo_heading,{position: "relative", color: "#F2338C", fontSize: responsiveFontSize(2)}]}> The tutorial is not finished yet, please ignore! </Text>
+        <Text style={[styles.logo_heading,{position: "relative", color: "#F2338C", fontSize: responsiveFontSize(2.5)}]}>Tutorial</Text>
       </View>
       <View style={{flex: 1, justifyContent: "center"}}>
       <Animated.View style={{
@@ -345,53 +329,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         zIndex:1000
     },
-    info_container: {
-      margin: "10%",
-      marginHorizontal: "0%",
-      borderRadius: 10,
-      position: "absolute",
-      bottom: 50,
-      alignSelf: "center",
-      padding: "5%"
-    },
-    info_title: {
-      color: "white", 
-      fontFamily: "PoppinsBlack",
-      fontSize: responsiveFontSize(4.5),
-      textAlign: "left",
-    },
-    info_text: {
-      color: "white",
-      fontFamily: "PoppinsLight",
-      fontSize: responsiveFontSize(1.75),
-      textAlign: "left"
-    },
     logo_heading: {
       fontFamily: "PoppinsBlack",
       fontSize: 30,
       color: "white",
       textAlign: "center"
-    },
-    blur_container: {
-      position: "absolute",
-      alignSelf: "center",
-      width: "100%",
-      height: "50%",
-      bottom: 0
-    },
-    card_label: {
-      color: "white",
-      fontFamily: "PoppinsLight",
-      fontSize: 14,
-      marginTop: 5,
-      textAlign: "left",
-    },
-    card_value: {
-      color: "white",
-      fontFamily: "PoppinsBlack",
-      fontSize: 30,
-      marginTop: -10,
-      textAlign: "left",
     },
     map: {
       width: "100%",
@@ -412,17 +354,6 @@ const styles = StyleSheet.create({
       textAlignVertical: "center",
       marginRight: 5,
       marginTop: -5
-    },
-    counter_image: {
-      height: responsiveHeight(6.5),
-      width: responsiveHeight(6.5),
-      marginTop: -2
-    },
-    next: {
-      color: "white",
-      fontFamily: "PoppinsBlack",
-      fontSize: responsiveFontSize(1.5),
-      marginHorizontal: responsiveWidth(2)
     },
     testComponentContainer: {
       width: "100%", 
@@ -470,13 +401,6 @@ const styles = StyleSheet.create({
       fontFamily: "PoppinsMedium",
       fontSize: responsiveFontSize(2),
       marginHorizontal: responsiveWidth(10)
-    },
-    knob: {
-      width: "40%",
-      height: 15,
-      borderRadius: 20,
-      backgroundColor: "rgba(255,255,255,0.1)",
-      alignSelf: "center"
     },
     touchable: {
       width: "100%",

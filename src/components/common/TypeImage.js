@@ -17,7 +17,7 @@ const TypeImage = ({ type, backgroundColor, x }) => {
         case "bong": 
         return (
         <View style={[styles.container, {backgroundColor: backgroundColor ? backgroundColor : null, height: x}]}>
-            <Image style={[styles.image,{height: x*1.3, width: x*0.7}]} source={require('../../data/img/bong.png')}/>
+            <Image style={[styles.image,{height: x*1.1, width: x*0.5}]} source={require('../../data/img/bong.png')}/>
         </View>
         )
         break;
@@ -25,7 +25,7 @@ const TypeImage = ({ type, backgroundColor, x }) => {
         case "vape": 
         return (
         <View style={[styles.container, {backgroundColor: backgroundColor ? backgroundColor : null, height: x}]}>
-            <Image style={[styles.image,{height: x*1.4, width: x*0.6}]} source={require('../../data/img/vape.png')}/>
+            <Image style={[styles.image,{height: x*1.1, width: x*0.4}]} source={require('../../data/img/vape.png')}/>
         </View>
         )
         break;

@@ -83,9 +83,6 @@ const styles = StyleSheet.create({
         fontFamily: "PoppinsBlack",
         marginLeft: 30
     },
-    note_container: {
-        marginVertical: 10
-    },
     title: {
         color: "white",
         fontSize: responsiveFontSize(2),
