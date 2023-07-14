@@ -39,7 +39,7 @@
         }
       },
       "permissions": ["NOTIFICATIONS"],
-      "useNextNotificationsApi": true,
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
