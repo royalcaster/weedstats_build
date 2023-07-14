@@ -34,11 +34,6 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
 
     //Ref
     const slideAnim = useRef(new Animated.Value(Dimensions.get("window").width)).current;
-    
-    useBackHandler(() => {
-        hide();
-        return true;
-    });
 
     useEffect(() => {
         Animated.timing(slideAnim,
@@ -49,6 +44,12 @@ const ProfileEditor = ({ onExit, refreshUser}) => {
             easing: Easing.bezier(0,.79,0,.99),
         }).start();
     },[]);
+
+    useBackHandler(() => {
+      console.log("test")
+        hide();
+        return true;
+    });
 
     const hide = () => {
         Animated.timing(slideAnim,

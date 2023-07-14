@@ -6,15 +6,18 @@ import { UserContext } from "../../../data/UserContext";
 //Custom Components
 import StatsDashboard from "./StatsDashboard/StatsDashboard";
 import CustomLoader from "../.././common/CustomLoader";
+import Button from "../../common/Button";
 
 //Service
 import { getLocalData } from "./../../../data/Service";
 import Empty from "../../common/Empty";
+import { LanguageContext } from "../../../data/LanguageContext";
 
 const Stats = () => {
 
   //Context
   const user = useContext(UserContext);
+  const language = useContext(LanguageContext)
 
   //State
   const [localData, setLocalData] = useState([]);
@@ -68,7 +71,7 @@ const Stats = () => {
         !localDataLoaded ? <CustomLoader x={50} color={"#484F78"}/> : 
         <>
           {
-            localData.length == 0 ? <View style={{height: "20%"}}><CustomLoader x={50} color={"#484F78"}/><Empty title={"Noch keine Aktivitäten"} tip={"Mache Einträge, um Statistiken zu sehen"}/></View>
+            localData.length == 0 ? <View style={{height: "20%"}}><Empty title={language.short == "de" ? "Noch keine Einträge" : "No entries yet"} tip={language.short == "de" ? "Mache Einträge, um Statistiken zu sehen" : "Smoke something to see statistics"}/><Button title={language.short == "de" ? "Aktualisieren" : "Refresh"} color={"#484F78"} fontColor={"white"} hovercolor={"rgba(255,255,255,0.25)"} onPress={() => loadData()}/></View>
             : <StatsDashboard localData={localData} onRefresh={() => loadData()}/>
           }
         </>
