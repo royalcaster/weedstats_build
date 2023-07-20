@@ -34,9 +34,9 @@ const MarkerListItem = ({ marker, onPress }) => {
     }
 
     return (
-            <Animated.View style={[styles.container,{opacity: slide, borderColor: marker.username == user.username ? "#F2338C" : "#131520", borderWidth: marker.username == user.username ? 2 : 0}]}>
+            <Animated.View style={[styles.container,{opacity: slide}]}>
                 <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple("rgba(255,255,255,0.2)", false)} onPress={() => onPress()}>
-                    <View style={styles.touchable}>
+                    <View style={[styles.touchable, {backgroundColor: marker.username == user.username ? "#484F78" : "#131520"}]}>
                         {
                             marker ?
                             <>

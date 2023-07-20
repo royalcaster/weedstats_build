@@ -24,7 +24,7 @@
         "levels": [
           {
             "key": 0,
-            "name":"Nappo",
+            "name":"Baby",
             "colors":["#00DB4D", "#008F32", "#0B6B33"]
           },
           {
@@ -355,7 +355,7 @@
         "levels": [
           {
             "key": 0,
-            "name":"Nappo",
+            "name":"Baby",
             "colors":["#00DB4D", "#008F32", "#0B6B33"]
           },
           {
@@ -370,7 +370,7 @@
           },
           {
             "key": 3,
-            "name":"Fortgeschrittener",
+            "name":"Advanced",
             "colors":["#409FFF", "#2D70B3", "#266099"]
           },
           {
@@ -380,12 +380,12 @@
           },
           {
             "key": 5,
-            "name":"Experte",
+            "name":"Expert",
             "colors":["#F2338C", "#B32567", "#8C1D51"]
           },
           {
             "key": 6,
-            "name":"Legende",
+            "name":"Legend",
             "colors":["#FC2044", "#B31731", "#961429"]
           }
         ],

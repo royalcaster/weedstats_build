@@ -183,20 +183,6 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
     var a = new Date(timestamp);
 
     return a.toTimeString().substring(0, 5) + " Uhr";
-    };
-
-  const calcLevelName = (counter) => {
-      let indicator = Math.floor(counter / 70);
-      return indicator > levels.length - 1
-          ? levels[levels.length - 1].name
-          : levels[Math.floor(counter / 70)].name;
-  };
-
-  const getGradientColors = (counter) => {
-      let indicator = Math.floor(counter / 70);
-      return indicator > levels.length - 1
-          ? levels[levels.length - 1].colors
-          : levels[Math.floor(counter / 70)].colors;
   };
 
   const removeFriend = async (id) => {
@@ -239,35 +225,6 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
     setModalVisible(false);
     onRemoveFriend();
   };
-
-  const getSortedCounters = (array) => {
-    array.sort((a, b) => {
-      return b.counter - a.counter;
-    });
-    return array[0];
-  }
-
-  const getTitle = () => {
-    return user.best.type + "-" + calcLevelName(user.best.counter);
-  };
-
-  //PanResponder test -> so funktionierts endlich, so ein dreck ehrlich
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: (event, gesture) => {
-      if (gesture?.moveX > gesture?.moveY) {
-        return false;
-      }
-      return true;
-    },
-    onPanResponderMove: (event, gesture) => {
-      gesture.dx > 0 ? pan.setValue(gesture.dx) : null;
-    },
-    onPanResponderRelease: (event, gesture) =>  {
-      if (gesture.dx > screen_width / 10 || gesture.vx > 1) {
-        hide()} else{slide();}
-    }
- });
 
   const toggleMapType = () => {
     mapType == "standard" ? setMapType("hybrid") : setMapType("standard");
@@ -435,7 +392,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
 
                 <View>
                   <View>
-                    {friendConfig.shareMainCounter ? <Text style={styles.small_counter}>{user.main_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
+                    {friendConfig.shareMainCounter ? <Text style={[styles.small_counter,{fontSize: responsiveFontSize(4)}]}>{user.main_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                   </View>
                   <View>
                     <Text style={[styles.small_label]}>{language.stats_all.toUpperCase()}</Text>
@@ -452,7 +409,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                           {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.joint_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                         </Animated.View>
                         <Text style={styles.small_label}>JOINT</Text>
-                        <Animated.Image style={[styles.small_image,{opacity: 0.2}]} source={require('../../../../../../data/img/joint.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(3), width: responsiveHeight(5), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/joint.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
@@ -460,7 +417,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                      {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.bong_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>BONG</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(8), width: responsiveHeight(5), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/bong.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(6), width: responsiveHeight(3), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/bong.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
@@ -468,7 +425,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.vape_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>VAPE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(7), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/vape.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(7), width: responsiveWidth(7), marginTop: responsiveHeight(-1), opacity: 0.2}]} source={require('../../../../../../data/img/vape.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
@@ -476,7 +433,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.pipe_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>PFEIFE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(9), width: responsiveWidth(10), marginTop: responsiveHeight(0), opacity: 0.2}]} source={require('../../../../../../data/img/pipe.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(3), width: responsiveWidth(10), marginTop: responsiveHeight(0), opacity: 0.2}]} source={require('../../../../../../data/img/pipe.png')}/>
                     </View>
 
                     <View style={{flex: 1, justifyContent: "center"}}>
@@ -484,7 +441,7 @@ const FriendPage = ({ show, user, onExit, refreshUser, onRemoveFriend }) => {
                       {friendConfig.shareTypeCounters ? <Text style={styles.small_counter}>{user.cookie_counter}</Text> : <MaterialIcons name="lock" style={styles.lock_icon}/>}
                       </Animated.View>
                         <Text style={styles.small_label}>EDIBLE</Text>
-                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(7), width: responsiveWidth(13), marginTop: responsiveHeight(1), opacity: 0.2}]} source={require('../../../../../../data/img/cookie.png')}/>
+                        <Animated.Image style={[styles.small_image,{height: responsiveHeight(4), width: responsiveWidth(8), marginTop: responsiveHeight(1), opacity: 0.2}]} source={require('../../../../../../data/img/cookie.png')}/>
                     </View>
 
                 </View>
@@ -684,7 +641,7 @@ const styles = StyleSheet.create({
   small_counter: {
     zIndex: 2,
     color: "white",
-    fontSize: responsiveFontSize(4),
+    fontSize: responsiveFontSize(3),
     fontFamily: "PoppinsMedium",
     textAlign: "center",
     opacity: 1

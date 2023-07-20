@@ -428,7 +428,7 @@ const Map = ({ getFriendList }) => {
                 <View>
                   {markers.length != 0 ? markers.map((marker) => {
                     return <>
-                              <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={marker.photoUrl} type={1} circle={user.username == marker.username} circleColor={user.username == marker.username ? "#F2338C" : "#131520"}/></View>
+                              <View key={uuid.v4()} style={{marginVertical: 5}}><ProfileImage x={50} url={marker.photoUrl} type={1} circle={user.username == marker.username} circleColor={user.username == marker.username ? "#484F78" : "#131520"}/></View>
                            </>
                   }) : null}
                 </View>

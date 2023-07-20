@@ -141,7 +141,7 @@ const StatsDashboard = ({ localData, onRefresh }) => {
                 <EvilIcons
                   name="clock"
                   style={{
-                    color: "white",
+                    color: "#F2338C",
                     fontSize: 30,
                     height: "100%",
                     textAlignVertical: "center",

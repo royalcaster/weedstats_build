@@ -44,7 +44,7 @@ import NewsPanel from "../../common/NewsPanel";
 import News from "../../../data/News";
 import UpdatePanel from "../../common/UpdatePanel";
 
-const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) => {
+const Main = ({ sendPushNotification, toggleNavbar, refreshUser }) => {
 
   //Context
   const user = useContext(UserContext);
@@ -476,7 +476,7 @@ const Main = ({ onSetUser, sendPushNotification, toggleNavbar, refreshUser }) =>
                     <View style={{flex: 1}}>
                     <Button
                         onPress={() => setShowDonation(true)}
-                        title={language.account_support}
+                        title={" " + language.account_support}
                         icon={<MaterialIcons name="euro" style={styles.money_icon} />}
                         borderradius={100}
                         color={"#131520"}

@@ -44,7 +44,7 @@ const Tutorial = ({ onDone, type}) => {
         onDone();
       }
       return true
-  })
+    })
 
 const slide = useRef(new Animated.Value(0)).current;
 
