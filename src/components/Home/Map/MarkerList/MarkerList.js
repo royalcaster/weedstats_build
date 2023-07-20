@@ -82,7 +82,7 @@ const MarkerList = ({onExit, setRegion, markers, onRefresh}) => {
                 </View>
             </View>
             
-            <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#484F78"]} progressBackgroundColor={"#131520"}/>}>
+            <ScrollView style={{width: "100%", flex: 1, alignSelf: "center", marginTop: 20}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["white"]} progressBackgroundColor={"#484F78"}/>}>
             {
                 markers.length != 0 ? markers.sort((a,b) => a.timestamp < b.timestamp).map((marker) => {
                     return <MarkerListItem key={uuidv4()} marker={marker} onPress={() => handlePress(marker)}/>

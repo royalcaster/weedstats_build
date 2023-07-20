@@ -2,8 +2,8 @@
   "expo": {
     "name": "WeedStats",
     "slug": "WeedStats",
-    "originalFullName": "@royalcaster/WeedStats",
-    "currentFullName": "@royalcaster/WeedStats",
+    /* "originalFullName": "@royalcaster/WeedStats",
+    "currentFullName": "@royalcaster/WeedStats", */
     "scheme": "com.royalcaster.WeedStats_build_test",
     "version": "0.0.2",
     "orientation": "portrait",

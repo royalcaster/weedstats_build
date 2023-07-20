@@ -32,14 +32,14 @@ const CustomMarker = ({ username, photoUrl, type, timestamp,  }) => {
             <Animated.View style={[styles.container]}>
                     
                      
-                    <View style={{display: "flex",flexDirection: "row", alignSelf: "center", backgroundColor: "#131520", padding: 5, marginBottom: -10, paddingBottom: 10, borderRadius: 10, paddingRight: 10, paddingLeft: 10, borderColor: username == user.username ? "#F2338C" : "#131520", borderWidth: username == user.username ? 2 : 0}}>
+                    <View style={{display: "flex",flexDirection: "row", alignSelf: "center", backgroundColor: username == user.username ? "#484F78" : "#131520", padding: 5, marginBottom: -10, paddingBottom: 10, borderRadius: 10, paddingRight: 10, paddingLeft: 10}}>
                         <TypeImage type={type} x={20} backgroundColor={"rgba(0,0,0,0)"}/>
                         <View style={{width: 5}}></View>
                         <Text style={{color: "white", fontSize: responsiveFontSize(1.25)}}> {new Date(timestamp).toUTCString().substring(5,16)}{"\n"}{new Date(timestamp).toUTCString().substring(16,22)}</Text>
                     </View>
 
                     <Animated.View style={[styles.image,{alignSelf: "center"}]}>
-                        <ProfileImage x={50} url={photoUrl} type={1} circleColor={username == user.username ? "#F2338C" : "#131520"} circle={username == user.username}/>
+                        <ProfileImage x={50} url={photoUrl} type={1} circleColor={username == user.username ? "#484F78" : "#131520"} circle={false}/>
                     </Animated.View>
                     <View style={styles.dot}></View>
             </Animated.View>
