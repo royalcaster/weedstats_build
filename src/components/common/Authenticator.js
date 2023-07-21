@@ -21,17 +21,19 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
     //navigation
     const navigation = useNavigation()
 
+    //Constants
+    const screen_height = Dimensions.get("screen").height;
+    
+    //Refs
+    const slide = useRef(new Animated.Value(screen_height)).current;
+
+    //Contexts
+    const language = useContext(LanguageContext);
+
     useEffect(() => {
         first ? null : checkLocalAuth();
         show();
     },[]);
-
-    const screen_height = Dimensions.get("screen").height;
-    const screen_width = Dimensions.get("screen").width;
-
-    const slide = useRef(new Animated.Value(screen_height)).current;
-
-    const language = useContext(LanguageContext);
 
     const show = () => {
         Animated.timing(slide,{
@@ -52,7 +54,7 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
         })
     }
 
-    //checkt, ob Biometrie unterstützt wird
+    //checkt, ob Biometrie unterstützt wird & führt diese durch
     const checkLocalAuth = async () => {
         const compatible = await LocalAuthentication.hasHardwareAsync();
         var isBiometricSupported;
@@ -61,15 +63,15 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
         var promise = null;
         if (isBiometricSupported) {
         promise = await handleBiometricAuth();
-        if (promise.success) {
-            navigation.navigate("login")
-            hide();
-        }
-        else {
-            Alert.alert("Fehler beim Entsperren");
-            checkLocalAuth();
-            hide();
-        }
+            if (promise.success) {
+                onSubmit();
+                hide();
+            }
+            else {
+                Alert.alert("Fehler beim Entsperren");
+                checkLocalAuth();
+                hide();
+            }
         }
     }
 
@@ -85,9 +87,9 @@ const Authenticator = ({ first, onSubmit, onCancel, onExit }) => {
         );
 
         const biometricAuth = await LocalAuthentication.authenticateAsync({
-        promptMessage: 'Entsperren für WeedStats',
-        disableDeviceFallback: false,
-        cancelLabel: "Abbrechen"
+            promptMessage: 'Entsperren für WeedStats',
+            disableDeviceFallback: false,
+            cancelLabel: "Abbrechen"
         });
 
         return biometricAuth;
